@@ -20,6 +20,17 @@ export default function FestivalPage({ params }) {
     [params.id]
   );
 
+  const kites = useMemo(
+    () =>
+      Array.from({ length: 4 }).map((_, i) => ({
+        top: `${15 + Math.random() * 45}%`,
+        duration: `${(9 + Math.random() * 6).toFixed(1)}s`,
+        delay: `${(i * 2.5 + Math.random() * 2).toFixed(2)}s`,
+        hue: i % 2 === 0 ? "#F2A93B" : "#D8483B",
+      })),
+    [params.id]
+  );
+
   if (!data) {
     return (
       <main className="min-h-[100dvh] bg-night text-cream flex items-center justify-center p-8 text-center">
@@ -39,6 +50,17 @@ export default function FestivalPage({ params }) {
         {stars.map((s, i) => (
           <div key={i} className="star-dot" style={{ top: s.top, left: s.left, animationDelay: s.delay }} />
         ))}
+        {data.motif === "kites" &&
+          kites.map((k, i) => (
+            <div
+              key={i}
+              className="kite-drift-icon"
+              style={{ top: k.top, animationDuration: k.duration, animationDelay: k.delay }}
+            >
+              <div className="kite-body" style={{ background: k.hue }} />
+              <div className="kite-tail" />
+            </div>
+          ))}
         <Link href="/" className="absolute top-3.5 left-3.5 z-10 w-[30px] h-[30px] rounded-full bg-white/15 flex items-center justify-center text-cream">
           ←
         </Link>
@@ -78,6 +100,9 @@ export default function FestivalPage({ params }) {
             </div>
             <div className="bg-night2 rounded-2xl p-4">
               {region.date && <div className="text-[10.5px] text-marigold font-semibold mb-1.5">📅 {region.date}</div>}
+              {region.feel && (
+                <div className="text-[11.5px] italic text-muted mb-2 pb-2 border-b border-dashed border-white/10">{region.feel}</div>
+              )}
               <div className="text-[13px] leading-relaxed">{region.text}</div>
               <div className="flex justify-end mt-2.5">
                 <button onClick={() => setSourceOpen((o) => !o)} className="text-[10.5px] text-muted bg-white/5 px-2 py-1 rounded-lg">

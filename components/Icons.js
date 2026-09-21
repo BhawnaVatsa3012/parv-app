@@ -49,6 +49,26 @@ export function FestivalIcon({ type }) {
       </div>
     );
   }
+  if (type === "kite") {
+    return (
+      <div className="relative w-6 h-6 kite-sway">
+        <div
+          className="absolute inset-0"
+          style={{
+            background: "linear-gradient(135deg, #F2A93B 50%, #D8483B 50%)",
+            clipPath: "polygon(50% 0%, 100% 40%, 50% 100%, 0% 40%)",
+          }}
+        />
+        <div className="absolute top-1/2 left-1/2 w-[9px] h-[1.5px] bg-cream/70 -translate-x-1/2 -translate-y-1/2 rotate-90" />
+        <div className="absolute top-1/2 left-1/2 w-[9px] h-[1.5px] bg-cream/70 -translate-x-1/2 -translate-y-1/2" />
+        <div className="absolute top-full left-1/2 -translate-x-1/2 flex flex-col items-center gap-[2px] mt-[1px]">
+          {[0, 1, 2].map((i) => (
+            <div key={i} className="w-[3px] h-[3px] rounded-full bg-emerald" style={{ animationDelay: `${i * 0.15}s` }} />
+          ))}
+        </div>
+      </div>
+    );
+  }
   // steam (default / in-production placeholder)
   return (
     <div className="flex items-end gap-[3px]">
