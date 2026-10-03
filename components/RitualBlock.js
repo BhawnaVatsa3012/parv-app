@@ -14,7 +14,7 @@ export default function RitualBlock({ block }) {
         <Row label="What you'll need">
           <div className="flex flex-wrap gap-1.5">
             {block.samagri.map((s, i) => (
-              <span key={i} className="text-[10px] bg-white/10 text-cream px-2 py-1 rounded-md">{s}</span>
+              <span key={i} className="text-[10px] bg-black/10 text-cream px-2 py-1 rounded-md">{s}</span>
             ))}
           </div>
         </Row>

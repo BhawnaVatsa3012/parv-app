@@ -3,6 +3,13 @@ import DodoPayments from "dodopayments";
 import { createClient } from "@/lib/supabase/server";
 
 export async function POST() {
+  if (!process.env.DODO_PAYMENTS_API_KEY || !process.env.DODO_PRODUCT_ID) {
+    return NextResponse.json(
+      { error: "Subscriptions aren't set up yet — check back soon." },
+      { status: 503 }
+    );
+  }
+
   const supabase = createClient();
   const {
     data: { user },

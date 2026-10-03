@@ -83,7 +83,7 @@ export default function AccountClient({ email, subscription }) {
 
         <button
           onClick={handleSignOut}
-          className="w-full py-3 rounded-xl text-[13px] font-bold border border-white/15 text-cream"
+          className="w-full py-3 rounded-xl text-[13px] font-bold border border-black/15 text-cream"
         >
           Sign out
         </button>

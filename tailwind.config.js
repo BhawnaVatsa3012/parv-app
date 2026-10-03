@@ -7,18 +7,18 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        night: "#2B1210",
-        night2: "#3D1B16",
-        night3: "#341712",
-        marigold: "#F2A93B",
-        vermillion: "#D8483B",
-        cream: "#F7F1E6",
-        muted: "#D8B79C",
-        emerald: "#4C8C6B",
+        night: "#F3F2F2",
+        night2: "#EAE9E9",
+        night3: "#DCD8D7",
+        marigold: "#C28D41",
+        vermillion: "#A8362A",
+        cream: "#201F1D",
+        muted: "#6B6764",
+        emerald: "#3F7A5C",
       },
       fontFamily: {
-        display: ["'Rozha One'", "serif"],
-        body: ["'Mukta'", "system-ui", "sans-serif"],
+        display: ["'Cormorant Garamond'", "serif"],
+        body: ["'Lora'", "system-ui", "sans-serif"],
       },
     },
   },

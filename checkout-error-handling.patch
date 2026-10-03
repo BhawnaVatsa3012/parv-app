@@ -1,0 +1,36 @@
+diff --git a/app/api/checkout/dodo/route.js b/app/api/checkout/dodo/route.js
+index b85d098..c3a02e6 100644
+--- a/app/api/checkout/dodo/route.js
++++ b/app/api/checkout/dodo/route.js
+@@ -3,6 +3,13 @@ import DodoPayments from "dodopayments";
+ import { createClient } from "@/lib/supabase/server";
+ 
+ export async function POST() {
++  if (!process.env.DODO_PAYMENTS_API_KEY || !process.env.DODO_PRODUCT_ID) {
++    return NextResponse.json(
++      { error: "Subscriptions aren't set up yet — check back soon." },
++      { status: 503 }
++    );
++  }
++
+   const supabase = createClient();
+   const {
+     data: { user },
+diff --git a/app/api/checkout/razorpay/route.js b/app/api/checkout/razorpay/route.js
+index 6db5202..2f6162d 100644
+--- a/app/api/checkout/razorpay/route.js
++++ b/app/api/checkout/razorpay/route.js
+@@ -3,6 +3,13 @@ import Razorpay from "razorpay";
+ import { createClient } from "@/lib/supabase/server";
+ 
+ export async function POST() {
++  if (!process.env.RAZORPAY_KEY_ID || !process.env.RAZORPAY_KEY_SECRET || !process.env.RAZORPAY_PLAN_ID) {
++    return NextResponse.json(
++      { error: "Subscriptions aren't set up yet — check back soon." },
++      { status: 503 }
++    );
++  }
++
+   const supabase = createClient();
+   const {
+     data: { user },

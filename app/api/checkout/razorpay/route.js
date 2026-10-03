@@ -3,6 +3,13 @@ import Razorpay from "razorpay";
 import { createClient } from "@/lib/supabase/server";
 
 export async function POST() {
+  if (!process.env.RAZORPAY_KEY_ID || !process.env.RAZORPAY_KEY_SECRET || !process.env.RAZORPAY_PLAN_ID) {
+    return NextResponse.json(
+      { error: "Subscriptions aren't set up yet — check back soon." },
+      { status: 503 }
+    );
+  }
+
   const supabase = createClient();
   const {
     data: { user },

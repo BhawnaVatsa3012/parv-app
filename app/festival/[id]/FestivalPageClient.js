@@ -61,7 +61,7 @@ export default function FestivalPageClient({ params, entitled }) {
               <div className="kite-tail" />
             </div>
           ))}
-        <Link href="/" className="absolute top-3.5 left-3.5 z-10 w-[30px] h-[30px] rounded-full bg-white/15 flex items-center justify-center text-cream">
+        <Link href="/" className="absolute top-3.5 left-3.5 z-10 w-[30px] h-[30px] rounded-full bg-black/15 flex items-center justify-center text-cream">
           ←
         </Link>
       </div>
@@ -73,13 +73,13 @@ export default function FestivalPageClient({ params, entitled }) {
         <div className="flex gap-1.5 mb-3">
           <button
             onClick={() => setMode("stories")}
-            className={`flex-1 text-center py-2 rounded-xl text-xs font-bold border ${mode === "stories" ? "bg-marigold text-[#3A2405] border-marigold" : "text-muted border-white/15"}`}
+            className={`flex-1 text-center py-2 rounded-xl text-xs font-bold border ${mode === "stories" ? "bg-marigold text-[#3A2405] border-marigold" : "text-muted border-black/15"}`}
           >
             Stories
           </button>
           <button
             onClick={() => setMode("rituals")}
-            className={`flex-1 text-center py-2 rounded-xl text-xs font-bold border ${mode === "rituals" ? "bg-marigold text-[#3A2405] border-marigold" : "text-muted border-white/15"}`}
+            className={`flex-1 text-center py-2 rounded-xl text-xs font-bold border ${mode === "rituals" ? "bg-marigold text-[#3A2405] border-marigold" : "text-muted border-black/15"}`}
           >
             Rituals
           </button>
@@ -92,7 +92,7 @@ export default function FestivalPageClient({ params, entitled }) {
                 <button
                   key={r.name}
                   onClick={() => { setRegionIdx(i); setSourceOpen(false); }}
-                  className={`shrink-0 text-[11px] font-semibold px-3 py-1.5 rounded-2xl border ${i === regionIdx ? "bg-vermillion border-vermillion text-white" : "border-white/15 text-cream"}`}
+                  className={`shrink-0 text-[11px] font-semibold px-3 py-1.5 rounded-2xl border ${i === regionIdx ? "bg-vermillion border-vermillion text-white" : "border-black/15 text-cream"}`}
                 >
                   {r.name}
                 </button>
@@ -101,16 +101,16 @@ export default function FestivalPageClient({ params, entitled }) {
             <div className="bg-night2 rounded-2xl p-4">
               {region.date && <div className="text-[10.5px] text-marigold font-semibold mb-1.5">📅 {region.date}</div>}
               {region.feel && (
-                <div className="text-[11.5px] italic text-muted mb-2 pb-2 border-b border-dashed border-white/10">{region.feel}</div>
+                <div className="text-[11.5px] italic text-muted mb-2 pb-2 border-b border-dashed border-black/10">{region.feel}</div>
               )}
               <div className="text-[13px] leading-relaxed">{region.text}</div>
               <div className="flex justify-end mt-2.5">
-                <button onClick={() => setSourceOpen((o) => !o)} className="text-[10.5px] text-muted bg-white/5 px-2 py-1 rounded-lg">
+                <button onClick={() => setSourceOpen((o) => !o)} className="text-[10.5px] text-muted bg-black/5 px-2 py-1 rounded-lg">
                   ⓘ source
                 </button>
               </div>
               {sourceOpen && (
-                <div className="mt-2 pt-2 border-t border-dashed border-white/15 text-[10.5px] text-muted">
+                <div className="mt-2 pt-2 border-t border-dashed border-black/15 text-[10.5px] text-muted">
                   As told in <b className="text-cream">{region.name}</b> — illustrative source: <b className="text-cream">{region.source}</b>. Real entries would link to a verified regional reference.
                 </div>
               )}

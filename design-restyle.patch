@@ -1,0 +1,259 @@
+diff --git a/app/account/AccountClient.js b/app/account/AccountClient.js
+index 12202bd..3e6f4b8 100644
+--- a/app/account/AccountClient.js
++++ b/app/account/AccountClient.js
+@@ -83,7 +83,7 @@ export default function AccountClient({ email, subscription }) {
+ 
+         <button
+           onClick={handleSignOut}
+-          className="w-full py-3 rounded-xl text-[13px] font-bold border border-white/15 text-cream"
++          className="w-full py-3 rounded-xl text-[13px] font-bold border border-black/15 text-cream"
+         >
+           Sign out
+         </button>
+diff --git a/app/festival/[id]/FestivalPageClient.js b/app/festival/[id]/FestivalPageClient.js
+index 7966afc..1b15010 100644
+--- a/app/festival/[id]/FestivalPageClient.js
++++ b/app/festival/[id]/FestivalPageClient.js
+@@ -61,7 +61,7 @@ export default function FestivalPageClient({ params, entitled }) {
+               <div className="kite-tail" />
+             </div>
+           ))}
+-        <Link href="/" className="absolute top-3.5 left-3.5 z-10 w-[30px] h-[30px] rounded-full bg-white/15 flex items-center justify-center text-cream">
++        <Link href="/" className="absolute top-3.5 left-3.5 z-10 w-[30px] h-[30px] rounded-full bg-black/15 flex items-center justify-center text-cream">
+           ←
+         </Link>
+       </div>
+@@ -73,13 +73,13 @@ export default function FestivalPageClient({ params, entitled }) {
+         <div className="flex gap-1.5 mb-3">
+           <button
+             onClick={() => setMode("stories")}
+-            className={`flex-1 text-center py-2 rounded-xl text-xs font-bold border ${mode === "stories" ? "bg-marigold text-[#3A2405] border-marigold" : "text-muted border-white/15"}`}
++            className={`flex-1 text-center py-2 rounded-xl text-xs font-bold border ${mode === "stories" ? "bg-marigold text-[#3A2405] border-marigold" : "text-muted border-black/15"}`}
+           >
+             Stories
+           </button>
+           <button
+             onClick={() => setMode("rituals")}
+-            className={`flex-1 text-center py-2 rounded-xl text-xs font-bold border ${mode === "rituals" ? "bg-marigold text-[#3A2405] border-marigold" : "text-muted border-white/15"}`}
++            className={`flex-1 text-center py-2 rounded-xl text-xs font-bold border ${mode === "rituals" ? "bg-marigold text-[#3A2405] border-marigold" : "text-muted border-black/15"}`}
+           >
+             Rituals
+           </button>
+@@ -92,7 +92,7 @@ export default function FestivalPageClient({ params, entitled }) {
+                 <button
+                   key={r.name}
+                   onClick={() => { setRegionIdx(i); setSourceOpen(false); }}
+-                  className={`shrink-0 text-[11px] font-semibold px-3 py-1.5 rounded-2xl border ${i === regionIdx ? "bg-vermillion border-vermillion text-white" : "border-white/15 text-cream"}`}
++                  className={`shrink-0 text-[11px] font-semibold px-3 py-1.5 rounded-2xl border ${i === regionIdx ? "bg-vermillion border-vermillion text-white" : "border-black/15 text-cream"}`}
+                 >
+                   {r.name}
+                 </button>
+@@ -101,16 +101,16 @@ export default function FestivalPageClient({ params, entitled }) {
+             <div className="bg-night2 rounded-2xl p-4">
+               {region.date && <div className="text-[10.5px] text-marigold font-semibold mb-1.5">📅 {region.date}</div>}
+               {region.feel && (
+-                <div className="text-[11.5px] italic text-muted mb-2 pb-2 border-b border-dashed border-white/10">{region.feel}</div>
++                <div className="text-[11.5px] italic text-muted mb-2 pb-2 border-b border-dashed border-black/10">{region.feel}</div>
+               )}
+               <div className="text-[13px] leading-relaxed">{region.text}</div>
+               <div className="flex justify-end mt-2.5">
+-                <button onClick={() => setSourceOpen((o) => !o)} className="text-[10.5px] text-muted bg-white/5 px-2 py-1 rounded-lg">
++                <button onClick={() => setSourceOpen((o) => !o)} className="text-[10.5px] text-muted bg-black/5 px-2 py-1 rounded-lg">
+                   ⓘ source
+                 </button>
+               </div>
+               {sourceOpen && (
+-                <div className="mt-2 pt-2 border-t border-dashed border-white/15 text-[10.5px] text-muted">
++                <div className="mt-2 pt-2 border-t border-dashed border-black/15 text-[10.5px] text-muted">
+                   As told in <b className="text-cream">{region.name}</b> — illustrative source: <b className="text-cream">{region.source}</b>. Real entries would link to a verified regional reference.
+                 </div>
+               )}
+diff --git a/app/globals.css b/app/globals.css
+index 99f55df..296c95e 100644
+--- a/app/globals.css
++++ b/app/globals.css
+@@ -1,9 +1,20 @@
+-@import url('https://fonts.googleapis.com/css2?family=Rozha+One&family=Mukta:wght@400;500;600;700&display=swap');
++@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Lora:wght@400;600&display=swap');
+ @tailwind base;
+ @tailwind components;
+ @tailwind utilities;
+ 
+-html, body { margin: 0; padding: 0; background: #EFEBE3; }
++:root {
++  --color-bg: #F3F2F2;
++  --color-surface: #EAE9E9;
++  --color-text: #201F1D;
++  --color-accent: #C28D41;
++  --color-divider: color-mix(in srgb, #201F1D 16%, transparent);
++  --radius-sm: 2px;
++  --radius-md: 4px;
++  --radius-lg: 7px;
++}
++
++html, body { margin: 0; padding: 0; background: #F3F2F2; }
+ 
+ /* ---------- shared animations ---------- */
+ @keyframes flick { 0% { transform: scaleY(1) rotate(-2deg); } 100% { transform: scaleY(1.15) rotate(2deg); } }
+diff --git a/app/login/page.js b/app/login/page.js
+index dcf80a9..8f7881d 100644
+--- a/app/login/page.js
++++ b/app/login/page.js
+@@ -48,7 +48,7 @@ export default function LoginPage() {
+               value={email}
+               onChange={(e) => setEmail(e.target.value)}
+               placeholder="you@example.com"
+-              className="w-full rounded-xl bg-night2 border border-white/15 px-4 py-3 text-[14px] text-cream placeholder:text-muted outline-none focus:border-marigold"
++              className="w-full rounded-xl bg-night2 border border-black/15 px-4 py-3 text-[14px] text-cream placeholder:text-muted outline-none focus:border-marigold"
+             />
+             <button
+               type="submit"
+diff --git a/app/pricing/PricingClient.js b/app/pricing/PricingClient.js
+index bf78935..b7551b1 100644
+--- a/app/pricing/PricingClient.js
++++ b/app/pricing/PricingClient.js
+@@ -23,13 +23,13 @@ export default function PricingClient({ detectedRegion }) {
+         <div className="flex gap-1.5 mb-4">
+           <button
+             onClick={() => setRegion("india")}
+-            className={`flex-1 text-center py-2 rounded-xl text-xs font-bold border ${region === "india" ? "bg-marigold text-[#3A2405] border-marigold" : "text-muted border-white/15"}`}
++            className={`flex-1 text-center py-2 rounded-xl text-xs font-bold border ${region === "india" ? "bg-marigold text-[#3A2405] border-marigold" : "text-muted border-black/15"}`}
+           >
+             India
+           </button>
+           <button
+             onClick={() => setRegion("international")}
+-            className={`flex-1 text-center py-2 rounded-xl text-xs font-bold border ${region === "international" ? "bg-marigold text-[#3A2405] border-marigold" : "text-muted border-white/15"}`}
++            className={`flex-1 text-center py-2 rounded-xl text-xs font-bold border ${region === "international" ? "bg-marigold text-[#3A2405] border-marigold" : "text-muted border-black/15"}`}
+           >
+             International
+           </button>
+diff --git a/components/FestivalCard.js b/components/FestivalCard.js
+index 8fd3095..a37d446 100644
+--- a/components/FestivalCard.js
++++ b/components/FestivalCard.js
+@@ -1,21 +1,35 @@
+ "use client";
+ import Link from "next/link";
+ import { FestivalIcon } from "./Icons";
++import { getFestivalColors } from "@/lib/festivalColors";
+ 
+ export default function FestivalCard({ festival }) {
++  const colors = festival.active ? getFestivalColors(festival.id) : null;
++
+   const inner = (
+-    <div className={`relative flex items-center gap-3 rounded-2xl p-3 bg-night2 border border-white/5 ${festival.active ? "cursor-pointer hover:brightness-110" : "opacity-50"}`}>
++    <div
++      className={`relative flex items-center gap-3 rounded-2xl p-3 border ${festival.active ? "cursor-pointer hover:brightness-95" : "bg-night2 border-black/5 opacity-60"}`}
++      style={festival.active ? { background: colors.tint, borderColor: colors.line } : undefined}
++    >
+       {!festival.active && (
+-        <div className="absolute top-2 right-2.5 text-[8.5px] bg-white/10 text-cream px-2 py-0.5 rounded-lg font-semibold">soon</div>
++        <div className="absolute top-2 right-2.5 text-[8.5px] bg-black/10 text-cream px-2 py-0.5 rounded-lg font-semibold">soon</div>
+       )}
+-      <div className="w-[52px] h-[52px] rounded-xl bg-night3 flex items-center justify-center shrink-0">
++      <div
++        className="w-[52px] h-[52px] rounded-xl flex items-center justify-center shrink-0"
++        style={festival.active ? { background: colors.base } : { background: "#DCD8D7" }}
++      >
+         <FestivalIcon type={festival.icon} />
+       </div>
+       <div>
+         <h4 className="font-display text-base text-cream mb-0.5">{festival.name}</h4>
+         <p className="text-[11px] text-muted mb-1 leading-snug">{festival.hook}</p>
+         <div className="text-[9.5px] text-muted mb-0.5">📅 {festival.date}</div>
+-        <div className="text-[9.5px] text-marigold font-semibold">{festival.meta}</div>
++        <div
++          className="text-[9.5px] font-semibold"
++          style={festival.active ? { color: colors.deep } : undefined}
++        >
++          {festival.meta}
++        </div>
+       </div>
+     </div>
+   );
+diff --git a/components/RitualBlock.js b/components/RitualBlock.js
+index eb350e5..28f00db 100644
+--- a/components/RitualBlock.js
++++ b/components/RitualBlock.js
+@@ -14,7 +14,7 @@ export default function RitualBlock({ block }) {
+         <Row label="What you'll need">
+           <div className="flex flex-wrap gap-1.5">
+             {block.samagri.map((s, i) => (
+-              <span key={i} className="text-[10px] bg-white/10 text-cream px-2 py-1 rounded-md">{s}</span>
++              <span key={i} className="text-[10px] bg-black/10 text-cream px-2 py-1 rounded-md">{s}</span>
+             ))}
+           </div>
+         </Row>
+diff --git a/lib/festivalColors.js b/lib/festivalColors.js
+new file mode 100644
+index 0000000..c2ddf7d
+--- /dev/null
++++ b/lib/festivalColors.js
+@@ -0,0 +1,32 @@
++// Per-festival accent colors, from the Classical design system.
++// Each festival gets a hue on a shared OKLCH scale, so every festival's
++// base/deep/tint/line colors sit at the same lightness/chroma steps.
++const HUE = {
++  diwali: 65,
++  bhaidooj: 300,
++  holi: 350,
++  teej: 150,
++  newyear: 35,
++  sankranti: 240,
++  ganesh: 45,
++  navratri: 330,
++  onam: 110,
++};
++
++const NEUTRAL = {
++  base: "#C28D41",
++  deep: "#8A5F26",
++  tint: "#EFEAE2",
++  line: "#D8D2C8",
++};
++
++export function getFestivalColors(id) {
++  const h = HUE[id];
++  if (h == null) return NEUTRAL;
++  return {
++    base: `oklch(0.66 0.16 ${h})`,
++    deep: `oklch(0.45 0.13 ${h})`,
++    tint: `oklch(0.95 0.035 ${h})`,
++    line: `oklch(0.83 0.1 ${h})`,
++  };
++}
+diff --git a/tailwind.config.js b/tailwind.config.js
+index 7a98572..c0a5c82 100644
+--- a/tailwind.config.js
++++ b/tailwind.config.js
+@@ -7,18 +7,18 @@ module.exports = {
+   theme: {
+     extend: {
+       colors: {
+-        night: "#2B1210",
+-        night2: "#3D1B16",
+-        night3: "#341712",
+-        marigold: "#F2A93B",
+-        vermillion: "#D8483B",
+-        cream: "#F7F1E6",
+-        muted: "#D8B79C",
+-        emerald: "#4C8C6B",
++        night: "#F3F2F2",
++        night2: "#EAE9E9",
++        night3: "#DCD8D7",
++        marigold: "#C28D41",
++        vermillion: "#A8362A",
++        cream: "#201F1D",
++        muted: "#6B6764",
++        emerald: "#3F7A5C",
+       },
+       fontFamily: {
+-        display: ["'Rozha One'", "serif"],
+-        body: ["'Mukta'", "system-ui", "sans-serif"],
++        display: ["'Cormorant Garamond'", "serif"],
++        body: ["'Lora'", "system-ui", "sans-serif"],
+       },
+     },
+   },
