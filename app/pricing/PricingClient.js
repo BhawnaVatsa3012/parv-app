@@ -23,19 +23,19 @@ export default function PricingClient({ detectedRegion }) {
         <div className="flex gap-1.5 mb-4">
           <button
             onClick={() => setRegion("india")}
-            className={`flex-1 text-center py-2 rounded-xl text-xs font-bold border ${region === "india" ? "bg-marigold text-[#3A2405] border-marigold" : "text-muted border-black/15"}`}
+            className={`flex-1 text-center py-2 rounded-xl text-xs font-bold border ${region === "india" ? "bg-marigold/10 text-[#8A5F26] border-marigold" : "text-muted border-black/15"}`}
           >
             India
           </button>
           <button
             onClick={() => setRegion("international")}
-            className={`flex-1 text-center py-2 rounded-xl text-xs font-bold border ${region === "international" ? "bg-marigold text-[#3A2405] border-marigold" : "text-muted border-black/15"}`}
+            className={`flex-1 text-center py-2 rounded-xl text-xs font-bold border ${region === "international" ? "bg-marigold/10 text-[#8A5F26] border-marigold" : "text-muted border-black/15"}`}
           >
             International
           </button>
         </div>
 
-        <div className="bg-night2 rounded-2xl p-5 mb-4 text-center">
+        <div className="bg-transparent border border-black/10 rounded-2xl p-5 mb-4 text-center">
           <div className="text-3xl font-display mb-1">
             {region === "india" ? INDIA_PRICE : INTL_PRICE}
           </div>
