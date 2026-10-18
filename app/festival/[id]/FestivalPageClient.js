@@ -73,13 +73,13 @@ export default function FestivalPageClient({ params, entitled }) {
         <div className="flex gap-1.5 mb-3">
           <button
             onClick={() => setMode("stories")}
-            className={`flex-1 text-center py-2 rounded-xl text-xs font-bold border ${mode === "stories" ? "bg-marigold text-[#3A2405] border-marigold" : "text-muted border-black/15"}`}
+            className={`flex-1 text-center py-2 rounded-xl text-xs font-bold border ${mode === "stories" ? "bg-marigold/10 text-[#8A5F26] border-marigold" : "text-muted border-black/15"}`}
           >
             Stories
           </button>
           <button
             onClick={() => setMode("rituals")}
-            className={`flex-1 text-center py-2 rounded-xl text-xs font-bold border ${mode === "rituals" ? "bg-marigold text-[#3A2405] border-marigold" : "text-muted border-black/15"}`}
+            className={`flex-1 text-center py-2 rounded-xl text-xs font-bold border ${mode === "rituals" ? "bg-marigold/10 text-[#8A5F26] border-marigold" : "text-muted border-black/15"}`}
           >
             Rituals
           </button>
@@ -98,7 +98,7 @@ export default function FestivalPageClient({ params, entitled }) {
                 </button>
               ))}
             </div>
-            <div className="bg-night2 rounded-2xl p-4">
+            <div className="bg-transparent border border-black/10 rounded-2xl p-4">
               {region.date && <div className="text-[10.5px] text-marigold font-semibold mb-1.5">📅 {region.date}</div>}
               {region.feel && (
                 <div className="text-[11.5px] italic text-muted mb-2 pb-2 border-b border-dashed border-black/10">{region.feel}</div>
@@ -118,7 +118,7 @@ export default function FestivalPageClient({ params, entitled }) {
           </div>
         ) : !entitled ? (
           <div className="pb-8">
-            <div className="bg-night2 rounded-2xl p-6 text-center">
+            <div className="bg-transparent border border-black/10 rounded-2xl p-6 text-center">
               <div className="text-3xl mb-2">🔒</div>
               <div className="text-[14px] font-semibold mb-1.5">Rituals are part of Parv's subscription</div>
               <div className="text-[12px] text-muted mb-4">
@@ -126,7 +126,7 @@ export default function FestivalPageClient({ params, entitled }) {
               </div>
               <Link
                 href="/pricing"
-                className="inline-block py-2.5 px-5 rounded-xl text-[13px] font-bold bg-marigold text-[#3A2405]"
+                className="inline-block py-2.5 px-5 rounded-xl text-[13px] font-bold bg-transparent border border-marigold text-[#8A5F26]"
               >
                 Unlock Rituals
               </Link>
@@ -137,7 +137,7 @@ export default function FestivalPageClient({ params, entitled }) {
             {data.rituals && data.rituals.length ? (
               data.rituals.map((block, i) => <RitualBlock key={i} block={block} />)
             ) : (
-              <div className="bg-night2 rounded-2xl p-4 text-[12px] text-cream">Rituals for this festival aren't written up yet.</div>
+              <div className="bg-transparent border border-black/10 rounded-2xl p-4 text-[12px] text-cream">Rituals for this festival aren't written up yet.</div>
             )}
           </div>
         )}
