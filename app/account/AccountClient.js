@@ -46,7 +46,7 @@ export default function AccountClient({ email, subscription }) {
         <h1 className="font-display text-2xl mb-1">Your account</h1>
         <p className="text-[13px] text-muted mb-5">{email}</p>
 
-        <div className="bg-night2 rounded-2xl p-4 mb-4">
+        <div className="bg-transparent border border-black/10 rounded-2xl p-4 mb-4">
           <div className="text-[11px] text-muted mb-1">Rituals subscription</div>
           {subscription ? (
             <>
