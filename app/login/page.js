@@ -37,7 +37,7 @@ export default function LoginPage() {
         </p>
 
         {status === "sent" ? (
-          <div className="bg-night2 rounded-2xl p-4 text-[13px]">
+          <div className="bg-transparent border border-black/10 rounded-2xl p-4 text-[13px]">
             Check <b>{email}</b> for a sign-in link.
           </div>
         ) : (
@@ -53,7 +53,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={status === "sending"}
-              className="w-full py-3 rounded-xl text-[13px] font-bold bg-marigold text-[#3A2405] disabled:opacity-60"
+              className="w-full py-3 rounded-xl text-[13px] font-bold bg-transparent border border-marigold text-[#8A5F26] disabled:opacity-60"
             >
               {status === "sending" ? "Sending…" : "Send magic link"}
             </button>
