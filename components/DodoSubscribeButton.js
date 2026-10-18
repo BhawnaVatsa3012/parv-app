@@ -27,7 +27,7 @@ export default function DodoSubscribeButton() {
       <button
         onClick={handleClick}
         disabled={loading}
-        className="w-full py-3 rounded-xl text-[13px] font-bold bg-marigold text-[#3A2405] disabled:opacity-60"
+        className="w-full py-3 rounded-xl text-[13px] font-bold bg-transparent border border-marigold text-[#8A5F26] disabled:opacity-60"
       >
         {loading ? "Starting checkout…" : "Subscribe (international)"}
       </button>

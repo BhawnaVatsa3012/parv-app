@@ -2,7 +2,7 @@
 
 export default function RitualBlock({ block }) {
   return (
-    <div className="bg-night2 rounded-2xl p-4 mb-2.5">
+    <div className="bg-transparent border border-black/10 rounded-2xl p-4 mb-2.5">
       {block.heading && <h4 className="font-display text-marigold text-[15px] mb-2">{block.heading}</h4>}
       {block.deity && (
         <Row label="Who's worshipped"><span className="text-cream">{block.deity}</span></Row>
