@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 
 export default function LoginPage() {
@@ -31,7 +32,13 @@ export default function LoginPage() {
   return (
     <main className="min-h-[100dvh] bg-night text-cream flex items-center justify-center p-6">
       <div className="w-full max-w-sm">
-        <h1 className="font-display text-2xl mb-2">Sign in to Parv</h1>
+        <Link href="/" className="text-[12px] text-muted underline">← All festivals</Link>
+        <div className="font-display text-3xl text-marigold leading-none mt-8">Parv</div>
+        <div className="text-[11.5px] text-muted mt-1 mb-8">the stories behind our festivals</div>
+        <h1 className="font-display text-2xl mb-2">Sign in</h1>
+        <p className="text-[13px] text-muted mb-1">
+          Stories are always free. Sign in to unlock Rituals — the how-to-celebrate guides.
+        </p>
         <p className="text-[13px] text-muted mb-6">
           We'll email you a one-time link — no password needed.
         </p>
