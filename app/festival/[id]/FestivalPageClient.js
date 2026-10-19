@@ -61,8 +61,8 @@ export default function FestivalPageClient({ params, entitled }) {
               <div className="kite-tail" />
             </div>
           ))}
-        <Link href="/" className="absolute top-3.5 left-3.5 z-10 w-[30px] h-[30px] rounded-full bg-black/15 flex items-center justify-center text-cream">
-          ←
+        <Link href="/" aria-label="Back to all festivals" className="absolute top-3.5 left-3.5 z-10 h-[32px] px-3 rounded-full bg-white/90 border border-black/10 flex items-center gap-1.5 text-[12px] font-semibold text-[#201F1D]">
+          <span aria-hidden="true">←</span> All festivals
         </Link>
       </div>
 
