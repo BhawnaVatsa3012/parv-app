@@ -1,14 +1,33 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Splash from "@/components/Splash";
 import FestivalCard from "@/components/FestivalCard";
 import { festivals } from "@/lib/data";
 
 export default function HomePage() {
-  const [showSplash, setShowSplash] = useState(true);
+  // null = deciding, true = show splash, false = show list.
+  // Splash plays once per browser session so "All festivals" returns to the list.
+  const [showSplash, setShowSplash] = useState(null);
+
+  useEffect(() => {
+    let seen = false;
+    try { seen = sessionStorage.getItem("parv-splash-seen") === "1"; } catch (e) {}
+    setShowSplash(!seen);
+  }, []);
+
+  if (showSplash === null) {
+    return <main className="min-h-[100dvh] bg-night" />;
+  }
 
   if (showSplash) {
-    return <Splash onDone={() => setShowSplash(false)} />;
+    return (
+      <Splash
+        onDone={() => {
+          try { sessionStorage.setItem("parv-splash-seen", "1"); } catch (e) {}
+          setShowSplash(false);
+        }}
+      />
+    );
   }
 
   return (
