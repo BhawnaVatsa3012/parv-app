@@ -10,6 +10,14 @@ export default function LoginPage() {
   const [errorMsg, setErrorMsg] = useState("");
   const router = useRouter();
 
+  // Show a message if a sign-in link failed (expired, already used, etc.)
+  useEffect(() => {
+    if (new URLSearchParams(window.location.search).get("error") === "auth_failed") {
+      setStatus("error");
+      setErrorMsg("That sign-in link didn't work — it may have expired or already been used. Please request a new one.");
+    }
+  }, []);
+
   // Already signed in? Go straight to the account page.
   useEffect(() => {
     try {
