@@ -1,5 +1,6 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 
@@ -7,6 +8,16 @@ export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState("idle"); // idle | sending | sent | error
   const [errorMsg, setErrorMsg] = useState("");
+  const router = useRouter();
+
+  // Already signed in? Go straight to the account page.
+  useEffect(() => {
+    try {
+      createClient().auth.getUser().then(({ data }) => {
+        if (data?.user) router.replace("/account");
+      });
+    } catch (e) {}
+  }, [router]);
 
   async function handleSubmit(e) {
     e.preventDefault();
