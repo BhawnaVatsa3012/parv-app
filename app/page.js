@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { createClient } from "@/lib/supabase/client";
 import Splash from "@/components/Splash";
 import FestivalCard from "@/components/FestivalCard";
 import { festivals } from "@/lib/data";
@@ -9,6 +10,13 @@ export default function HomePage() {
   // null = deciding, true = show splash, false = show list.
   // Splash plays once per browser session so "All festivals" returns to the list.
   const [showSplash, setShowSplash] = useState(null);
+  const [signedIn, setSignedIn] = useState(false);
+
+  useEffect(() => {
+    try {
+      createClient().auth.getUser().then(({ data }) => setSignedIn(!!data?.user));
+    } catch (e) {}
+  }, []);
 
   useEffect(() => {
     let seen = false;
@@ -39,8 +47,8 @@ export default function HomePage() {
             <div className="font-display text-2xl text-marigold leading-none">Parv</div>
             <div className="text-[11.5px] text-muted mt-1">the stories behind our festivals</div>
           </div>
-          <Link href="/login" className="h-[30px] px-3.5 rounded-full border border-marigold text-[12px] font-semibold text-[#8A5F26] flex items-center">
-            Sign in
+          <Link href={signedIn ? "/account" : "/login"} className="h-[30px] px-3.5 rounded-full border border-marigold text-[12px] font-semibold text-[#8A5F26] flex items-center">
+            {signedIn ? "Account" : "Sign in"}
           </Link>
         </div>
       </div>
