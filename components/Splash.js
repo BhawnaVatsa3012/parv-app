@@ -1,54 +1,37 @@
 "use client";
-import { useEffect, useRef } from "react";
-import RangoliSpirit from "./RangoliSpirit";
+import { useEffect } from "react";
+import { SPLASH_BG } from "@/lib/design";
+import { Bunting, Rangoli } from "@/components/ui/Decor";
 
-const CONFETTI_COLORS = ["#F2A93B", "#D8483B", "#7B6BC9", "#4C8C6B", "#E85D9E"];
-
+// Opening screen: festival bunting, the ghosted पर्व, the turning Rangoli.
+// Moves on by itself after 2.8 s, or on tap.
 export default function Splash({ onDone }) {
-  const timerRef = useRef(null);
-
   useEffect(() => {
-    timerRef.current = setTimeout(onDone, 3200);
-    return () => clearTimeout(timerRef.current);
+    const t = setTimeout(onDone, 2800);
+    return () => clearTimeout(t);
   }, [onDone]);
-
-  const confetti = Array.from({ length: 16 }).map((_, i) => ({
-    left: `${Math.random() * 100}%`,
-    background: CONFETTI_COLORS[i % CONFETTI_COLORS.length],
-    duration: `${(2.2 + Math.random() * 1.6).toFixed(2)}s`,
-    delay: `${(Math.random() * 2).toFixed(2)}s`,
-  }));
 
   return (
     <div
-      onClick={() => { clearTimeout(timerRef.current); onDone(); }}
-      className="relative w-full h-[100dvh] flex flex-col items-center justify-center cursor-pointer overflow-hidden text-cream"
-      style={{ background: "linear-gradient(160deg,#F2A93B 0%,#D8483B 55%,#5A1418 100%)" }}
+      onClick={onDone}
+      role="button"
+      aria-label="Continue"
+      style={{
+        position: "fixed", inset: 0, zIndex: 50, cursor: "pointer", display: "flex", flexDirection: "column",
+        alignItems: "center", justifyContent: "center", gap: 18, color: "var(--color-bg)", background: SPLASH_BG, overflow: "hidden",
+      }}
     >
-      {confetti.map((c, i) => (
-        <div
-          key={i}
-          className="absolute -top-3 w-[6px] h-3 rounded-sm"
-          style={{ left: c.left, background: c.background, animation: `confetti-fall ${c.duration} linear infinite`, animationDelay: c.delay }}
-        />
-      ))}
-      <div className="absolute w-[220px] h-[220px] rounded-full" style={{ background: "radial-gradient(circle, rgba(255,255,255,0.14), transparent 70%)" }} />
-      <RangoliSpirit />
-      <div
-        className="font-display text-4xl mt-5"
-        style={{ color: "#F7F1E6", textShadow: "0 2px 14px rgba(50,10,8,0.55)", animation: "word-in 0.7s ease forwards 0.35s", opacity: 0 }}
-      >
-        Parv
+      <div style={{ position: "absolute", top: "max(env(safe-area-inset-top), 12px)", left: 0, right: 0 }}>
+        <Bunting light />
       </div>
-      <div
-        className="text-sm mt-1"
-        style={{ color: "#F7F1E6", textShadow: "0 1px 8px rgba(50,10,8,0.5)", animation: "word-in 0.7s ease forwards 0.6s", opacity: 0 }}
-      >
-        the stories behind our festivals
+      <div style={{ position: "absolute", width: 320, height: 320, borderRadius: "50%", background: "radial-gradient(circle, color-mix(in srgb, var(--color-bg) 30%, transparent), transparent 70%)" }} />
+      <div className="font-hi" lang="hi" aria-hidden="true" style={{ position: "absolute", top: "14vh", fontSize: "min(260px, 62vw)", lineHeight: 1, color: "transparent", WebkitTextStroke: "1px color-mix(in srgb, var(--color-bg) 35%, transparent)" }}>
+        पर्व
       </div>
-      <div className="absolute bottom-9 text-xs opacity-75" style={{ color: "#F7F1E6", textShadow: "0 1px 6px rgba(50,10,8,0.5)" }}>
-        tap anywhere to continue
-      </div>
+      <div style={{ position: "relative" }}><Rangoli /></div>
+      <div style={{ position: "relative", fontFamily: "var(--font-heading)", fontSize: 56, fontWeight: 400, letterSpacing: "-.01em", lineHeight: 1 }}>Parv</div>
+      <div style={{ position: "relative", fontSize: 14, fontStyle: "italic" }}>the stories behind our festivals</div>
+      <div style={{ position: "absolute", bottom: 44, fontSize: 12, opacity: 0.85 }}>tap anywhere to continue</div>
     </div>
   );
 }

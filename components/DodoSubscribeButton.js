@@ -1,7 +1,8 @@
 "use client";
 import { useState } from "react";
 
-export default function DodoSubscribeButton() {
+// Sends international users to Dodo Payments' hosted checkout page.
+export default function DodoSubscribeButton({ label, from = "", disabled = false }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -9,12 +10,13 @@ export default function DodoSubscribeButton() {
     setLoading(true);
     setError("");
     try {
-      const res = await fetch("/api/checkout/dodo", { method: "POST" });
+      const res = await fetch("/api/checkout/dodo", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ from }),
+      });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Could not start checkout");
-
-      // Dodo returns a hosted checkout URL — redirect the whole page,
-      // no client SDK/modal needed.
       window.location.href = data.checkoutUrl;
     } catch (err) {
       setError(err.message);
@@ -24,14 +26,10 @@ export default function DodoSubscribeButton() {
 
   return (
     <>
-      <button
-        onClick={handleClick}
-        disabled={loading}
-        className="w-full py-3 rounded-xl text-[13px] font-bold bg-transparent border border-marigold text-[#8A5F26] disabled:opacity-60"
-      >
-        {loading ? "Starting checkout…" : "Subscribe (international)"}
+      <button className="btn btn-primary btn-block" onClick={handleClick} disabled={loading || disabled} style={{ minHeight: 50, fontSize: 17, marginTop: 0 }}>
+        {loading ? "Starting checkout…" : label}
       </button>
-      {error && <p className="text-[12px] text-vermillion mt-2">{error}</p>}
+      {error && <p role="alert" style={{ fontSize: 12, color: "var(--color-accent-800)", margin: 0, textAlign: "center" }}>{error}</p>}
     </>
   );
 }
