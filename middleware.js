@@ -12,8 +12,8 @@ export async function middleware(request) {
       !process.env.NEXT_PUBLIC_SUPABASE_URL ||
       !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
     ) {
-      // Monetization not configured yet — degrade gracefully, free
-      // content keeps working, Rituals paywall will just always show locked.
+      // Supabase not configured — degrade gracefully rather than lock
+      // everyone out of the site.
       return response;
     }
 
@@ -38,7 +38,28 @@ export async function middleware(request) {
       }
     );
 
-    await supabase.auth.getUser();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    // Sign-in gate: the whole app is for signed-in users only.
+    // Open paths: the login page, the auth link handlers, and payment
+    // webhooks (Razorpay/Dodo call these server-to-server, with no login).
+    const path = request.nextUrl.pathname;
+    const isOpen =
+      path === "/login" ||
+      path.startsWith("/auth/") ||
+      path.startsWith("/api/webhooks/");
+
+    if (!user && !isOpen) {
+      if (path.startsWith("/api/")) {
+        return NextResponse.json({ error: "Sign in first" }, { status: 401 });
+      }
+      const url = request.nextUrl.clone();
+      url.pathname = "/login";
+      url.search = "";
+      return NextResponse.redirect(url);
+    }
   } catch (err) {
     console.error("Auth middleware error (degrading gracefully):", err);
   }

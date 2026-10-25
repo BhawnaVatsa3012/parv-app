@@ -22,7 +22,7 @@ export default function LoginPage() {
   useEffect(() => {
     try {
       createClient().auth.getUser().then(({ data }) => {
-        if (data?.user) router.replace("/account");
+        if (data?.user) router.replace("/");
       });
     } catch (e) {}
   }, [router]);
