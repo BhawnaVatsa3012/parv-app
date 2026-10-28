@@ -1,32 +1,40 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { festivals, storyData } from "@/lib/data";
 import { HI, UI, ROMAN, col, DARK_SKY } from "@/lib/design";
+import { orderRegions } from "@/lib/regions";
 import Screen from "@/components/ui/Screen";
 import { Bunting, Plate } from "@/components/ui/Decor";
 import { Hi } from "@/components/ui/Lang";
 import Icon from "@/components/ui/Icon";
+import Timings from "@/components/Timings";
+import Checklist from "@/components/Checklist";
+import FamilyRitual from "@/components/FamilyRitual";
 
 const label = { fontSize: 10, letterSpacing: ".1em", textTransform: "uppercase", color: "var(--color-neutral-700)", marginBottom: 3 };
 const heading = { fontFamily: "var(--font-heading)" };
 
-export default function FestivalPageClient({ params, entitled, price: detectedPrice = "₹99" }) {
+export default function FestivalPageClient({ params, entitled, price: detectedPrice = "₹99", profile, checklist, family }) {
   const router = useRouter();
   const id = params.id;
   const data = storyData[id];
   const meta = festivals.find((f) => f.id === id)?.meta || "";
-  const [tab, setTab] = useState("stories");
-  const [openR, setOpenR] = useState(0);
   const c = col(id);
+  const state = profile?.state || null;
+  const regions = useMemo(() => orderRegions(id, data?.regions, state), [id, data, state]);
+  const [tab, setTab] = useState("stories");
+  const [openR, setOpenR] = useState(0); // first in list = the reader's region when there is one
   const [price, setPrice] = useState(detectedPrice);
+
   useEffect(() => {
     try {
       const r = localStorage.getItem("parv-region");
       if (r === "india") setPrice("₹99");
       if (r === "international") setPrice("$3.99");
     } catch (e) {}
+    if (window.location.hash === "#prepare") setTab("prepare");
   }, []);
 
   if (!data) {
@@ -40,15 +48,19 @@ export default function FestivalPageClient({ params, entitled, price: detectedPr
     );
   }
 
-  const regions = data.regions || [];
   const rituals = data.rituals || [];
   const locked = !entitled;
   const r0 = rituals[0] || { steps: [] };
-  const tabStyle = (on) => ({
-    all: "unset", cursor: "pointer", display: "flex", justifyContent: "center", alignItems: "center", gap: 6, padding: "10px 0", fontSize: 14,
+  const tabStyle = (on, first) => ({
+    all: "unset", cursor: "pointer", display: "flex", justifyContent: "center", alignItems: "center", gap: 5, padding: "10px 0", fontSize: 13.5,
     color: on ? c.deep : "var(--color-neutral-700)", boxShadow: on ? `inset 0 0 0 1px ${c.base}` : "none",
+    borderLeft: first ? 0 : "1px solid var(--color-divider)",
   });
   const back = () => (window.history.length > 1 ? router.back() : router.push("/"));
+  const pick = (t) => {
+    setTab(t);
+    try { history.replaceState(null, "", t === "prepare" ? "#prepare" : window.location.pathname); } catch (e) {}
+  };
 
   return (
     <Screen>
@@ -73,19 +85,23 @@ export default function FestivalPageClient({ params, entitled, price: detectedPr
         </div>
 
         <div style={{ padding: "0 20px" }}>
-          <div role="tablist" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", margin: "18px 0 6px", border: "1px solid var(--color-divider)", borderRadius: "var(--radius-md)", overflow: "hidden" }}>
-            <button role="tab" aria-selected={tab === "stories"} onClick={() => setTab("stories")} style={tabStyle(tab === "stories")}>
-              Stories <Hi size={12} color="inherit">{UI.stories}</Hi>
+          <div role="tablist" style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", margin: "18px 0 6px", border: "1px solid var(--color-divider)", borderRadius: "var(--radius-md)", overflow: "hidden" }}>
+            <button role="tab" aria-selected={tab === "stories"} onClick={() => pick("stories")} style={tabStyle(tab === "stories", true)}>
+              Stories <Hi size={11.5} color="inherit">{UI.stories}</Hi>
             </button>
-            <button role="tab" aria-selected={tab === "rituals"} onClick={() => setTab("rituals")} style={{ ...tabStyle(tab === "rituals"), borderLeft: "1px solid var(--color-divider)" }}>
-              {locked && <Icon name="lock" size={13} width={1.8} />}
-              Rituals <Hi size={12} color="inherit">{UI.rituals}</Hi>
+            <button role="tab" aria-selected={tab === "rituals"} onClick={() => pick("rituals")} style={tabStyle(tab === "rituals")}>
+              {locked && <Icon name="lock" size={12} width={1.8} />}
+              Rituals <Hi size={11.5} color="inherit">{UI.rituals}</Hi>
+            </button>
+            <button role="tab" aria-selected={tab === "prepare"} onClick={() => pick("prepare")} style={tabStyle(tab === "prepare")}>
+              Prepare <Hi size={11.5} color="inherit">तैयारी</Hi>
             </button>
           </div>
 
           {tab === "stories" && (
             <>
-              <div style={{ fontSize: 12, color: "var(--color-neutral-700)", margin: "10px 0 2px" }}>
+              <Timings festivalId={id} homeCityId={profile?.city_id} c={c} />
+              <div style={{ fontSize: 12, color: "var(--color-neutral-700)", margin: "14px 0 2px" }}>
                 {regions.length} regional stories · tap to read
               </div>
               {regions.map((r, i) => {
@@ -99,7 +115,10 @@ export default function FestivalPageClient({ params, entitled, price: detectedPr
                     >
                       <span style={{ flex: "none", width: 30, ...heading, fontSize: 20, color: c.deep }}>{ROMAN[i]}</span>
                       <span style={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column", gap: 2 }}>
-                        <span style={{ ...heading, fontSize: 20, fontWeight: 600, lineHeight: 1.15 }}>{r.name}</span>
+                        <span style={{ display: "flex", alignItems: "baseline", gap: 8, flexWrap: "wrap" }}>
+                          <span style={{ ...heading, fontSize: 20, fontWeight: 600, lineHeight: 1.15 }}>{r.name}</span>
+                          {r.mine && <span className="tag" style={{ fontSize: 10.5, background: c.tint, color: c.deep }}>Your region</span>}
+                        </span>
                         <span style={{ fontSize: 12, color: "var(--color-neutral-700)" }}>{r.date}</span>
                       </span>
                       <Icon name="chevronDown" size={18} style={{ transition: "transform .2s", transform: `rotate(${open ? 180 : 0}deg)` }} />
@@ -118,53 +137,15 @@ export default function FestivalPageClient({ params, entitled, price: detectedPr
           )}
 
           {tab === "rituals" && !locked && rituals.map((rt, k) => (
-            <div key={k} style={{ padding: "20px 0 8px", borderBottom: "1px solid var(--color-divider)", display: "flex", flexDirection: "column", gap: 14 }}>
-              <h3 style={{ margin: 0, fontSize: 25, lineHeight: 1.15 }}>{rt.heading}</h3>
-              {rt.deity && <div><div style={label}>Who's worshipped</div><div style={{ fontSize: 14, lineHeight: 1.5 }}>{rt.deity}</div></div>}
-              {rt.when && <div><div style={label}>When</div><div style={{ fontSize: 14, lineHeight: 1.5 }}>{rt.when}</div></div>}
-              {rt.samagri?.length > 0 && (
-                <div>
-                  <div style={{ ...label, marginBottom: 6 }}>What you'll need</div>
-                  <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
-                    {rt.samagri.map((s) => <span key={s} className="tag" style={{ fontSize: 12, lineHeight: 1.35, background: c.tint, color: c.deep }}>{s}</span>)}
-                  </div>
-                </div>
-              )}
-              {rt.steps?.length > 0 && (
-                <div>
-                  <div style={{ ...label, marginBottom: 6 }}>How it's done</div>
-                  <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                    {rt.steps.map((t, i) => (
-                      <div key={i} style={{ display: "grid", gridTemplateColumns: "26px 1fr", gap: 6, fontSize: 14, lineHeight: 1.5 }}>
-                        <span className="tnum" style={{ ...heading, fontSize: 17, color: c.deep }}>{i + 1}</span><span>{t}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-              {rt.mantra && (
-                <div>
-                  <div style={{ ...label, marginBottom: 6 }}>Mantra</div>
-                  <div style={{ textAlign: "center", padding: "16px 8px", borderTop: `1px solid ${c.base}`, borderBottom: `1px solid ${c.base}`, background: c.tint, display: "flex", flexDirection: "column", gap: 6 }}>
-                    <div className="font-hi" lang="sa" style={{ fontSize: 20, lineHeight: 1.5 }}>{rt.mantra.sanskrit}</div>
-                    <div style={{ fontSize: 14, fontStyle: "italic", color: c.deep }}>{rt.mantra.translit}</div>
-                    <div style={{ fontSize: 12.5, lineHeight: 1.5, color: "var(--color-neutral-700)" }}>{rt.mantra.meaning}</div>
-                  </div>
-                </div>
-              )}
-              {rt.attire && (
-                <div>
-                  <div style={label}>What to wear</div>
-                  <div style={{ fontSize: 14, lineHeight: 1.55 }}><b style={{ fontWeight: 600 }}>{rt.attire.clothing}.</b> Colours: {rt.attire.colors}. {rt.attire.why}</div>
-                </div>
-              )}
-              {rt.significance && (
-                <div>
-                  <div style={label}>Why it matters</div>
-                  <div style={{ ...heading, fontSize: 18, fontStyle: "italic", lineHeight: 1.35 }}>{rt.significance}</div>
-                </div>
-              )}
-            </div>
+            <FamilyRitual
+              key={k}
+              festivalId={id}
+              ritualIndex={k}
+              rt={rt}
+              c={c}
+              notes={(family?.notes || []).filter((n) => n.ritual_index === k)}
+              saved={family?.rituals?.[k] || null}
+            />
           ))}
 
           {tab === "rituals" && locked && (
@@ -186,13 +167,17 @@ export default function FestivalPageClient({ params, entitled, price: detectedPr
                   {rituals.length === 1 ? "1 ritual" : `${rituals.length} rituals`} for {data.title}, with samagri, steps and mantras
                 </div>
                 <div style={{ fontSize: 13.5, lineHeight: 1.55, color: "var(--color-neutral-800)", textAlign: "justify", hyphens: "auto" }}>
-                  Stories stay free, always. Rituals — the samagri, steps and mantras for every festival — are part of Parv's subscription.
+                  Stories stay free, always. Rituals — the samagri, steps and mantras for every festival, adapted to your family's way — are part of Parv's subscription.
                 </div>
                 <Link href={`/pricing?from=${id}`} className="btn btn-primary btn-block" style={{ minHeight: 46, fontSize: 16 }}>
                   Unlock Rituals · {price}/month
                 </Link>
               </div>
             </div>
+          )}
+
+          {tab === "prepare" && (
+            <Checklist festivalId={id} festivalName={data.title} entitled={entitled} initial={checklist} c={c} />
           )}
         </div>
       </div>

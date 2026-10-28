@@ -6,11 +6,12 @@ import { UI, nameFromEmail } from "@/lib/design";
 import Screen from "@/components/ui/Screen";
 import { Hi, useLang } from "@/components/ui/Lang";
 import Icon from "@/components/ui/Icon";
+import ProfileSettings from "@/components/ProfileSettings";
 
 const PRICE = { razorpay: "₹99", dodo: "$3.99" };
 const fmt = (iso) => (iso ? new Date(iso).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" }) : "");
 
-export default function AccountClient({ email, subscription, detectedRegion }) {
+export default function AccountClient({ email, subscription, detectedRegion, profile }) {
   const { bi, setBi } = useLang();
   const [status, setStatus] = useState(subscription?.status || null);
   const [dialog, setDialog] = useState(false);
@@ -28,7 +29,7 @@ export default function AccountClient({ email, subscription, detectedRegion }) {
     try { localStorage.setItem("parv-region", r); } catch (e) {}
   };
 
-  const name = nameFromEmail(email);
+  const [name, setName] = useState(profile?.name || nameFromEmail(email));
   const provider = subscription?.provider;
   const until = fmt(subscription?.current_period_end);
   const myPrice = region === "india" ? "₹99" : "$3.99";
@@ -101,7 +102,10 @@ export default function AccountClient({ email, subscription, detectedRegion }) {
           {message && <div role="status" style={{ fontSize: 12, color: "var(--color-neutral-700)", marginTop: 4 }}>{message}</div>}
         </div>
 
-        <h6 style={{ margin: "24px 0 4px", color: "var(--color-neutral-700)" }}>Settings</h6>
+        <h6 style={{ margin: "24px 0 4px", color: "var(--color-neutral-700)" }}>You</h6>
+        <ProfileSettings profile={profile} onName={(n) => setName(n || nameFromEmail(email))} />
+
+        <h6 style={{ margin: "18px 0 4px", color: "var(--color-neutral-700)" }}>Settings</h6>
         <div style={row}>
           <span style={{ fontSize: 14 }}>Language</span>
           <div className="seg">

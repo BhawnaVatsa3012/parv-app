@@ -32,7 +32,7 @@ export default function Timings({ festivalId, homeCityId, c }) {
     <section aria-label="Timings" style={{ margin: "14px 0 4px", padding: "12px 14px", border: "1px solid var(--color-divider)", borderRadius: "var(--radius-md)", display: "flex", flexDirection: "column", gap: 8 }}>
       <div className="kicker" style={{ color: c.deep }}>Timings · {city.name}</div>
       {!rows ? <div style={{ height: 40 }} aria-busy="true" /> : rows.map(({ m, d, p, key }) => (
-        <div key={`${m}-${d}`} className="tnum" style={{ display: "grid", gridTemplateColumns: "64px 1fr", gap: 8, fontSize: 13, paddingTop: 6, borderTop: "1px solid var(--color-divider)" }}>
+        <div key={`${m}-${d}`} className="tnum" style={{ display: "grid", gridTemplateColumns: "80px 1fr", gap: 8, fontSize: 13, paddingTop: 6, borderTop: "1px solid var(--color-divider)" }}>
           <span style={{ fontFamily: "var(--font-heading)", fontSize: 16, color: c.deep }}>
             {new Date(Date.UTC(YEAR, m, d, 12)).toLocaleDateString("en-GB", { timeZone: "UTC", weekday: "short", day: "numeric", month: "short" })}
           </span>
