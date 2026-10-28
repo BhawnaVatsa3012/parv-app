@@ -8,10 +8,12 @@ import Screen from "@/components/ui/Screen";
 import { Bunting, Plate } from "@/components/ui/Decor";
 import { Hi } from "@/components/ui/Lang";
 import Splash from "@/components/Splash";
+import TodayCard from "@/components/TodayCard";
+import { checklistItems } from "@/lib/checklists";
 
 const heading = { fontFamily: "var(--font-heading)" };
 
-export default function HomeClient({ email }) {
+export default function HomeClient({ email, profile, checklists = {} }) {
   const router = useRouter();
   // Splash plays once per browser session.
   const [showSplash, setShowSplash] = useState(null);
@@ -27,7 +29,12 @@ export default function HomeClient({ email }) {
 
   const { upcoming, past, prod, next } = useMemo(() => orderFestivals(festivals), []);
   const list = [...upcoming, ...past, ...prod];
-  const name = nameFromEmail(email);
+  const name = profile?.name || nameFromEmail(email);
+  // Preparation nudge: the next followed festival within 14 days.
+  const followed = profile?.followed?.length ? profile.followed : null;
+  const prep = upcoming.find((f) => f.days <= 14 && (!followed || followed.includes(f.id)));
+  const prepItems = prep ? checklistItems(prep.id).filter((i) => !i.samagri) : [];
+  const prepDone = prep ? (checklists[prep.id]?.done || []).filter((k) => prepItems.some((i) => i.key === k)).length : 0;
   const initial = (name[0] || "P").toUpperCase();
 
   return (
@@ -54,9 +61,28 @@ export default function HomeClient({ email }) {
             the stories behind our festivals
           </div>
 
+          <div style={{ padding: "20px 20px 0", display: "flex", flexDirection: "column", gap: 10 }}>
+            <div style={{ fontSize: 13, color: "var(--color-neutral-700)" }}>Namaste, {name}</div>
+            <TodayCard homeCityId={profile?.city_id} next={next} />
+            {prep && (
+              <Link href={`/festival/${prep.id}#prepare`} className="card hover-accent" style={{ flexDirection: "row", alignItems: "center", gap: 12, textDecoration: "none", color: "var(--color-text)", padding: "12px 14px", background: "transparent" }}>
+                <span style={{ flex: "none", width: 42, height: 42, borderRadius: "50%", border: `1.5px solid ${prep.c.base}`, display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "var(--font-heading)", fontSize: 15, color: prep.c.deep }} className="tnum">
+                  {prepDone}/{prepItems.length}
+                </span>
+                <span style={{ flex: 1, display: "flex", flexDirection: "column", gap: 2 }}>
+                  <span style={{ fontFamily: "var(--font-heading)", fontSize: 18, fontWeight: 600, lineHeight: 1.15 }}>
+                    {prep.days === 0 ? `${prep.name} is today` : `${prep.name} is ${prep.days} day${prep.days === 1 ? "" : "s"} away`}
+                  </span>
+                  <span style={{ fontSize: 12.5, color: "var(--color-neutral-700)" }}>
+                    {prepDone === prepItems.length ? "You're all set. Open your checklist" : `${prepItems.length - prepDone} things left to prepare · open your checklist`}
+                  </span>
+                </span>
+              </Link>
+            )}
+          </div>
+
           {next && (
             <div style={{ padding: "20px 20px 8px", display: "flex", flexDirection: "column", gap: 10 }}>
-              <div style={{ fontSize: 13, color: "var(--color-neutral-700)" }}>Namaste, {name}</div>
               <div className="kicker" style={{ color: next.c.deep }}>
                 {next.upcoming ? (next.days === 0 ? "Next festival · today" : `Next festival · in ${next.days} days`) : "From this year"}
               </div>
