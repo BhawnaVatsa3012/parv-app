@@ -20,6 +20,7 @@ const PERKS = [
   "Step-by-step puja, written for home",
   "Mantras in Devanagari, transliterated, with meaning",
   "What to wear, and why",
+  "Preparation checklists and reminders",
 ];
 
 export default function PricingClient({ detectedRegion, email, member, success, paymentId, via, from }) {
@@ -99,7 +100,7 @@ export default function PricingClient({ detectedRegion, email, member, success, 
         <h1 style={{ margin: "18px 0 2px", fontSize: 42, fontWeight: 400, lineHeight: 1 }}>Unlock Rituals</h1>
         <Hi size={16}>{UI.unlock}</Hi>
         <p style={{ margin: "10px 0 12px", fontSize: 14, lineHeight: 1.6, textAlign: "justify", hyphens: "auto" }}>
-          Stories stay free, always. Rituals — the samagri, steps and mantras for every festival — are part of Parv's subscription.
+          Stories stay free, always. Rituals — the samagri, steps and mantras for every festival — and the preparation checklists with reminders are part of Parv's subscription.
         </p>
         {PERKS.map((t, i) => (
           <div key={t} style={{ display: "flex", gap: 10, alignItems: "flex-start", padding: "9px 0", borderTop: "1px solid var(--color-divider)", fontSize: 14 }}>

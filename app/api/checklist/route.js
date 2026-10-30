@@ -1,10 +1,13 @@
 import { requireUser, readJson, json, bad, strList } from "@/lib/api";
 import { saveChecklist } from "@/lib/store";
 import { checklistItems } from "@/lib/checklists";
+import { isEntitledToRituals } from "@/lib/entitlements";
 
 export async function POST(request) {
   const { user, res } = await requireUser();
   if (res) return res;
+  // The preparation tracker is part of the membership.
+  if (!(await isEntitledToRituals())) return bad("The preparation checklist is part of the membership.", 403);
   const b = await readJson(request);
   if (!b) return bad("Invalid request");
   const items = checklistItems(b.festival_id);

@@ -4,8 +4,8 @@ import { festivals } from "@/lib/data";
 import { START, YEAR } from "@/lib/design";
 import { checklistItems, NUDGE_DAYS } from "@/lib/checklists";
 
-// Runs once a day (vercel.json). Emails each user who switched on
-// reminders, 10, 3 and 1 day(s) before each festival they follow.
+// Runs once a day (vercel.json). Emails each member (active subscription)
+// who switched on reminders, 10, 3 and 1 day(s) before each festival they follow.
 // Each reminder is logged so it is sent only once.
 export const dynamic = "force-dynamic";
 
@@ -36,9 +36,14 @@ export async function GET(request) {
   const sb = createServiceClient();
   const { data: people, error } = await sb.from("parv_profiles").select("user_id, name, followed").eq("nudge_email", true);
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+  // Reminders are part of the membership.
+  const { data: subs, error: subErr } = await sb.from("subscriptions").select("user_id").eq("status", "active");
+  if (subErr) return NextResponse.json({ error: subErr.message }, { status: 500 });
+  const members = new Set((subs || []).map((s) => s.user_id));
 
   let sent = 0;
   for (const p of people || []) {
+    if (!members.has(p.user_id)) continue;
     for (const { f, days } of due) {
       if (p.followed?.length && !p.followed.includes(f.id)) continue;
       const { data: already } = await sb.from("parv_nudges_sent").select("user_id").eq("user_id", p.user_id).eq("festival_id", f.id).eq("year", YEAR).eq("days_before", days).maybeSingle();

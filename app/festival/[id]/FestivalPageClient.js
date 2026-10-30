@@ -94,6 +94,7 @@ export default function FestivalPageClient({ params, entitled, price: detectedPr
               Rituals <Hi size={11.5} color="inherit">{UI.rituals}</Hi>
             </button>
             <button role="tab" aria-selected={tab === "prepare"} onClick={() => pick("prepare")} style={tabStyle(tab === "prepare")}>
+              {locked && <Icon name="lock" size={12} width={1.8} />}
               Prepare <Hi size={11.5} color="inherit">तैयारी</Hi>
             </button>
           </div>
@@ -177,7 +178,7 @@ export default function FestivalPageClient({ params, entitled, price: detectedPr
           )}
 
           {tab === "prepare" && (
-            <Checklist festivalId={id} festivalName={data.title} entitled={entitled} initial={checklist} c={c} />
+            <Checklist festivalId={id} festivalName={data.title} entitled={entitled} initial={checklist} c={c} price={price} />
           )}
         </div>
       </div>

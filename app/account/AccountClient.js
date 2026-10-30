@@ -103,7 +103,7 @@ export default function AccountClient({ email, subscription, detectedRegion, pro
         </div>
 
         <h6 style={{ margin: "24px 0 4px", color: "var(--color-neutral-700)" }}>You</h6>
-        <ProfileSettings profile={profile} onName={(n) => setName(n || nameFromEmail(email))} />
+        <ProfileSettings profile={profile} member={status === "active"} onName={(n) => setName(n || nameFromEmail(email))} />
 
         <h6 style={{ margin: "18px 0 4px", color: "var(--color-neutral-700)" }}>Settings</h6>
         <div style={row}>
