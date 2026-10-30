@@ -8,7 +8,7 @@ import { feature } from "topojson-client";
 import { HI, UI, HUE } from "@/lib/design";
 import { Hi, useLang } from "@/components/ui/Lang";
 
-const FEST = { diwali: "Diwali", holi: "Holi", teej: "Teej", newyear: "New Year Cluster", sankranti: "Makar Sankranti", bhaidooj: "Bhai Dooj" };
+const FEST = { diwali: "Diwali", holi: "Holi", teej: "Teej", newyear: "New Year Cluster", sankranti: "Makar Sankranti", bhaidooj: "Bhai Dooj", chhath: "Chhath Puja" };
 
 // Where each regional story is set (from lib/data.js regions).
 const PLACES = [
@@ -16,7 +16,7 @@ const PLACES = [
   ["Kolkata, West Bengal", 22.57, 88.36, [["diwali", "Bengal"], ["bhaidooj", "West Bengal"], ["newyear", "West Bengal (Poila Boishakh)"]]],
   ["Chennai, Tamil Nadu", 13.08, 80.27, [["diwali", "Tamil Nadu"], ["newyear", "Tamil Nadu (Puthandu)"], ["sankranti", "Tamil Nadu (Pongal)"]]],
   ["Ahmedabad, Gujarat", 23.02, 72.57, [["diwali", "Gujarat"], ["sankranti", "Gujarat (Uttarayan)"]]],
-  ["Mumbai, Maharashtra", 19.08, 72.88, [["diwali", "Maharashtra"], ["bhaidooj", "Maharashtra"], ["newyear", "Maharashtra (Gudi Padwa)"], ["newyear", "Sindhi community (Cheti Chand)"], ["sankranti", "Maharashtra & Karnataka"]]],
+  ["Mumbai, Maharashtra", 19.08, 72.88, [["chhath", "Delhi & Mumbai"], ["diwali", "Maharashtra"], ["bhaidooj", "Maharashtra"], ["newyear", "Maharashtra (Gudi Padwa)"], ["newyear", "Sindhi community (Cheti Chand)"], ["sankranti", "Maharashtra & Karnataka"]]],
   ["Barsana, Braj", 27.65, 77.38, [["holi", "Braj (Mathura)"]]],
   ["Shantiniketan, West Bengal", 23.68, 87.68, [["holi", "West Bengal"]]],
   ["Anandpur Sahib, Punjab", 31.24, 76.5, [["holi", "Punjab"]]],
@@ -29,6 +29,11 @@ const PLACES = [
   ["Thiruvananthapuram, Kerala", 8.52, 76.94, [["newyear", "Kerala (Vishu)"]]],
   ["Guwahati, Assam", 26.14, 91.74, [["newyear", "Assam (Rongali Bihu)"], ["sankranti", "Assam (Magh Bihu)"]]],
   ["Amritsar, Punjab", 31.63, 74.87, [["newyear", "Punjab (Baisakhi)"], ["sankranti", "Punjab (Lohri)"]]],
+  ["Deo, Bihar", 24.66, 84.43, [["chhath", "Bihar (Deo, Aurangabad)"]]],
+  ["Munger, Bihar", 25.37, 86.47, [["chhath", "Munger, Bihar"]]],
+  ["Ranchi, Jharkhand", 23.34, 85.31, [["chhath", "Jharkhand"]]],
+  ["Janakpur, Nepal", 26.73, 85.92, [["chhath", "Mithila & Nepal (Janakpur)"]]],
+  ["Delhi", 28.61, 77.21, [["chhath", "Delhi & Mumbai"]]],
   ["Sagar Island, West Bengal", 21.65, 88.08, [["sankranti", "West Bengal & Odisha"]]],
 ].map(([place, lat, lon, items]) => ({ place, lat, lon, items, soon: false }));
 
