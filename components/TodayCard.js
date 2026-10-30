@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { dayPanchang, paranaWindow, fmtTime, zonedYMD } from "@/lib/panchang";
+import { dayPanchang, rangePanchang, paranaWindow, fmtTime, zonedYMD } from "@/lib/panchang";
 import { OBSERVANCES } from "@/lib/observances";
 import { cityById, DEFAULT_CITY } from "@/lib/cities";
 import { Hi } from "@/components/ui/Lang";
@@ -22,10 +22,7 @@ export default function TodayCard({ homeCityId, next }) {
     const p = dayPanchang(y, m, d, city);
     let upcoming = null;
     if (!p.observances.length) {
-      for (let i = 1; i <= 20 && !upcoming; i++) {
-        const q = dayPanchang(y, m, d + i, city);
-        if (q.observances.length) upcoming = { ...q, inDays: i };
-      }
+      upcoming = rangePanchang(y, m, d + 1, 20, city).find((q) => q.observances.length) || null;
     }
     const extra = {};
     if (p.observances.includes("ekadashi")) extra.parana = paranaWindow(p, city);
