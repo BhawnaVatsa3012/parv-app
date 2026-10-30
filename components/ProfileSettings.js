@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import { useState } from "react";
 import { festivals } from "@/lib/data";
 import { HI } from "@/lib/design";
@@ -17,7 +18,7 @@ async function save(fields) {
 }
 
 // Name, city, reminders, followed festivals and family details.
-export default function ProfileSettings({ profile: initial, onName }) {
+export default function ProfileSettings({ profile: initial, onName, member = false }) {
   const [p, setP] = useState(initial || {});
   const [open, setOpen] = useState(""); // "name" | "city" | "family" | ""
   const [name, setName] = useState(initial?.name || "");
@@ -70,12 +71,16 @@ export default function ProfileSettings({ profile: initial, onName }) {
       <div style={row}>
         <span style={{ display: "flex", flexDirection: "column" }}>
           <span style={{ fontSize: 14 }}>Festival reminders by email</span>
-          <span style={sub}>10, 3 and 1 day before, with what's left on your checklist</span>
+          <span style={sub}>{member ? "10, 3 and 1 day before, with what's left on your checklist" : "Part of the membership, with the preparation checklists"}</span>
         </span>
-        <div className="seg">
-          <label className="seg-opt" style={{ fontSize: 12 }}><input type="radio" name="pf-nudge" checked={!p.nudge_email} onChange={() => update({ nudge_email: false })} />Off</label>
-          <label className="seg-opt" style={{ fontSize: 12 }}><input type="radio" name="pf-nudge" checked={!!p.nudge_email} onChange={() => update({ nudge_email: true })} />On</label>
-        </div>
+        {member ? (
+          <div className="seg">
+            <label className="seg-opt" style={{ fontSize: 12 }}><input type="radio" name="pf-nudge" checked={!p.nudge_email} onChange={() => update({ nudge_email: false })} />Off</label>
+            <label className="seg-opt" style={{ fontSize: 12 }}><input type="radio" name="pf-nudge" checked={!!p.nudge_email} onChange={() => update({ nudge_email: true })} />On</label>
+          </div>
+        ) : (
+          <Link href="/pricing" className="btn btn-ghost" style={{ fontSize: 13 }}>See membership</Link>
+        )}
       </div>
       <div style={{ padding: "12px 0", borderBottom: "1px solid var(--color-divider)" }}>
         <div style={{ fontSize: 14 }}>Festivals I follow</div>

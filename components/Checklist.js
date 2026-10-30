@@ -7,9 +7,48 @@ import Icon from "@/components/ui/Icon";
 
 const fmt = (d) => d.toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short" });
 
-// A festival's preparation checklist, grouped by "do by" date.
-// Saved to the user's account; samagri items are for members.
-export default function Checklist({ festivalId, festivalName, entitled, initial, c }) {
+// A festival's preparation checklist, grouped by "do by" date, saved to the
+// user's account. Part of the membership: non-members see the first few
+// items and an unlock prompt (the save API refuses them too).
+export default function Checklist({ festivalId, festivalName, entitled, initial, c, price }) {
+  if (!entitled) return <LockedChecklist festivalId={festivalId} festivalName={festivalName} c={c} price={price} />;
+  return <OpenChecklist festivalId={festivalId} festivalName={festivalName} entitled initial={initial} c={c} />;
+}
+
+function LockedChecklist({ festivalId, festivalName, c, price }) {
+  const all = checklistItems(festivalId);
+  const preview = all.filter((i) => !i.samagri).slice(0, 3);
+  return (
+    <div id="prepare" style={{ padding: "16px 0 0", display: "flex", flexDirection: "column", gap: 12 }}>
+      <h3 style={{ margin: 0, fontSize: 25 }}>Get ready for {festivalName}</h3>
+      <div style={{ fontSize: 13, color: "var(--color-neutral-700)" }}>
+        {all.length} things to do, each with a &ldquo;do by&rdquo; date counting down to the day.
+      </div>
+      <div aria-hidden="true" style={{ display: "flex", flexDirection: "column", WebkitMaskImage: "linear-gradient(black 10%,transparent 95%)", maskImage: "linear-gradient(black 10%,transparent 95%)", filter: "blur(.6px)", userSelect: "none" }}>
+        {preview.map((i) => (
+          <div key={i.key} style={{ display: "flex", alignItems: "flex-start", gap: 10, padding: "8px 0", borderTop: "1px solid var(--color-divider)", fontSize: 14, lineHeight: 1.45 }}>
+            <span style={{ flex: "none", width: 18, height: 18, marginTop: 2, borderRadius: 3, border: "1.5px solid var(--color-neutral-400)" }} />
+            <span>{i.text}</span>
+          </div>
+        ))}
+      </div>
+      <div className="card" style={{ borderColor: "var(--color-accent)", gap: 10, padding: 18 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 8, color: "var(--color-accent-700)" }}>
+          <Icon name="lock" size={16} /><span className="card-kicker" style={{ color: "inherit" }}>Parv membership</span>
+        </div>
+        <div className="card-title" style={{ fontSize: 21 }}>Your {festivalName} checklist, with reminders</div>
+        <div style={{ fontSize: 13.5, lineHeight: 1.55, color: "var(--color-neutral-800)" }}>
+          Tick things off as you go, add your own, and get an email 10, 3 and 1 day before — with what&rsquo;s still left. Part of the membership, with Rituals.
+        </div>
+        <Link href={`/pricing?from=${festivalId}`} className="btn btn-primary btn-block" style={{ minHeight: 46, fontSize: 16 }}>
+          Unlock{price ? ` · ${price}/month` : ""}
+        </Link>
+      </div>
+    </div>
+  );
+}
+
+function OpenChecklist({ festivalId, festivalName, entitled, initial, c }) {
   const all = checklistItems(festivalId);
   const items = all.filter((i) => entitled || !i.samagri);
   const lockedN = all.length - items.length;

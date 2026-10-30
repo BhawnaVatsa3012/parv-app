@@ -10,10 +10,11 @@ import { Hi } from "@/components/ui/Lang";
 import Splash from "@/components/Splash";
 import TodayCard from "@/components/TodayCard";
 import { checklistItems } from "@/lib/checklists";
+import Icon from "@/components/ui/Icon";
 
 const heading = { fontFamily: "var(--font-heading)" };
 
-export default function HomeClient({ email, profile, checklists = {} }) {
+export default function HomeClient({ email, profile, checklists = {}, member = false }) {
   const router = useRouter();
   // Splash plays once per browser session.
   const [showSplash, setShowSplash] = useState(null);
@@ -65,16 +66,20 @@ export default function HomeClient({ email, profile, checklists = {} }) {
             <div style={{ fontSize: 13, color: "var(--color-neutral-700)" }}>Namaste, {name}</div>
             <TodayCard homeCityId={profile?.city_id} next={next} />
             {prep && (
-              <Link href={`/festival/${prep.id}#prepare`} className="card hover-accent" style={{ flexDirection: "row", alignItems: "center", gap: 12, textDecoration: "none", color: "var(--color-text)", padding: "12px 14px", background: "transparent" }}>
+              // Members see their checklist progress; free users are shown
+              // the countdown and led to the membership page.
+              <Link href={member ? `/festival/${prep.id}#prepare` : `/pricing?from=${prep.id}`} className="card hover-accent" style={{ flexDirection: "row", alignItems: "center", gap: 12, textDecoration: "none", color: "var(--color-text)", padding: "12px 14px", background: "transparent" }}>
                 <span style={{ flex: "none", width: 42, height: 42, borderRadius: "50%", border: `1.5px solid ${prep.c.base}`, display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "var(--font-heading)", fontSize: 15, color: prep.c.deep }} className="tnum">
-                  {prepDone}/{prepItems.length}
+                  {member ? `${prepDone}/${prepItems.length}` : <Icon name="lock" size={16} />}
                 </span>
                 <span style={{ flex: 1, display: "flex", flexDirection: "column", gap: 2 }}>
                   <span style={{ fontFamily: "var(--font-heading)", fontSize: 18, fontWeight: 600, lineHeight: 1.15 }}>
                     {prep.days === 0 ? `${prep.name} is today` : `${prep.name} is ${prep.days} day${prep.days === 1 ? "" : "s"} away`}
                   </span>
                   <span style={{ fontSize: 12.5, color: "var(--color-neutral-700)" }}>
-                    {prepDone === prepItems.length ? "You're all set. Open your checklist" : `${prepItems.length - prepDone} things left to prepare · open your checklist`}
+                    {!member
+                      ? `Get ready with a ${checklistItems(prep.id).length}-step checklist and reminders · see membership`
+                      : prepDone === prepItems.length ? "You're all set. Open your checklist" : `${prepItems.length - prepDone} things left to prepare · open your checklist`}
                   </span>
                 </span>
               </Link>
