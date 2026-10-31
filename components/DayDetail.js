@@ -103,7 +103,7 @@ export default function DayDetail({ y, m, d, city, festivalIds = [] }) {
         if (!f) return null;
         const c = col(fid);
         return (
-          <Link key={fid} href={`/festival/${fid}`} style={{ display: "flex", alignItems: "baseline", gap: 8, flexWrap: "wrap", padding: "8px 10px", borderRadius: "var(--radius-md)", background: c.tint, color: c.deep, textDecoration: "none" }}>
+          <Link key={fid} href={`/festival/${fid}?year=${y}`} style={{ display: "flex", alignItems: "baseline", gap: 8, flexWrap: "wrap", padding: "8px 10px", borderRadius: "var(--radius-md)", background: c.tint, color: c.deep, textDecoration: "none" }}>
             <b style={{ fontWeight: 600 }}>{f.name}</b>
             <Hi size={12}>{HI[fid]}</Hi>
             <span style={{ marginLeft: "auto", fontSize: 13 }}>Read the story →</span>

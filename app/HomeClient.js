@@ -74,7 +74,7 @@ export default function HomeClient({ email, profile, checklists = {}, member = f
                 </span>
                 <span style={{ flex: 1, display: "flex", flexDirection: "column", gap: 2 }}>
                   <span style={{ fontFamily: "var(--font-heading)", fontSize: 18, fontWeight: 600, lineHeight: 1.15 }}>
-                    {prep.days === 0 ? `${prep.name} is today` : `${prep.name} is ${prep.days} day${prep.days === 1 ? "" : "s"} away`}
+                    {prep.ongoing ? `${prep.name} is on now` : prep.days === 0 ? `${prep.name} is today` : `${prep.name} is ${prep.days} day${prep.days === 1 ? "" : "s"} away`}
                   </span>
                   <span style={{ fontSize: 12.5, color: "var(--color-neutral-700)" }}>
                     {!member
@@ -89,7 +89,7 @@ export default function HomeClient({ email, profile, checklists = {}, member = f
           {next && (
             <div style={{ padding: "20px 20px 8px", display: "flex", flexDirection: "column", gap: 10 }}>
               <div className="kicker" style={{ color: next.c.deep }}>
-                {next.upcoming ? (next.days === 0 ? "Next festival · today" : `Next festival · in ${next.days} days`) : "From this year"}
+                {next.upcoming ? (next.ongoing ? "On now" : next.days === 0 ? "Next festival · today" : `Next festival · in ${next.days} days`) : "Most recent"}
               </div>
               <Link
                 href={`/festival/${next.id}`}

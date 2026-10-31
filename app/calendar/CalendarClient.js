@@ -2,7 +2,8 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { festivals } from "@/lib/data";
-import { HI, UI, DAYS, MON, MON_HI, YEAR, col, orderFestivals } from "@/lib/design";
+import { HI, UI, MON, MON_HI, col, orderFestivals } from "@/lib/design";
+import { marksForMonth, occurrence, LAST_YEAR } from "@/lib/occurrence";
 import { monthPanchang, tithiShort, zonedYMD } from "@/lib/panchang";
 import { OBSERVANCES } from "@/lib/observances";
 import { cityById, DEFAULT_CITY } from "@/lib/cities";
@@ -15,7 +16,7 @@ import CitySwitch from "@/components/CitySwitch";
 const WEEKDAYS = ["S", "M", "T", "W", "T", "F", "S"];
 // Panchang can be calculated for any date; the grid offers this window.
 const FIRST = { y: 2026, m: 0 };
-const LAST = { y: 2027, m: 11 };
+const LAST = { y: LAST_YEAR, m: 11 };
 const key = (y, m) => y * 12 + m;
 const dot = (id) => `oklch(0.6 0.15 ${OBSERVANCES[id].hue})`;
 
@@ -55,15 +56,19 @@ export default function CalendarClient({ homeCityId }) {
   }, [view, city]);
 
   const { active, next } = useMemo(() => orderFestivals(festivals), []);
+  const activeIds = useMemo(() => active.map((f) => f.id), [active]);
   if (!view) return <Screen nav><div style={{ minHeight: "60vh" }} aria-busy="true" /></Screen>;
 
   const { y, m } = view;
-  const isFestYear = y === YEAR;
   const first = new Date(Date.UTC(y, m, 1)).getUTCDay();
   const n = new Date(Date.UTC(y, m + 1, 0)).getUTCDate();
-  const marks = {};
-  if (isFestYear) Object.entries(DAYS).forEach(([id, ds]) => ds.forEach(([mm, dd]) => { if (mm === m) (marks[dd] = marks[dd] || []).push(id); }));
-  const monthFests = isFestYear ? active.filter((f) => (DAYS[f.id] || []).some(([mm]) => mm === m)) : [];
+  const marks = marksForMonth(activeIds, y, m);
+  // Festivals with a day in this month, with that occurrence's date label.
+  const inMonth = new Set(Object.values(marks).flat());
+  const monthFests = active.filter((f) => inMonth.has(f.id)).map((f) => {
+    const o = occurrence(f.id, y)?.days.some((dd) => dd.m === m && dd.y === y) ? occurrence(f.id, y) : occurrence(f.id, y - 1);
+    return { ...f, date: o ? o.label : f.date, year: o ? o.year : y };
+  });
   const go = (delta) => {
     const k2 = key(y, m) + delta;
     setView({ y: Math.floor(k2 / 12), m: k2 % 12 });
@@ -150,7 +155,7 @@ export default function CalendarClient({ homeCityId }) {
           {Object.keys(OBSERVANCES).map((o) => (
             <span key={o} style={{ display: "flex", alignItems: "center", gap: 5 }}><span style={{ width: 7, height: 7, borderRadius: "50%", background: dot(o) }} />{OBSERVANCES[o].name}</span>
           ))}
-          {isFestYear && <span style={{ display: "flex", alignItems: "center", gap: 5 }}><span style={{ width: 11, height: 11, borderRadius: "50%", border: "1px solid var(--color-accent)" }} />Festival day</span>}
+          <span style={{ display: "flex", alignItems: "center", gap: 5 }}><span style={{ width: 11, height: 11, borderRadius: "50%", border: "1px solid var(--color-accent)" }} />Festival day</span>
         </div>
 
         <div style={{ marginBottom: 22 }}>
@@ -165,7 +170,7 @@ export default function CalendarClient({ homeCityId }) {
         {monthFests.length === 0 && (
           <>
             <p style={{ fontSize: 13.5, color: "var(--color-neutral-700)", margin: "0 0 10px" }}>
-              {isFestYear ? "No festivals from the library fall this month." : `Festival dates for ${y} are being added. The panchang above is already calculated.`}
+              No festivals from the library fall this month.
             </p>
             {next && next.upcoming && (
               <button className="btn btn-ghost" onClick={() => router.push(`/festival/${next.id}`)} style={{ paddingLeft: 0 }}>
@@ -176,7 +181,7 @@ export default function CalendarClient({ homeCityId }) {
         )}
         <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
           {monthFests.map((f) => (
-            <button key={f.id} className="card hover-accent" onClick={() => router.push(`/festival/${f.id}`)} style={{ textAlign: "left", fontFamily: "var(--font-body)", color: "var(--color-text)", cursor: "pointer", borderTop: `3px solid ${f.c.base}`, background: "transparent" }}>
+            <button key={f.id} className="card hover-accent" onClick={() => router.push(`/festival/${f.id}?year=${f.year}`)} style={{ textAlign: "left", fontFamily: "var(--font-body)", color: "var(--color-text)", cursor: "pointer", borderTop: `3px solid ${f.c.base}`, background: "transparent" }}>
               <div className="card-kicker" style={{ color: f.c.deep }}>{f.date}</div>
               <div style={{ display: "flex", alignItems: "baseline", gap: 8, flexWrap: "wrap" }}>
                 <span className="card-title" style={{ fontSize: 20 }}>{f.name}</span>
