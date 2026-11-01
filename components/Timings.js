@@ -9,6 +9,7 @@ import CitySwitch from "@/components/CitySwitch";
 const KEY = {
   diwali: [["lakshmi", "Lakshmi Puja — Pradosh Kaal", "pradosh"]],
   chhath: [["sandhya", "Sandhya Arghya — sunset", "sunset"], ["usha", "Usha Arghya — sunrise", "sunrise"]],
+  navratri: [["ghatasthapana", "Ghatasthapana — first third of the day", "pratah"], ["dashami", "Vijayadashami puja — Aparahna", "aparahna"]],
 };
 
 // "2:02 am" on the same day, or "2:02 am next day" when it runs past midnight.
@@ -52,6 +53,11 @@ export default function Timings({ festivalId, year, homeCityId, c }) {
             )}
             {key && key[2] === "sunset" && <span style={{ color: c.deep }}>{key[1]}: {fmtTime(p.sunset, tz)}</span>}
             {key && key[2] === "sunrise" && <span style={{ color: c.deep }}>{key[1]}: {fmtTime(p.sunrise, tz)}</span>}
+            {key && key[2] === "pratah" && (
+              // From sunrise, or from when Pratipada begins if it starts later that morning.
+              <span style={{ color: c.deep }}>{key[1]}: {fmtTime(p.tithi === 1 ? p.sunrise : p.tithiEndsAt, tz)} – {fmtTime(new Date(p.sunrise.getTime() + (p.sunset - p.sunrise) / 3), tz)}</span>
+            )}
+            {key && key[2] === "aparahna" && <span style={{ color: c.deep }}>{key[1]}: {fmtTime(new Date(p.sunrise.getTime() + 3 * (p.sunset - p.sunrise) / 5), tz)} – {fmtTime(new Date(p.sunrise.getTime() + 4 * (p.sunset - p.sunrise) / 5), tz)}</span>}
           </span>
         </div>
       ))}
