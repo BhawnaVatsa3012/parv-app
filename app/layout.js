@@ -5,6 +5,9 @@ import { LangProvider } from "@/components/ui/Lang";
 export const metadata = {
   title: "Parv — the stories behind our festivals",
   description: "Regional stories and rituals for Indian festivals, starting with Hindu festivals.",
+  applicationName: "Parv",
+  // Home-screen app on iPhone: the name under the icon, full-screen opening.
+  appleWebApp: { capable: true, title: "Parv", statusBarStyle: "default" },
 };
 
 export const viewport = {
