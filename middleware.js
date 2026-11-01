@@ -49,6 +49,7 @@ export async function middleware(request) {
     const path = request.nextUrl.pathname;
     const isOpen =
       path === "/login" ||
+      path === "/manifest.webmanifest" || // phones fetch it before anyone signs in
       path.startsWith("/auth/") ||
       path.startsWith("/api/webhooks/") ||
       path.startsWith("/api/cron/");
