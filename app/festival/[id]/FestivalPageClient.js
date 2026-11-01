@@ -12,14 +12,27 @@ import Icon from "@/components/ui/Icon";
 import Timings from "@/components/Timings";
 import Checklist from "@/components/Checklist";
 import FamilyRitual from "@/components/FamilyRitual";
+import { occurrence, years as festYears, fillDates } from "@/lib/occurrence";
 
 const label = { fontSize: 10, letterSpacing: ".1em", textTransform: "uppercase", color: "var(--color-neutral-700)", marginBottom: 3 };
 const heading = { fontFamily: "var(--font-heading)" };
 
-export default function FestivalPageClient({ params, entitled, price: detectedPrice = "₹99", profile, checklist, family }) {
+export default function FestivalPageClient({ params, year, entitled, price: detectedPrice = "₹99", profile, checklist, family }) {
   const router = useRouter();
   const id = params.id;
-  const data = storyData[id];
+  // Story and ritual text carries date tokens ("{lakshmi}, {year}"); fill
+  // them with the dates of the year being shown.
+  const data = useMemo(() => {
+    const d = storyData[id];
+    if (!d || !year) return d;
+    return {
+      ...d,
+      regions: d.regions.map((r) => ({ ...r, date: fillDates(r.date, id, year) })),
+      rituals: (d.rituals || []).map((rt) => ({ ...rt, when: fillDates(rt.when, id, year) })),
+    };
+  }, [id, year]);
+  const occ = year ? occurrence(id, year) : null;
+  const otherYears = festYears(id).filter((y) => y !== year);
   const meta = festivals.find((f) => f.id === id)?.meta || "";
   const c = col(id);
   const state = profile?.state || null;
@@ -80,7 +93,9 @@ export default function FestivalPageClient({ params, entitled, price: detectedPr
               <h1 style={{ margin: 0, fontSize: 40, fontWeight: 400, lineHeight: 1.05, color: "var(--color-bg)" }}>{data.title}</h1>
               <Hi size={19} color={c.line}>{HI[id]}</Hi>
             </div>
-            <div className="tnum" style={{ fontSize: 13, color: "var(--color-neutral-300)", marginTop: 4 }}>{data.dateRange}</div>
+            <div className="tnum" style={{ fontSize: 13, color: "var(--color-neutral-300)", marginTop: 4 }}>
+              {occ ? occ.label : ""}{data.dateNote ? ` (${data.dateNote})` : ""}
+            </div>
           </div>
         </div>
 
@@ -101,7 +116,15 @@ export default function FestivalPageClient({ params, entitled, price: detectedPr
 
           {tab === "stories" && (
             <>
-              <Timings festivalId={id} homeCityId={profile?.city_id} c={c} />
+              <Timings festivalId={id} year={year} homeCityId={profile?.city_id} c={c} />
+              {otherYears.length > 0 && (
+                <div className="tnum" style={{ display: "flex", flexWrap: "wrap", gap: "4px 10px", fontSize: 12, color: "var(--color-neutral-700)", margin: "8px 0 0" }}>
+                  <span>Other years:</span>
+                  {otherYears.map((y) => (
+                    <Link key={y} href={`/festival/${id}?year=${y}`} replace scroll={false}>{occurrence(id, y).label}</Link>
+                  ))}
+                </div>
+              )}
               <div style={{ fontSize: 12, color: "var(--color-neutral-700)", margin: "14px 0 2px" }}>
                 {regions.length} regional stories · tap to read
               </div>
@@ -178,7 +201,7 @@ export default function FestivalPageClient({ params, entitled, price: detectedPr
           )}
 
           {tab === "prepare" && (
-            <Checklist festivalId={id} festivalName={data.title} entitled={entitled} initial={checklist} c={c} price={price} />
+            <Checklist festivalId={id} year={year} festivalName={data.title} entitled={entitled} initial={checklist} c={c} price={price} />
           )}
         </div>
       </div>

@@ -2,3 +2,4 @@ node_modules
 .next
 .env*.local
 .vercel
+scripts/festival-dates/panchang.generated.mjs

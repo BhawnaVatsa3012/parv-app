@@ -2,7 +2,6 @@
 import { useRef, useState } from "react";
 import Link from "next/link";
 import { checklistItems, doBy } from "@/lib/checklists";
-import { YEAR } from "@/lib/design";
 import Icon from "@/components/ui/Icon";
 
 const fmt = (d) => d.toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short" });
@@ -10,9 +9,9 @@ const fmt = (d) => d.toLocaleDateString("en-GB", { weekday: "short", day: "numer
 // A festival's preparation checklist, grouped by "do by" date, saved to the
 // user's account. Part of the membership: non-members see the first few
 // items and an unlock prompt (the save API refuses them too).
-export default function Checklist({ festivalId, festivalName, entitled, initial, c, price }) {
+export default function Checklist({ festivalId, year, festivalName, entitled, initial, c, price }) {
   if (!entitled) return <LockedChecklist festivalId={festivalId} festivalName={festivalName} c={c} price={price} />;
-  return <OpenChecklist festivalId={festivalId} festivalName={festivalName} entitled initial={initial} c={c} />;
+  return <OpenChecklist festivalId={festivalId} year={year} festivalName={festivalName} entitled initial={initial} c={c} />;
 }
 
 function LockedChecklist({ festivalId, festivalName, c, price }) {
@@ -48,7 +47,7 @@ function LockedChecklist({ festivalId, festivalName, c, price }) {
   );
 }
 
-function OpenChecklist({ festivalId, festivalName, entitled, initial, c }) {
+function OpenChecklist({ festivalId, year, festivalName, entitled, initial, c }) {
   const all = checklistItems(festivalId);
   const items = all.filter((i) => entitled || !i.samagri);
   const lockedN = all.length - items.length;
@@ -65,7 +64,7 @@ function OpenChecklist({ festivalId, festivalName, entitled, initial, c }) {
       try {
         const r = await fetch("/api/checklist", {
           method: "POST", headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ festival_id: festivalId, year: YEAR, done: [...nextDone], custom: nextCustom }),
+          body: JSON.stringify({ festival_id: festivalId, year, done: [...nextDone], custom: nextCustom }),
         });
         setStatus(r.ok ? "Saved" : "Couldn't save — check your connection");
       } catch { setStatus("Couldn't save — check your connection"); }
@@ -90,7 +89,7 @@ function OpenChecklist({ festivalId, festivalName, entitled, initial, c }) {
 
   const groups = [];
   items.forEach((i) => {
-    const label = `By ${fmt(doBy(festivalId, i.before))}`;
+    const label = `By ${fmt(doBy(festivalId, i.before, year))}`;
     let g = groups.find((x) => x.label === label);
     if (!g) groups.push((g = { label, items: [] }));
     g.items.push(i);

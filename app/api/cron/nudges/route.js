@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { createServiceClient } from "@/lib/supabase/server";
 import { festivals } from "@/lib/data";
-import { START, YEAR } from "@/lib/design";
+import { nextOccurrence, daysUntil } from "@/lib/occurrence";
 import { checklistItems, NUDGE_DAYS } from "@/lib/checklists";
 
 // Runs once a day (vercel.json). Emails each member (active subscription)
@@ -26,11 +26,13 @@ export async function GET(request) {
     return NextResponse.json({ skipped: "Reminder emails aren't configured yet" });
   }
 
-  const today = indiaToday();
+  const t = new Date(indiaToday());
+  const today = new Date(t.getUTCFullYear(), t.getUTCMonth(), t.getUTCDate());
+  // Each festival's next occurrence; reminders are logged against its year.
   const due = festivals
-    .filter((f) => f.active && START[f.id])
-    .map((f) => ({ f, days: Math.round((Date.UTC(YEAR, START[f.id][0], START[f.id][1]) - today) / 864e5) }))
-    .filter((x) => NUDGE_DAYS.includes(x.days));
+    .filter((f) => f.active)
+    .map((f) => { const occ = nextOccurrence(f.id, today); return occ && { f, occ, year: occ.year, days: daysUntil(occ, today) }; })
+    .filter((x) => x && NUDGE_DAYS.includes(x.days));
   if (!due.length) return NextResponse.json({ sent: 0, note: "No festival at 10, 3 or 1 day(s) today" });
 
   const sb = createServiceClient();
@@ -44,14 +46,14 @@ export async function GET(request) {
   let sent = 0;
   for (const p of people || []) {
     if (!members.has(p.user_id)) continue;
-    for (const { f, days } of due) {
+    for (const { f, days, year } of due) {
       if (p.followed?.length && !p.followed.includes(f.id)) continue;
-      const { data: already } = await sb.from("parv_nudges_sent").select("user_id").eq("user_id", p.user_id).eq("festival_id", f.id).eq("year", YEAR).eq("days_before", days).maybeSingle();
+      const { data: already } = await sb.from("parv_nudges_sent").select("user_id").eq("user_id", p.user_id).eq("festival_id", f.id).eq("year", year).eq("days_before", days).maybeSingle();
       if (already) continue;
       const { data: u } = await sb.auth.admin.getUserById(p.user_id);
       const email = u?.user?.email;
       if (!email) continue;
-      const { data: cl } = await sb.from("parv_checklists").select("done").eq("user_id", p.user_id).eq("festival_id", f.id).eq("year", YEAR).maybeSingle();
+      const { data: cl } = await sb.from("parv_checklists").select("done").eq("user_id", p.user_id).eq("festival_id", f.id).eq("year", year).maybeSingle();
       const items = checklistItems(f.id).filter((i) => !i.samagri);
       const doneN = (cl?.done || []).length;
       const nextUp = items.filter((i) => i.before >= days && !(cl?.done || []).includes(i.key)).slice(0, 3);
@@ -69,7 +71,7 @@ export async function GET(request) {
         body: JSON.stringify({ from: FROM, to: email, subject: `${f.name} is ${when}`, html }),
       });
       if (r.ok) {
-        await sb.from("parv_nudges_sent").insert({ user_id: p.user_id, festival_id: f.id, year: YEAR, days_before: days });
+        await sb.from("parv_nudges_sent").insert({ user_id: p.user_id, festival_id: f.id, year, days_before: days });
         sent++;
       } else {
         console.error("Resend failed:", r.status, await r.text());
