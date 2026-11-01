@@ -96,6 +96,27 @@ export function rules(Y) {
     hartalika: sunriseTithi(Y, 7, 15, 60, 5, 3),
     ganesh: bestOverlap(Y, 7, 15, 60, 5, [4], (o) => fifth(o, 2)), // Chaturthi in madhyahna
   };
+  // --- Sharad Navratri (amanta Ashwin = 6, Shukla paksha) ---
+  // Ghatasthapana: Pratipada at sunrise. Ashtami / Navami: at sunrise.
+  // Vijayadashami: Dashami in Aparahna (fourth fifth of daytime), the Drik rule.
+  // Bengal's Durga Puja runs Shashthi to Dashami by the same sunrise rule.
+  const ghat = sunriseTithi(Y, 8, 1, 60, 6, 1);
+  const vijaya = bestOverlap(ghat.y, ghat.m, ghat.d + 7, 5, 6, [10], (o) => fifth(o, 3));
+  // Maha Navami: Navami at sunrise, unless that is Dussehra itself; then the
+  // day before, together with Ashtami (2024: Navami 11 Oct, Dussehra 12 Oct).
+  let navami = sunriseTithi(ghat.y, ghat.m, ghat.d, 10, 6, 9);
+  if (navami.y === vijaya.y && navami.m === vijaya.m && navami.d === vijaya.d) navami = addDays(navami, -1);
+  out.navratri = {
+    mahalaya: addDays(ghat, -1),
+    ghatasthapana: ghat,
+    shashthi: sunriseTithi(ghat.y, ghat.m, ghat.d, 9, 6, 6),
+    saptami: sunriseTithi(ghat.y, ghat.m, ghat.d, 9, 6, 7),
+    ashtami: sunriseTithi(ghat.y, ghat.m, ghat.d, 10, 6, 8),
+    navami,
+    dashami: vijaya,
+    kulluEnd: addDays(vijaya, 6),
+  };
+
   // --- Diwali (amanta Ashwin = 6 Krishna; Kartika = 7 Shukla) ---
   const lakshmi = bestOverlap(Y, 9, 10, 50, 6, [30], pradoshKaal);
   // Dhanteras: Trayodashi in Pradosh; if it reaches no Pradosh, the day it holds at sunrise.

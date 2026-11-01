@@ -25,6 +25,10 @@ Lancaster, California), and put any close calls in `OVERRIDES` with the reason.
   kshaya day); Bhai Dooj = Dwitiya in Aparahna.
 - Chhath: Kartik Shukla Shashthi at sunrise (2023: Sandhya Arghya 19 Nov).
 - Teej: Shravana / Bhadrapada Shukla Tritiya at sunrise.
+- Sharad Navratri: Ghatasthapana = Ashwin Shukla Pratipada at sunrise (or the kshaya day: 30 Sep 2027);
+  Ashtami at sunrise; Maha Navami at sunrise unless that is Dussehra, then with Ashtami (2024);
+  Vijayadashami = Dashami in Aparahna. Durga Puja runs Shashthi to Dashami. Checked: 2024, 2025,
+  2026 (Dussehra 20 Oct), 2027 (Dekho; Hindu Blog), 2028 and 2029 Ghatasthapana (Dekho Panchang).
 
 ## Checked against (Oct–Nov 2026)
 Dekho Panchang (Delhi), Drik Panchang via HinduTone (India dates), AstroSage
