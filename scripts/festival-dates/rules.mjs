@@ -145,6 +145,10 @@ export function rules(Y) {
   const janmashtami = bestOverlap(Y, 7, 1, 45, 4, [23], nishita) || sunriseTithi(Y, 7, 1, 45, 4, 23);
   // Dahi Handi / Gopalkala is the day after.
   out.janmashtami = { janmashtami, dahihandi: addDays(janmashtami, 1) };
+  // --- Maha Shivratri: Krishna Chaturdashi of amanta Magha (10) (Phalguna in purnimanta
+  // calendars), on the day it overlaps Nishita Kaal most; the vigil begins that evening.
+  const shivratri = bestOverlap(Y, 1, 5, 45, 10, [29], nishita) || sunriseTithi(Y, 1, 5, 45, 10, 29);
+  out.shivratri = { shivratri };
   // --- Chhath: Sandhya Arghya on Kartika Shukla Shashthi by the sunrise rule
   // (2023: Shashthi began 18 Nov, Sandhya Arghya was 19 Nov). ---
   const sandhya = sunriseTithi(bhaidooj.y, bhaidooj.m, bhaidooj.d + 1, 8, 7, 6);

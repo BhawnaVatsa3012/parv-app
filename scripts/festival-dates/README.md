@@ -28,6 +28,10 @@ Lancaster, California), and put any close calls in `OVERRIDES` with the reason.
   Chaturthi also in publicholidays.in (2026–28), Temples in India Info and muhuratam.in (2029) and
   Calendardate/Hindusphere (2028, 2030); Anant Chaturdashi 2026–2030 against Dekho Panchang (Delhi).
   Calendardate lists 12 Sep for 2029 (no city given); every India source with a city says 11 Sep.
+- Maha Shivratri: Krishna Chaturdashi of amanta Magha (Phalguna in purnimanta calendars) on the day it
+  overlaps Nishita Kaal most, the same rule as Janmashtami. Checked 2026–2030 against Dekho Panchang
+  (Delhi) for 2026, 2027, 2029, 2030; 2028 (23 Feb) against publicholidays.in, Calendardate and timeanddate
+  (Dekho's 2028 page was not retrieved). timeanddate lists all five years and agrees.
 - Janmashtami: Krishna Paksha Ashtami (amanta Shravana) on the day it overlaps Nishita Kaal (8th muhurta of
   the night) most; if it touches none (2026: Ashtami ends 12:14 am), the day it holds at sunrise. The date is
   the day the vigil starts; the midnight puja is just after midnight, so sites that date by the midnight
