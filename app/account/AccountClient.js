@@ -7,6 +7,7 @@ import Screen from "@/components/ui/Screen";
 import { Hi, useLang } from "@/components/ui/Lang";
 import Icon from "@/components/ui/Icon";
 import ProfileSettings from "@/components/ProfileSettings";
+import { LegalLinks } from "@/components/LegalPage";
 
 const PRICE = { razorpay: "₹99", dodo: "$3.99" };
 const fmt = (iso) => (iso ? new Date(iso).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" }) : "");
@@ -128,6 +129,7 @@ export default function AccountClient({ email, subscription, detectedRegion, pro
           <Icon name="logOut" size={16} />Sign out
         </button>
         <p style={{ margin: "16px 0 0", textAlign: "center", fontSize: 11, color: "var(--color-neutral-600)" }}>Parv · the stories behind our festivals</p>
+        <LegalLinks style={{ marginTop: 8 }} />
       </div>
 
       {dialog && (
