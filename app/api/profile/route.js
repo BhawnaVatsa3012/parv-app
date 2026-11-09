@@ -2,6 +2,7 @@ import { requireUser, readJson, json, bad, str, strList } from "@/lib/api";
 import { getProfile, saveProfile } from "@/lib/store";
 import { cityById } from "@/lib/cities";
 import { festivals } from "@/lib/data";
+import { normalizeLayers } from "@/lib/layers";
 
 const FEST_IDS = festivals.map((f) => f.id);
 
@@ -30,6 +31,11 @@ export async function POST(request) {
     const l = strList(b.followed, 20, 40);
     if (!l) return bad("Invalid festivals");
     f.followed = l.filter((id) => FEST_IDS.includes(id));
+  }
+  if ("calendar_layers" in b) {
+    const l = normalizeLayers(b.calendar_layers);
+    if (!l) return bad("Invalid calendars");
+    f.calendar_layers = l;
   }
   if ("nudge_email" in b) f.nudge_email = Boolean(b.nudge_email);
   if ("daily_email" in b) f.daily_email = Boolean(b.daily_email);

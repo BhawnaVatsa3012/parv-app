@@ -11,6 +11,7 @@ import Splash from "@/components/Splash";
 import TodayCard from "@/components/TodayCard";
 import { checklistItems } from "@/lib/checklists";
 import Icon from "@/components/ui/Icon";
+import { effectiveLayers } from "@/lib/layers";
 
 const heading = { fontFamily: "var(--font-heading)" };
 
@@ -64,7 +65,7 @@ export default function HomeClient({ email, profile, checklists = {}, member = f
 
           <div style={{ padding: "20px 20px 0", display: "flex", flexDirection: "column", gap: 10 }}>
             <div style={{ fontSize: 13, color: "var(--color-neutral-700)" }}>Namaste, {name}</div>
-            <TodayCard homeCityId={profile?.city_id} next={next} />
+            <TodayCard homeCityId={profile?.city_id} next={next} onNow={upcoming.filter((f) => f.days === 0)} layers={effectiveLayers(profile?.calendar_layers)} />
             {prep && (
               // Members see their checklist progress; free users are shown
               // the countdown and led to the membership page.

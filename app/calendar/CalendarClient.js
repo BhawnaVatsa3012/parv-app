@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useMemo, useRef, useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { festivals } from "@/lib/data";
 import { HI, UI, MON, MON_HI, col, orderFestivals } from "@/lib/design";
@@ -7,10 +8,13 @@ import { marksForMonth, occurrence, LAST_YEAR } from "@/lib/occurrence";
 import { monthPanchang, tithiShort, zonedYMD } from "@/lib/panchang";
 import { OBSERVANCES } from "@/lib/observances";
 import { cityById, DEFAULT_CITY } from "@/lib/cities";
+import { hijriOf, hijriSpan, hijriLabel, HIJRI_NOTE } from "@/lib/hijri";
+import { layerLabel } from "@/lib/layers";
 import Screen from "@/components/ui/Screen";
 import { Hi } from "@/components/ui/Lang";
 import Icon from "@/components/ui/Icon";
 import DayDetail from "@/components/DayDetail";
+import DaySimple from "@/components/DaySimple";
 import CitySwitch from "@/components/CitySwitch";
 
 const WEEKDAYS = ["S", "M", "T", "W", "T", "F", "S"];
@@ -20,7 +24,9 @@ const LAST = { y: LAST_YEAR, m: 11 };
 const key = (y, m) => y * 12 + m;
 const dot = (id) => `oklch(0.6 0.15 ${OBSERVANCES[id].hue})`;
 
-export default function CalendarClient({ homeCityId }) {
+export default function CalendarClient({ homeCityId, layers = ["panchang"] }) {
+  const showPanchang = layers.includes("panchang");
+  const showHijri = layers.includes("hijri");
   const router = useRouter();
   const home = cityById(homeCityId) || DEFAULT_CITY;
   const [cityId, setCityId] = useState(home.id);
@@ -42,7 +48,7 @@ export default function CalendarClient({ homeCityId }) {
   const cache = useRef(new Map());
   const [rows, setRows] = useState(null);
   useEffect(() => {
-    if (!view) return;
+    if (!view || !showPanchang) { setRows(null); return; }
     const k = `${city.id}:${view.y}-${view.m}`;
     if (cache.current.has(k)) { setRows(cache.current.get(k)); return; }
     setRows(null);
@@ -53,7 +59,7 @@ export default function CalendarClient({ homeCityId }) {
       setRows(r);
     }, 0);
     return () => clearTimeout(id);
-  }, [view, city]);
+  }, [view, city, showPanchang]);
 
   const { active, next } = useMemo(() => orderFestivals(festivals), []);
   const activeIds = useMemo(() => active.map((f) => f.id), [active]);
@@ -96,9 +102,13 @@ export default function CalendarClient({ homeCityId }) {
           </div>
           <button className="btn btn-icon btn-secondary" onClick={() => go(1)} disabled={atEnd} aria-label="Next month"><Icon name="chevronRight" /></button>
         </div>
-        <div style={{ margin: "0 0 10px" }}>
-          <CitySwitch city={city} homeId={home.id} onChange={setCityId} />
+        {showHijri && <div className="tnum" style={{ textAlign: "center", fontSize: 12, color: "var(--color-neutral-700)", margin: "0 0 8px" }}>{hijriSpan(y, m)} AH (approximate)</div>}
+        <div style={{ fontSize: 12, color: "var(--color-neutral-700)", margin: "0 0 8px" }}>
+          Showing: {layers.length ? layers.map(layerLabel).join(" · ") : "festival dates only"} · <Link href="/account">Change calendars</Link>
         </div>
+        {showPanchang && <div style={{ margin: "0 0 10px" }}>
+          <CitySwitch city={city} homeId={home.id} onChange={setCityId} />
+        </div>}
 
         <div role="grid" aria-label={`${MON[m]} ${y}`} style={{ display: "grid", gridTemplateColumns: "repeat(7,1fr)", gap: 2, textAlign: "center" }}>
           {WEEKDAYS.map((w, i) => <div key={i} role="columnheader" style={{ fontSize: 11, letterSpacing: ".08em", color: "var(--color-neutral-600)", padding: "4px 0" }}>{w}</div>)}
@@ -106,13 +116,15 @@ export default function CalendarClient({ homeCityId }) {
             if (!d) return <div key={"e" + i} />;
             const ids = marks[d];
             const mc = ids ? col(ids[0]) : null;
-            const r = rows ? rows[d - 1] : null;
+            const r = showPanchang && rows ? rows[d - 1] : null;
+            const hj = showHijri ? hijriOf(y, m, d) : null;
             const isToday = today && today.y === y && today.m === m && today.d === d;
             const isSel = sel === d;
             const fNames = ids ? ids.map((x) => festivals.find((f) => f.id === x)?.name).filter(Boolean) : [];
             const label = [
               `${d} ${MON[m]}`,
               r && `${r.info.paksha} ${r.info.name}`,
+              hj && `${hijriLabel(hj)}, approximate`,
               ...(r ? r.observances.map((o) => OBSERVANCES[o].name) : []),
               ...fNames,
               isToday && "today",
@@ -126,7 +138,7 @@ export default function CalendarClient({ homeCityId }) {
                 aria-label={label}
                 aria-pressed={isSel}
                 style={{
-                  all: "unset", cursor: "pointer", position: "relative", height: 58, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "flex-start", paddingTop: 5, boxSizing: "border-box",
+                  all: "unset", cursor: "pointer", position: "relative", height: showPanchang && showHijri ? 70 : 58, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "flex-start", paddingTop: 5, boxSizing: "border-box",
                   borderRadius: "var(--radius-md)",
                   background: isSel ? "color-mix(in srgb, var(--color-accent) 14%, transparent)" : "transparent",
                   outline: isSel ? "1.5px solid var(--color-accent)" : "none", outlineOffset: -1,
@@ -136,9 +148,12 @@ export default function CalendarClient({ homeCityId }) {
                   {mc && <span aria-hidden="true" style={{ position: "absolute", inset: 0, borderRadius: "50%", border: `1.5px solid ${mc.base}`, background: mc.tint }} />}
                   <span style={{ position: "relative" }}>{d}</span>
                 </span>
-                <span aria-hidden="true" style={{ fontSize: 9.5, lineHeight: "12px", height: 12, color: "var(--color-neutral-700)", letterSpacing: ".02em" }}>
+                {showPanchang && <span aria-hidden="true" style={{ fontSize: 9.5, lineHeight: "12px", height: 12, color: "var(--color-neutral-700)", letterSpacing: ".02em" }}>
                   {r ? (r.tithi === 15 ? "◯" : r.tithi === 30 ? "●" : tithiShort(r.tithi)) : ""}
-                </span>
+                </span>}
+                {hj && <span aria-hidden="true" style={{ fontSize: 9.5, lineHeight: "12px", height: 12, color: "var(--color-neutral-700)", letterSpacing: ".02em", marginTop: showPanchang ? 1 : 0 }}>
+                  {hj.d === 1 ? hj.monthShort : hj.d}
+                </span>}
                 <span aria-hidden="true" style={{ display: "flex", gap: 2, height: 5, marginTop: 1 }}>
                   {r && r.observances.slice(0, 3).map((o) => <span key={o} style={{ width: 5, height: 5, borderRadius: "50%", background: dot(o) }} />)}
                   {isToday && !(r && r.observances.length) && <span style={{ width: 5, height: 5, borderRadius: "50%", border: "1px solid var(--color-accent)" }} />}
@@ -148,11 +163,16 @@ export default function CalendarClient({ homeCityId }) {
           })}
         </div>
 
-        <div style={{ fontSize: 11, color: "var(--color-neutral-700)", margin: "10px 0 6px", lineHeight: 1.5 }}>
+        {showHijri && (
+          <div style={{ fontSize: 11, color: "var(--color-neutral-700)", margin: "10px 0 6px", lineHeight: 1.5 }}>
+            {showPanchang ? "The smaller number below that is" : "Under each date is"} the Hijri day of the month (the month's name on its first day). {HIJRI_NOTE}
+          </div>
+        )}
+        {showPanchang && <div style={{ fontSize: 11, color: "var(--color-neutral-700)", margin: "10px 0 6px", lineHeight: 1.5 }}>
           Under each date is the tithi at sunrise: <b style={{ fontWeight: 600 }}>S</b> = Shukla (waxing moon), <b style={{ fontWeight: 600 }}>K</b> = Krishna (waning moon). So <span className="tnum">K14</span> is the 14th day of the waning moon; ◯ is Purnima, ● is Amavasya. A dot marks the day an observance is kept, which can be the day before the tithi holds at sunrise (a Purnima fast often is).
-        </div>
-        <div style={{ display: "flex", gap: "6px 14px", flexWrap: "wrap", fontSize: 11, color: "var(--color-neutral-700)", margin: "0 0 18px" }}>
-          {Object.keys(OBSERVANCES).map((o) => (
+        </div>}
+        <div style={{ display: "flex", gap: "6px 14px", flexWrap: "wrap", fontSize: 11, color: "var(--color-neutral-700)", margin: "10px 0 18px" }}>
+          {showPanchang && Object.keys(OBSERVANCES).map((o) => (
             <span key={o} style={{ display: "flex", alignItems: "center", gap: 5 }}><span style={{ width: 7, height: 7, borderRadius: "50%", background: dot(o) }} />{OBSERVANCES[o].name}</span>
           ))}
           <span style={{ display: "flex", alignItems: "center", gap: 5 }}><span style={{ width: 11, height: 11, borderRadius: "50%", border: "1px solid var(--color-accent)" }} />Festival day</span>
@@ -160,9 +180,11 @@ export default function CalendarClient({ homeCityId }) {
 
         <div style={{ marginBottom: 22 }}>
           {sel ? (
-            <DayDetail y={y} m={m} d={sel} city={city} festivalIds={marks[sel] || []} />
+            showPanchang
+              ? <DayDetail y={y} m={m} d={sel} city={city} festivalIds={marks[sel] || []} hijri={showHijri ? hijriOf(y, m, sel) : null} />
+              : <DaySimple y={y} m={m} d={sel} festivalIds={marks[sel] || []} hijri={showHijri ? hijriOf(y, m, sel) : null} />
           ) : (
-            <p style={{ fontSize: 13.5, color: "var(--color-neutral-700)", margin: 0 }}>Tap any day to see its panchang.</p>
+            <p style={{ fontSize: 13.5, color: "var(--color-neutral-700)", margin: 0 }}>{showPanchang ? "Tap any day to see its panchang." : "Tap any day to see what falls on it."}</p>
           )}
         </div>
 
