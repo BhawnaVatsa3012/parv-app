@@ -8,7 +8,7 @@ import { HI, HUE } from "@/lib/design";
 
 const COMMUNITIES = ["Hindu", "Sikh", "Jain", "Buddhist", "Christian", "Muslim"];
 // One free story per community (a label only: nothing reads freeStory yet).
-const FREE = ["diwali", "vaisakhi", "mahavir"];
+const FREE = ["diwali", "vaisakhi", "mahavir", "buddha"];
 // Older entries with short stories or a region left unmapped; held to the looser checks only.
 const LEGACY = new Set(["bhaidooj", "teej", "newyear"]);
 
@@ -46,6 +46,10 @@ describe("festival library", () => {
 
   it("keeps the generated dates for Mahavir Jayanti", () => {
     expect(Object.fromEntries(Object.entries(FESTIVAL_DATES.mahavir).map(([y, v]) => [y, v.mahavir]))).toEqual({ 2026: "3-31", 2027: "4-19", 2028: "4-7", 2029: "4-26", 2030: "4-16" });
+  });
+
+  it("keeps the generated dates for Buddha Purnima", () => {
+    expect(Object.fromEntries(Object.entries(FESTIVAL_DATES.buddha).map(([y, v]) => [y, v.buddha]))).toEqual({ 2026: "5-1", 2027: "5-20", 2028: "5-8", 2029: "5-27", 2030: "5-17" });
   });
 
   it("keeps the generated dates for Vaisakhi", () => {

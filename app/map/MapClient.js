@@ -8,7 +8,7 @@ import { feature } from "topojson-client";
 import { HI, UI, HUE } from "@/lib/design";
 import { Hi, useLang } from "@/components/ui/Lang";
 
-const FEST = { diwali: "Diwali", holi: "Holi", teej: "Teej", newyear: "New Year Cluster", sankranti: "Makar Sankranti", bhaidooj: "Bhai Dooj", chhath: "Chhath Puja", ganesh: "Ganesh Chaturthi", janmashtami: "Janmashtami", shivratri: "Maha Shivratri", vaisakhi: "Vaisakhi", mahavir: "Mahavir Jayanti", rakshabandhan: "Raksha Bandhan", karvachauth: "Karva Chauth", onam: "Onam", pongal: "Pongal", navratri: "Navratri & Dussehra" };
+const FEST = { diwali: "Diwali", holi: "Holi", teej: "Teej", newyear: "New Year Cluster", sankranti: "Makar Sankranti", bhaidooj: "Bhai Dooj", chhath: "Chhath Puja", ganesh: "Ganesh Chaturthi", janmashtami: "Janmashtami", shivratri: "Maha Shivratri", vaisakhi: "Vaisakhi", mahavir: "Mahavir Jayanti", buddha: "Buddha Purnima", rakshabandhan: "Raksha Bandhan", karvachauth: "Karva Chauth", onam: "Onam", pongal: "Pongal", navratri: "Navratri & Dussehra" };
 
 // Where each regional story is set (from lib/data.js regions).
 const PLACES = [
@@ -57,6 +57,14 @@ const PLACES = [
   ["Shri Mahaveerji, Rajasthan", 26.8, 77.0, [["mahavir", "Rajasthan (Shri Mahaveerji)"]]],
   ["Palitana, Gujarat", 21.52, 71.82, [["mahavir", "Gujarat (Ahmedabad & Palitana)"]]],
   ["Jabalpur, Madhya Pradesh", 23.18, 79.95, [["mahavir", "Madhya Pradesh (Jabalpur)"]]],
+  ["Bodh Gaya, Bihar", 24.7, 84.99, [["buddha", "Bihar (Bodh Gaya)"]]],
+  ["Sarnath, Uttar Pradesh", 25.38, 83.02, [["buddha", "Uttar Pradesh (Sarnath & Shravasti)"]]],
+  ["Shravasti, Uttar Pradesh", 27.51, 82.0, [["buddha", "Uttar Pradesh (Sarnath & Shravasti)"]]],
+  ["Hanle, Ladakh", 32.78, 78.97, [["buddha", "Ladakh (Saga Dawa)"]]],
+  ["Leh, Ladakh", 34.16, 77.58, [["buddha", "Ladakh (Saga Dawa)"]]],
+  ["Gangtok, Sikkim", 27.33, 88.61, [["buddha", "Sikkim (Saga Dawa in Gangtok)"]]],
+  ["Nagpur, Maharashtra", 21.15, 79.09, [["buddha", "Maharashtra (Nagpur & Mumbai)"]]],
+  ["Mumbai, Maharashtra (Chaitya Bhoomi)", 19.02, 72.84, [["buddha", "Maharashtra (Nagpur & Mumbai)"]]],
   ["Varanasi, Uttar Pradesh", 25.32, 82.97, [["karvachauth", "Uttar Pradesh (Chauth Mata & the karwa)"], ["shivratri", "Uttar Pradesh (Varanasi)"]]],
   ["Ujjain, Madhya Pradesh", 23.18, 75.78, [["shivratri", "Madhya Pradesh (Ujjain)"]]],
   ["Srinagar, Kashmir", 34.08, 74.8, [["shivratri", "Jammu & Kashmir (Herath)"]]],

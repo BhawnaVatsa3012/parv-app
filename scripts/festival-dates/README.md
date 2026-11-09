@@ -82,6 +82,13 @@ Lancaster, California), and put any close calls in `OVERRIDES` with the reason.
   minutes (it is the tithi for most of the 18th daytime). Not overridden; the page tells readers to confirm with their
   sangh. Some 2026 articles asked '30 or 31 March' because the tithi began at 7:09 am on the 30th; 31 March is right
   by the sunrise rule.
+- Buddha Purnima (Buddhist): Vaishakha Purnima (amanta Vaishakha, tithi 15) on the day Purnima holds at sunrise in
+  Delhi. Result 2026–2030: 1 May 2026, 20 May 2027, 8 May 2028, 27 May 2029, 17 May 2030. Matches Temples in India Info
+  (all five years, with tithi times within a minute or two of ours), publicholidays.in (2026–28), Dekho Panchang
+  (Delhi: 2029, 2030, 'udaya tithi'), and Nagpur press for 1 May 2026. Disagreement to note, not a date change: Saga
+  Dawa Düchen (Ladakh, Sikkim, Tibetan communities) follows the Tibetan fourth month; one guide (StayVista) gives 31 May
+  2026 for it, and wrongly says that is also Buddha Purnima (1 May 2026 in every Indian calendar checked). Sri Lanka and
+  South-East Asia keep Vesak by their own rules. The page says so.
 - Janmashtami: Krishna Paksha Ashtami (amanta Shravana) on the day it overlaps Nishita Kaal (8th muhurta of
   the night) most; if it touches none (2026: Ashtami ends 12:14 am), the day it holds at sunrise. The date is
   the day the vigil starts; the midnight puja is just after midnight, so sites that date by the midnight
