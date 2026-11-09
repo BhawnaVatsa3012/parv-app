@@ -8,12 +8,12 @@ import { feature } from "topojson-client";
 import { HI, UI, HUE } from "@/lib/design";
 import { Hi, useLang } from "@/components/ui/Lang";
 
-const FEST = { diwali: "Diwali", holi: "Holi", teej: "Teej", newyear: "New Year Cluster", sankranti: "Makar Sankranti", bhaidooj: "Bhai Dooj", chhath: "Chhath Puja", ganesh: "Ganesh Chaturthi", janmashtami: "Janmashtami", shivratri: "Maha Shivratri", vaisakhi: "Vaisakhi", mahavir: "Mahavir Jayanti", buddha: "Buddha Purnima", rakshabandhan: "Raksha Bandhan", karvachauth: "Karva Chauth", onam: "Onam", pongal: "Pongal", navratri: "Navratri & Dussehra" };
+const FEST = { diwali: "Diwali", holi: "Holi", teej: "Teej", newyear: "New Year Cluster", sankranti: "Makar Sankranti", bhaidooj: "Bhai Dooj", chhath: "Chhath Puja", ganesh: "Ganesh Chaturthi", janmashtami: "Janmashtami", shivratri: "Maha Shivratri", vaisakhi: "Vaisakhi", mahavir: "Mahavir Jayanti", buddha: "Buddha Purnima", christmas: "Christmas", rakshabandhan: "Raksha Bandhan", karvachauth: "Karva Chauth", onam: "Onam", pongal: "Pongal", navratri: "Navratri & Dussehra" };
 
 // Where each regional story is set (from lib/data.js regions).
 const PLACES = [
   ["Ayodhya, Uttar Pradesh", 26.8, 82.2, [["diwali", "Uttar Pradesh"]]],
-  ["Kolkata, West Bengal", 22.57, 88.36, [["rakshabandhan", "West Bengal (Tagore's rakhi)"], ["navratri", "West Bengal (Durga Puja)"], ["diwali", "Bengal"], ["bhaidooj", "West Bengal"], ["newyear", "West Bengal (Poila Boishakh)"]]],
+  ["Kolkata, West Bengal", 22.57, 88.36, [["rakshabandhan", "West Bengal (Tagore's rakhi)"], ["navratri", "West Bengal (Durga Puja)"], ["diwali", "Bengal"], ["bhaidooj", "West Bengal"], ["newyear", "West Bengal (Poila Boishakh)"], ["christmas", "West Bengal (Kolkata)"]]],
   ["Chennai, Tamil Nadu", 13.08, 80.27, [["pongal", "Tamil Nadu (Thai Pongal)"], ["rakshabandhan", "Tamil Nadu & Karnataka (Avani Avittam)"], ["janmashtami", "Tamil Nadu (Gokulashtami)"], ["navratri", "Tamil Nadu (Golu)"], ["diwali", "Tamil Nadu"], ["newyear", "Tamil Nadu (Puthandu)"], ["sankranti", "Tamil Nadu (Pongal)"]]],
   ["Ahmedabad, Gujarat", 23.02, 72.57, [["karvachauth", "Gujarat & Maharashtra (a newer custom)"], ["navratri", "Gujarat (Garba)"], ["diwali", "Gujarat"], ["sankranti", "Gujarat (Uttarayan)"], ["mahavir", "Gujarat (Ahmedabad & Palitana)"]]],
   ["Mumbai, Maharashtra", 19.08, 72.88, [["rakshabandhan", "Maharashtra (Narali Purnima)"], ["ganesh", "Maharashtra (Mumbai)"], ["janmashtami", "Maharashtra (Dahi Handi)"], ["chhath", "Delhi & Mumbai"], ["diwali", "Maharashtra"], ["bhaidooj", "Maharashtra"], ["newyear", "Maharashtra (Gudi Padwa)"], ["newyear", "Sindhi community (Cheti Chand)"], ["sankranti", "Maharashtra & Karnataka"]]],
@@ -65,6 +65,11 @@ const PLACES = [
   ["Gangtok, Sikkim", 27.33, 88.61, [["buddha", "Sikkim (Saga Dawa in Gangtok)"]]],
   ["Nagpur, Maharashtra", 21.15, 79.09, [["buddha", "Maharashtra (Nagpur & Mumbai)"]]],
   ["Mumbai, Maharashtra (Chaitya Bhoomi)", 19.02, 72.84, [["buddha", "Maharashtra (Nagpur & Mumbai)"]]],
+  ["Old Goa, Goa (Bom Jesus Basilica)", 15.5, 73.91, [["christmas", "Goa"]]],
+  ["Kochi, Kerala", 9.93, 76.27, [["christmas", "Kerala"]]],
+  ["Kohima, Nagaland", 25.67, 94.11, [["christmas", "Nagaland & Mizoram"]]],
+  ["Aizawl, Mizoram", 23.73, 92.72, [["christmas", "Nagaland & Mizoram"]]],
+  ["Shillong, Meghalaya", 25.58, 91.89, [["christmas", "Meghalaya (Shillong)"]]],
   ["Varanasi, Uttar Pradesh", 25.32, 82.97, [["karvachauth", "Uttar Pradesh (Chauth Mata & the karwa)"], ["shivratri", "Uttar Pradesh (Varanasi)"]]],
   ["Ujjain, Madhya Pradesh", 23.18, 75.78, [["shivratri", "Madhya Pradesh (Ujjain)"]]],
   ["Srinagar, Kashmir", 34.08, 74.8, [["shivratri", "Jammu & Kashmir (Herath)"]]],
@@ -74,7 +79,7 @@ const PLACES = [
   ["Puri, Odisha", 19.81, 85.83, [["rakshabandhan", "Odisha (Gamha Purnima)"]]],
   ["Madurai, Tamil Nadu", 9.93, 78.12, [["pongal", "Madurai (Jallikattu)"]]],
   ["Pune, Maharashtra", 18.52, 73.86, [["ganesh", "Maharashtra (Pune)"], ["mahavir", "Maharashtra (Pune)"]]],
-  ["Panaji, Goa", 15.5, 73.83, [["ganesh", "Goa (Chavath)"]]],
+  ["Panaji, Goa", 15.5, 73.83, [["ganesh", "Goa (Chavath)"], ["christmas", "Goa"]]],
   ["Pillaiyarpatti, Tamil Nadu", 10.1, 78.7, [["ganesh", "Tamil Nadu (Pillaiyarpatti)"]]],
   ["Sagar Island, West Bengal", 21.65, 88.08, [["sankranti", "West Bengal & Odisha"]]],
 ].map(([place, lat, lon, items]) => ({ place, lat, lon, items, soon: false }));

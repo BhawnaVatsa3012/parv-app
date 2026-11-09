@@ -89,6 +89,9 @@ Lancaster, California), and put any close calls in `OVERRIDES` with the reason.
   Dawa Düchen (Ladakh, Sikkim, Tibetan communities) follows the Tibetan fourth month; one guide (StayVista) gives 31 May
   2026 for it, and wrongly says that is also Buddha Purnima (1 May 2026 in every Indian calendar checked). Sri Lanka and
   South-East Asia keep Vesak by their own rules. The page says so.
+- Christmas (Christian): fixed civil date, 25 December every year, with Christmas Eve (Midnight Mass) on 24 December;
+  no lunar rule, so no source disagreement for the date. Churches that follow the Julian calendar (some Orthodox
+  churches) keep 7 January; the app's note says to check with your own church.
 - Janmashtami: Krishna Paksha Ashtami (amanta Shravana) on the day it overlaps Nishita Kaal (8th muhurta of
   the night) most; if it touches none (2026: Ashtami ends 12:14 am), the day it holds at sunrise. The date is
   the day the vigil starts; the midnight puja is just after midnight, so sites that date by the midnight

@@ -19,12 +19,13 @@ const KEY = {
 };
 
 // Festivals that follow the sun, a fixed date or the Hijri moon, not a tithi: no Hindu tithi line.
-const NO_TITHI = new Set(["vaisakhi"]);
+const NO_TITHI = new Set(["vaisakhi", "christmas"]);
 
 // A short note under a festival's timings, where the date needs explaining.
 const NOTE = {
   buddha: "Buddha Purnima is the day Vaishakha Purnima holds at sunrise. Sri Lanka and South-East Asia keep Vesak by their own reckoning, and Tibetan Buddhists keep Saga Dawa Düchen on the full moon of their fourth month, which can be a month later: confirm with your monastery or vihara.",
   mahavir: "Jains keep the day on which Chaitra Shukla Trayodashi holds at sunrise. Calendars can differ by a day in a year when the tithi begins and ends close to sunrise; your temple or sangh will announce the day.",
+  christmas: "Christmas is on 25 December every year; Midnight Mass is on the night of 24 December. Some Orthodox and other churches keep Christmas on other dates, so check with your own church.",
   vaisakhi: "Vaisakhi follows the sun's entry into Mesha (Aries), not the moon. Sikh institutions announce the day: it is 13 or 14 April, and in some years Punjab has kept the 13th when the Delhi calculation gives the 14th.",
 };
 
