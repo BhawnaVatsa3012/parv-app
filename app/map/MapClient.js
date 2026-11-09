@@ -8,7 +8,7 @@ import { feature } from "topojson-client";
 import { HI, UI, HUE } from "@/lib/design";
 import { Hi, useLang } from "@/components/ui/Lang";
 
-const FEST = { diwali: "Diwali", holi: "Holi", teej: "Teej", newyear: "New Year Cluster", sankranti: "Makar Sankranti", bhaidooj: "Bhai Dooj", chhath: "Chhath Puja", ganesh: "Ganesh Chaturthi", janmashtami: "Janmashtami", navratri: "Navratri & Dussehra" };
+const FEST = { diwali: "Diwali", holi: "Holi", teej: "Teej", newyear: "New Year Cluster", sankranti: "Makar Sankranti", bhaidooj: "Bhai Dooj", chhath: "Chhath Puja", ganesh: "Ganesh Chaturthi", janmashtami: "Janmashtami", shivratri: "Maha Shivratri", navratri: "Navratri & Dussehra" };
 
 // Where each regional story is set (from lib/data.js regions).
 const PLACES = [
@@ -40,6 +40,12 @@ const PLACES = [
   ["Mathura & Vrindavan, Uttar Pradesh", 27.55, 77.65, [["janmashtami", "Uttar Pradesh (Mathura & Vrindavan)"]]],
   ["Dwarka, Gujarat", 22.24, 68.97, [["janmashtami", "Gujarat (Dwarka)"]]],
   ["Udupi, Karnataka", 13.34, 74.75, [["janmashtami", "Karnataka (Udupi)"]]],
+  ["Varanasi, Uttar Pradesh", 25.32, 82.97, [["shivratri", "Uttar Pradesh (Varanasi)"]]],
+  ["Ujjain, Madhya Pradesh", 23.18, 75.78, [["shivratri", "Madhya Pradesh (Ujjain)"]]],
+  ["Srinagar, Kashmir", 34.08, 74.8, [["shivratri", "Jammu & Kashmir (Herath)"]]],
+  ["Junagadh, Gujarat", 21.52, 70.46, [["shivratri", "Gujarat (Junagadh)"]]],
+  ["Tiruvannamalai, Tamil Nadu", 12.23, 79.07, [["shivratri", "Tamil Nadu (Tiruvannamalai & Chidambaram)"]]],
+  ["Chidambaram, Tamil Nadu", 11.4, 79.69, [["shivratri", "Tamil Nadu (Tiruvannamalai & Chidambaram)"]]],
   ["Pune, Maharashtra", 18.52, 73.86, [["ganesh", "Maharashtra (Pune)"]]],
   ["Panaji, Goa", 15.5, 73.83, [["ganesh", "Goa (Chavath)"]]],
   ["Pillaiyarpatti, Tamil Nadu", 10.1, 78.7, [["ganesh", "Tamil Nadu (Pillaiyarpatti)"]]],

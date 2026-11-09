@@ -9,6 +9,7 @@ import CitySwitch from "@/components/CitySwitch";
 const KEY = {
   diwali: [["lakshmi", "Lakshmi Puja — Pradosh Kaal", "pradosh"]],
   chhath: [["sandhya", "Sandhya Arghya — sunset", "sunset"], ["usha", "Usha Arghya — sunrise", "sunrise"]],
+  shivratri: [["shivratri", "Nishita puja (just after midnight)", "nishita"]],
   janmashtami: [["janmashtami", "Nishita puja (just after midnight)", "nishita"]],
   ganesh: [["ganesh", "Ganesh puja — Madhyahna", "madhyahna"]],
   navratri: [["ghatasthapana", "Ghatasthapana — first third of the day", "pratah"], ["dashami", "Vijayadashami puja — Aparahna", "aparahna"]],
