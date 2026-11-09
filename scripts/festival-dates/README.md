@@ -28,6 +28,12 @@ Lancaster, California), and put any close calls in `OVERRIDES` with the reason.
   Chaturthi also in publicholidays.in (2026–28), Temples in India Info and muhuratam.in (2029) and
   Calendardate/Hindusphere (2028, 2030); Anant Chaturdashi 2026–2030 against Dekho Panchang (Delhi).
   Calendardate lists 12 Sep for 2029 (no city given); every India source with a city says 11 Sep.
+- Karva Chauth: Krishna Chaturthi of amanta Ashwin (purnimanta Kartik), on the day Chaturthi is present at
+  Delhi moonrise (the first such night if two). Matches Temples in India Info (undated city) for 2026 (29 Oct),
+  2027 (18 Oct), 2028 (7 Oct), 2029 (26 Oct), 2030 (15 Oct); 2026 also Free Press Journal (citing Drik). 2027 is
+  disputed: Chaturthi begins 5:50 pm on 18 Oct and ends 6:41 pm on 19 Oct, so the moon rises under it only on
+  the 18th (our rule, Temples in India Info). vedpanchang (Delhi, Agra) and Daanyam (Bengaluru) show 19 Oct,
+  the day Chaturthi holds at sunrise. Not overridden.
 - Raksha Bandhan: Purnima of amanta Shravana, tied in Aparahna and not in Bhadra (Vishti karana: the first
   half of Purnima, to the Moon's 174 degrees). If Bhadra covers all of that Aparahna, the next day provided
   Purnima holds at its sunrise (Dekho Panchang states the same rule: Aparahna avoiding Bhadra, else next day
