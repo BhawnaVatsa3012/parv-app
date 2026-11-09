@@ -91,11 +91,15 @@ export function rules(Y) {
   };
   out.holi.nandgaon = addDays(out.holi.lathmar, 1);
   // --- Teej (Shravana = 4, Bhadrapada = 5) ---
+  // Ganesh Chaturthi: Bhadrapada Shukla Chaturthi in Madhyahna (the middle fifth of daytime).
+  const ganesh = bestOverlap(Y, 7, 15, 60, 5, [4], (o) => fifth(o, 2));
   out.teej = {
     hariyali: sunriseTithi(Y, 6, 15, 60, 4, 3),
     hartalika: sunriseTithi(Y, 7, 15, 60, 5, 3),
-    ganesh: bestOverlap(Y, 7, 15, 60, 5, [4], (o) => fifth(o, 2)), // Chaturthi in madhyahna
+    ganesh,
   };
+  // Anant Chaturdashi (the last day, when the idols are immersed): Chaturdashi at sunrise.
+  out.ganesh = { ganesh, anant: sunriseTithi(ganesh.y, ganesh.m, ganesh.d + 5, 10, 5, 14) };
   // --- Sharad Navratri (amanta Ashwin = 6, Shukla paksha) ---
   // Ghatasthapana: Pratipada at sunrise. Ashtami / Navami: at sunrise.
   // Vijayadashami: Dashami in Aparahna (fourth fifth of daytime), the Drik rule.
