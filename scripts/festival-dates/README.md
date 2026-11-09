@@ -28,6 +28,13 @@ Lancaster, California), and put any close calls in `OVERRIDES` with the reason.
   Chaturthi also in publicholidays.in (2026–28), Temples in India Info and muhuratam.in (2029) and
   Calendardate/Hindusphere (2028, 2030); Anant Chaturdashi 2026–2030 against Dekho Panchang (Delhi).
   Calendardate lists 12 Sep for 2029 (no city given); every India source with a city says 11 Sep.
+- Raksha Bandhan: Purnima of amanta Shravana, tied in Aparahna and not in Bhadra (Vishti karana: the first
+  half of Purnima, to the Moon's 174 degrees). If Bhadra covers all of that Aparahna, the next day provided
+  Purnima holds at its sunrise (Dekho Panchang states the same rule: Aparahna avoiding Bhadra, else next day
+  if Purnima is at sunrise). Checked 2026–2030 against Dekho Panchang (Delhi); also publicholidays.in
+  (2026–28), Calendardate (2027, 2030), NavBharat Live (2026) and Drik Panchang for Puri (2027). 2029 (24 Aug)
+  is the weakest: Purnima holds only ~87 minutes after sunrise; Dekho (Delhi, Hyderabad, Ahmedabad) say 24 Aug,
+  Calendardate says 23 Aug (the first Purnima day, ignoring Bhadra).
 - Maha Shivratri: Krishna Chaturdashi of amanta Magha (Phalguna in purnimanta calendars) on the day it
   overlaps Nishita Kaal most, the same rule as Janmashtami. Checked 2026–2030 against Dekho Panchang
   (Delhi) for 2026, 2027, 2029, 2030; 2028 (23 Feb) against publicholidays.in, Calendardate and timeanddate
