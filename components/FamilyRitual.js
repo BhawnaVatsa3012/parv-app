@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 
+const SCRIPT_FONT = { sa: "font-hi", pi: "font-hi", pa: "font-pa", ar: "font-ar", en: "" };
 const label = { fontSize: 10, letterSpacing: ".1em", textTransform: "uppercase", color: "var(--color-neutral-700)", marginBottom: 3 };
 const heading = { fontFamily: "var(--font-heading)" };
 
@@ -90,7 +91,7 @@ export default function FamilyRitual({ festivalId, ritualIndex, rt, c, notes: in
         </div>
       )}
 
-      {rt.deity && <div><div style={label}>Who's worshipped</div><div style={{ fontSize: 14, lineHeight: 1.5 }}>{rt.deity}</div></div>}
+      {rt.deity && <div><div style={label}>{rt.labels?.deity || "Who's worshipped"}</div><div style={{ fontSize: 14, lineHeight: 1.5 }}>{rt.deity}</div></div>}
       {rt.when && <div><div style={label}>When</div><div style={{ fontSize: 14, lineHeight: 1.5 }}>{rt.when}</div></div>}
       {samagri.length > 0 && (
         <div>
@@ -128,9 +129,12 @@ export default function FamilyRitual({ festivalId, ritualIndex, rt, c, notes: in
       )}
       {rt.mantra && (
         <div>
-          <div style={{ ...label, marginBottom: 6 }}>Mantra</div>
+          <div style={{ ...label, marginBottom: 6 }}>{rt.labels?.mantra || "Mantra"}</div>
           <div style={{ textAlign: "center", padding: "16px 8px", borderTop: `1px solid ${c.base}`, borderBottom: `1px solid ${c.base}`, background: c.tint, display: "flex", flexDirection: "column", gap: 6 }}>
-            <div className="font-hi" lang="sa" style={{ fontSize: 20, lineHeight: 1.5 }}>{rt.mantra.sanskrit}</div>
+            {rt.mantra.sanskrit && (
+              // The text in its own script. lang picks the font: "sa" (default, Devanagari), "pa" (Gurmukhi), "ar" (Arabic, right to left).
+              <div className={SCRIPT_FONT[rt.mantra.lang || "sa"]} lang={rt.mantra.lang || "sa"} dir={rt.mantra.lang === "ar" ? "rtl" : undefined} style={{ fontSize: 20, lineHeight: 1.6 }}>{rt.mantra.sanskrit}</div>
+            )}
             <div style={{ fontSize: 14, fontStyle: "italic", color: c.deep }}>{rt.mantra.translit}</div>
             <div style={{ fontSize: 12.5, lineHeight: 1.5, color: "var(--color-neutral-700)" }}>{rt.mantra.meaning}</div>
           </div>

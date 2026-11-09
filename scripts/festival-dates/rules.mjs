@@ -75,6 +75,10 @@ export function rules(Y) {
     puthandu: ms.drik, vishu: ms.vishu, baisakhi: ms.civil,
     gorubihu: ms.civil, bihu: ms.bengal, poila: ms.bengal,
   };
+  // --- Vaisakhi (Sikh; solar): the civil date (IST) on which the Sun enters Mesha, the same
+  // Mesha Sankranti used for Baisakhi above. Sikh bodies announce the day; Punjab has sometimes kept
+  // the 13th when this gives the 14th (2025: sankranti 3:30 am on 14 April, Punjab holiday 13 April). ---
+  out.vaisakhi = { vaisakhi: ms.civil };
   // --- Holi (Phalguna = 11) ---
   // Holika Dahan: the first evening Purnima reaches Pradosh Kaal (in Bhadra
   // Puchha if Bhadra covers the evening). Holi (Dhulandi) is the day after.
