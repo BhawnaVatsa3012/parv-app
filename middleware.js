@@ -43,12 +43,15 @@ export async function middleware(request) {
     } = await supabase.auth.getUser();
 
     // Sign-in gate: the whole app is for signed-in users only.
-    // Open paths: the login page, the auth link handlers, and payment
+    // Open paths: the login page, the legal pages, the auth link handlers, and payment
     // webhooks (Razorpay/Dodo call these server-to-server, with no login),
     // and the daily cron job (protected by CRON_SECRET instead).
     const path = request.nextUrl.pathname;
     const isOpen =
       path === "/login" ||
+      path === "/terms" || // legal pages must be readable before sign-in
+      path === "/privacy" ||
+      path === "/refund" ||
       path === "/manifest.webmanifest" || // phones fetch it before anyone signs in
       path.startsWith("/auth/") ||
       path.startsWith("/api/webhooks/") ||

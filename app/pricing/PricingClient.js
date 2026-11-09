@@ -10,6 +10,7 @@ import { Hi } from "@/components/ui/Lang";
 import Icon from "@/components/ui/Icon";
 import RazorpaySubscribeButton from "@/components/RazorpaySubscribeButton";
 import DodoSubscribeButton from "@/components/DodoSubscribeButton";
+import { LegalLinks } from "@/components/LegalPage";
 
 // PROPOSED pricing — still pending approval. Change these two lines once decided.
 const PRICE = { india: "₹99", international: "$3.99" };
@@ -132,6 +133,7 @@ export default function PricingClient({ detectedRegion, email, member, success, 
             <Icon name="shield" size={13} />
             {region === "india" ? "Secure checkout via Razorpay · UPI, cards, netbanking" : "Secure checkout via Dodo Payments · international cards"}
           </div>
+          <LegalLinks />
         </div>
       </div>
     </Screen>

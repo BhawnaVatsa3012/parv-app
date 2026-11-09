@@ -1,5 +1,6 @@
 "use client";
 import { useCallback, useEffect, useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { ONBOARDING, UI } from "@/lib/design";
@@ -160,7 +161,8 @@ export default function LoginPage() {
           </form>
         )}
         <p style={{ margin: "auto 0 0", paddingTop: 24, fontSize: 11, lineHeight: 1.5, textAlign: "center", color: "var(--color-neutral-600)" }}>
-          By continuing you agree to Parv's Terms and Privacy Policy.
+          By continuing you agree to Parv's <Link href="/terms" style={{ textDecoration: "underline" }}>Terms</Link> and <Link href="/privacy" style={{ textDecoration: "underline" }}>Privacy Policy</Link>.
+          <br /><Link href="/refund" style={{ textDecoration: "underline" }}>Refunds and cancellation</Link>
         </p>
       </div>
     </Screen>
