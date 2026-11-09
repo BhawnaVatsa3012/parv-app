@@ -82,6 +82,9 @@ export function rules(Y) {
   // --- Mahavir Jayanti (Jain): Chaitra Shukla Trayodashi (amanta Chaitra = 0, tithi 13) on the day it holds at
   // sunrise (udaya tithi); if it holds at no sunrise, the day it runs. ---
   out.mahavir = { mahavir: sunriseTithi(Y, 2, 20, 45, 0, 13) };
+  // --- Buddha Purnima (Buddhist): Vaishakha Purnima (amanta Vaishakha = 1, tithi 15) on the day Purnima holds at
+  // sunrise; if it holds at no sunrise, the day it runs. ---
+  out.buddha = { buddha: sunriseTithi(Y, 3, 25, 50, 1, 15) };
   // --- Holi (Phalguna = 11) ---
   // Holika Dahan: the first evening Purnima reaches Pradosh Kaal (in Bhadra
   // Puchha if Bhadra covers the evening). Holi (Dhulandi) is the day after.
