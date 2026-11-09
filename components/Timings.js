@@ -11,6 +11,7 @@ const KEY = {
   chhath: [["sandhya", "Sandhya Arghya — sunset", "sunset"], ["usha", "Usha Arghya — sunrise", "sunrise"]],
   shivratri: [["shivratri", "Nishita puja (just after midnight)", "nishita"]],
   janmashtami: [["janmashtami", "Nishita puja (just after midnight)", "nishita"]],
+  karvachauth: [["karva", "Moonrise (break the fast after the moon is seen)", "moonrise"]],
   ganesh: [["ganesh", "Ganesh puja — Madhyahna", "madhyahna"]],
   navratri: [["ghatasthapana", "Ghatasthapana — first third of the day", "pratah"], ["dashami", "Vijayadashami puja — Aparahna", "aparahna"]],
 };
@@ -62,6 +63,7 @@ export default function Timings({ festivalId, year, homeCityId, c }) {
             )}
             {key && key[2] === "nishita" && <span style={{ color: c.deep }}>{key[1]}: {fmtTime(new Date(p.sunset.getTime() + 7 * (p.nextSunrise - p.sunset) / 15), tz)} – {fmtTime(new Date(p.sunset.getTime() + 8 * (p.nextSunrise - p.sunset) / 15), tz)}</span>}
             {key && key[2] === "madhyahna" && <span style={{ color: c.deep }}>{key[1]}: {fmtTime(new Date(p.sunrise.getTime() + 2 * (p.sunset - p.sunrise) / 5), tz)} – {fmtTime(new Date(p.sunrise.getTime() + 3 * (p.sunset - p.sunrise) / 5), tz)}</span>}
+            {key && key[2] === "moonrise" && p.moonrise && <span style={{ color: c.deep }}>{key[1]}: {fmtTime(p.moonrise, tz)}</span>}
             {key && key[2] === "aparahna" && <span style={{ color: c.deep }}>{key[1]}: {fmtTime(new Date(p.sunrise.getTime() + 3 * (p.sunset - p.sunrise) / 5), tz)} – {fmtTime(new Date(p.sunrise.getTime() + 4 * (p.sunset - p.sunrise) / 5), tz)}</span>}
           </span>
         </div>

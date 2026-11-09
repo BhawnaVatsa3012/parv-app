@@ -8,27 +8,27 @@ import { feature } from "topojson-client";
 import { HI, UI, HUE } from "@/lib/design";
 import { Hi, useLang } from "@/components/ui/Lang";
 
-const FEST = { diwali: "Diwali", holi: "Holi", teej: "Teej", newyear: "New Year Cluster", sankranti: "Makar Sankranti", bhaidooj: "Bhai Dooj", chhath: "Chhath Puja", ganesh: "Ganesh Chaturthi", janmashtami: "Janmashtami", shivratri: "Maha Shivratri", rakshabandhan: "Raksha Bandhan", navratri: "Navratri & Dussehra" };
+const FEST = { diwali: "Diwali", holi: "Holi", teej: "Teej", newyear: "New Year Cluster", sankranti: "Makar Sankranti", bhaidooj: "Bhai Dooj", chhath: "Chhath Puja", ganesh: "Ganesh Chaturthi", janmashtami: "Janmashtami", shivratri: "Maha Shivratri", rakshabandhan: "Raksha Bandhan", karvachauth: "Karva Chauth", navratri: "Navratri & Dussehra" };
 
 // Where each regional story is set (from lib/data.js regions).
 const PLACES = [
   ["Ayodhya, Uttar Pradesh", 26.8, 82.2, [["diwali", "Uttar Pradesh"]]],
   ["Kolkata, West Bengal", 22.57, 88.36, [["rakshabandhan", "West Bengal (Tagore's rakhi)"], ["navratri", "West Bengal (Durga Puja)"], ["diwali", "Bengal"], ["bhaidooj", "West Bengal"], ["newyear", "West Bengal (Poila Boishakh)"]]],
   ["Chennai, Tamil Nadu", 13.08, 80.27, [["rakshabandhan", "Tamil Nadu & Karnataka (Avani Avittam)"], ["janmashtami", "Tamil Nadu (Gokulashtami)"], ["navratri", "Tamil Nadu (Golu)"], ["diwali", "Tamil Nadu"], ["newyear", "Tamil Nadu (Puthandu)"], ["sankranti", "Tamil Nadu (Pongal)"]]],
-  ["Ahmedabad, Gujarat", 23.02, 72.57, [["navratri", "Gujarat (Garba)"], ["diwali", "Gujarat"], ["sankranti", "Gujarat (Uttarayan)"]]],
+  ["Ahmedabad, Gujarat", 23.02, 72.57, [["karvachauth", "Gujarat & Maharashtra (a newer custom)"], ["navratri", "Gujarat (Garba)"], ["diwali", "Gujarat"], ["sankranti", "Gujarat (Uttarayan)"]]],
   ["Mumbai, Maharashtra", 19.08, 72.88, [["rakshabandhan", "Maharashtra (Narali Purnima)"], ["ganesh", "Maharashtra (Mumbai)"], ["janmashtami", "Maharashtra (Dahi Handi)"], ["chhath", "Delhi & Mumbai"], ["diwali", "Maharashtra"], ["bhaidooj", "Maharashtra"], ["newyear", "Maharashtra (Gudi Padwa)"], ["newyear", "Sindhi community (Cheti Chand)"], ["sankranti", "Maharashtra & Karnataka"]]],
   ["Barsana, Braj", 27.65, 77.38, [["holi", "Braj (Mathura)"]]],
   ["Shantiniketan, West Bengal", 23.68, 87.68, [["holi", "West Bengal"]]],
   ["Anandpur Sahib, Punjab", 31.24, 76.5, [["holi", "Punjab"]]],
   ["Imphal, Manipur", 24.82, 93.94, [["holi", "Manipur"]]],
   ["Ratnagiri, Konkan", 16.99, 73.3, [["holi", "Konkan (Maharashtra)"]]],
-  ["Jaipur, Rajasthan", 26.91, 75.79, [["rakshabandhan", "Rajasthan (Lumba & Karnavati)"], ["teej", "Rajasthan (Jaipur)"]]],
+  ["Jaipur, Rajasthan", 26.91, 75.79, [["karvachauth", "Rajasthan (Baya & mud karvas)"], ["rakshabandhan", "Rajasthan (Lumba & Karnavati)"], ["teej", "Rajasthan (Jaipur)"]]],
   ["Patna, Bihar", 25.59, 85.14, [["teej", "Uttar Pradesh & Bihar"], ["bhaidooj", "Uttar Pradesh & Bihar"]]],
   ["Bengaluru, Karnataka", 12.97, 77.59, [["rakshabandhan", "Tamil Nadu & Karnataka (Avani Avittam)"], ["newyear", "Karnataka, AP & Telangana (Ugadi)"]]],
-  ["Hyderabad, Telangana", 17.39, 78.49, [["ganesh", "Telangana (Khairatabad, Hyderabad)"], ["navratri", "Telangana (Bathukamma)"], ["sankranti", "Andhra Pradesh & Telangana"], ["bhaidooj", "South India"]]],
+  ["Hyderabad, Telangana", 17.39, 78.49, [["karvachauth", "Andhra Pradesh & Telangana (Atla Tadde)"], ["ganesh", "Telangana (Khairatabad, Hyderabad)"], ["navratri", "Telangana (Bathukamma)"], ["sankranti", "Andhra Pradesh & Telangana"], ["bhaidooj", "South India"]]],
   ["Thiruvananthapuram, Kerala", 8.52, 76.94, [["newyear", "Kerala (Vishu)"]]],
   ["Guwahati, Assam", 26.14, 91.74, [["newyear", "Assam (Rongali Bihu)"], ["sankranti", "Assam (Magh Bihu)"]]],
-  ["Amritsar, Punjab", 31.63, 74.87, [["newyear", "Punjab (Baisakhi)"], ["sankranti", "Punjab (Lohri)"]]],
+  ["Amritsar, Punjab", 31.63, 74.87, [["karvachauth", "Punjab & Haryana (Sargi)"], ["newyear", "Punjab (Baisakhi)"], ["sankranti", "Punjab (Lohri)"]]],
   ["Mysuru, Karnataka", 12.3, 76.64, [["navratri", "Karnataka (Mysuru Dasara)"]]],
   ["Kullu, Himachal Pradesh", 31.96, 77.11, [["navratri", "Himachal Pradesh (Kullu Dussehra)"]]],
   ["Ramnagar, Varanasi", 25.27, 83.03, [["navratri", "Uttar Pradesh (Ramlila & Ravan Dahan)"]]],
@@ -40,7 +40,7 @@ const PLACES = [
   ["Mathura & Vrindavan, Uttar Pradesh", 27.55, 77.65, [["janmashtami", "Uttar Pradesh (Mathura & Vrindavan)"]]],
   ["Dwarka, Gujarat", 22.24, 68.97, [["janmashtami", "Gujarat (Dwarka)"]]],
   ["Udupi, Karnataka", 13.34, 74.75, [["janmashtami", "Karnataka (Udupi)"]]],
-  ["Varanasi, Uttar Pradesh", 25.32, 82.97, [["shivratri", "Uttar Pradesh (Varanasi)"]]],
+  ["Varanasi, Uttar Pradesh", 25.32, 82.97, [["karvachauth", "Uttar Pradesh (Chauth Mata & the karwa)"], ["shivratri", "Uttar Pradesh (Varanasi)"]]],
   ["Ujjain, Madhya Pradesh", 23.18, 75.78, [["shivratri", "Madhya Pradesh (Ujjain)"]]],
   ["Srinagar, Kashmir", 34.08, 74.8, [["shivratri", "Jammu & Kashmir (Herath)"]]],
   ["Junagadh, Gujarat", 21.52, 70.46, [["shivratri", "Gujarat (Junagadh)"]]],

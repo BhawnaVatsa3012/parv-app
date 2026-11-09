@@ -163,6 +163,17 @@ export function rules(Y) {
     if (tithiAt(sunrise(next.y, next.m, next.d)) === 15) rakhi = next;
   }
   out.rakshabandhan = { purnima: shravanaPurnima, rakhi };
+  // --- Karva Chauth: Krishna Chaturthi of amanta Ashwin (6, = purnimanta Kartik), on the day
+  // Chaturthi (tithi 19) is present at moonrise; the first such night if two. If the moon rises on
+  // neither, the day Chaturthi holds at sunrise. ---
+  let karva = null;
+  for (const o of days(Y, 9, 1, 40)) {
+    const i = info(o); if (i.L.adhik || i.L.month !== 6) continue;
+    const mr = moonrise(o.y, o.m, o.d);
+    if (mr && tithiAt(mr) === 19) { karva = o; break; }
+  }
+  if (!karva) karva = sunriseTithi(Y, 9, 1, 40, 6, 19);
+  out.karvachauth = { karva };
   // --- Chhath: Sandhya Arghya on Kartika Shukla Shashthi by the sunrise rule
   // (2023: Shashthi began 18 Nov, Sandhya Arghya was 19 Nov). ---
   const sandhya = sunriseTithi(bhaidooj.y, bhaidooj.m, bhaidooj.d + 1, 8, 7, 6);
