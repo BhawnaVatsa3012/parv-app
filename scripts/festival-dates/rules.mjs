@@ -2,6 +2,7 @@
 // named dates of a festival for one Gregorian year, as {y, m, d}.
 import { DELHI as C, KOCHI, nakshatra, sidSun, phaseTime, sankranti, sunrise, sunset, moonrise, addDays, lunarMonth, minutesOf, tithiAt, tithiStart, tithiEnd, ymd } from "./astro.mjs";
 import { skippedTithi } from "./panchang.generated.mjs";
+import { expectedEidAlFitr } from "./hijri.mjs";
 
 const nextRise = (y, m, d) => sunrise(y, m, d + 1);
 const pradoshKaal = (o) => { const ss = sunset(o.y, o.m, o.d), nr = nextRise(o.y, o.m, o.d); return [ss, new Date(ss.getTime() + (nr - ss) / 5)]; };
@@ -87,6 +88,10 @@ export function rules(Y) {
   out.buddha = { buddha: sunriseTithi(Y, 3, 25, 50, 1, 15) };
   // --- Christmas (Christian): fixed on 25 December (Midnight Mass on the night of the 24th); no lunar rule. ---
   out.christmas = { eve: { y: Y, m: 11, d: 24 }, christmas: { y: Y, m: 11, d: 25 } };
+  // --- Eid al-Fitr (Muslim; Hijri moon): an EXPECTED date, 1 Shawwal in India, from a crescent-visibility test at
+  // New Delhi sunset (see hijri.mjs). The real day is set by moon sighting and can differ by a day by place. `eve`
+  // is Chand Raat, the evening the crescent is expected. ---
+  { const e = expectedEidAlFitr(Y); out.eid = { eve: e.eve, eid: e.eid }; }
   // --- Holi (Phalguna = 11) ---
   // Holika Dahan: the first evening Purnima reaches Pradosh Kaal (in Bhadra
   // Puchha if Bhadra covers the evening). Holi (Dhulandi) is the day after.

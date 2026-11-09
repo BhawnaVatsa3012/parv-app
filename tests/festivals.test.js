@@ -8,7 +8,7 @@ import { HI, HUE } from "@/lib/design";
 
 const COMMUNITIES = ["Hindu", "Sikh", "Jain", "Buddhist", "Christian", "Muslim"];
 // One free story per community (a label only: nothing reads freeStory yet).
-const FREE = ["diwali", "vaisakhi", "mahavir", "buddha", "christmas"];
+const FREE = ["diwali", "vaisakhi", "mahavir", "buddha", "christmas", "eid"];
 // Older entries with short stories or a region left unmapped; held to the looser checks only.
 const LEGACY = new Set(["bhaidooj", "teej", "newyear"]);
 
@@ -50,6 +50,17 @@ describe("festival library", () => {
 
   it("keeps the generated dates for Buddha Purnima", () => {
     expect(Object.fromEntries(Object.entries(FESTIVAL_DATES.buddha).map(([y, v]) => [y, v.buddha]))).toEqual({ 2026: "5-1", 2027: "5-20", 2028: "5-8", 2029: "5-27", 2030: "5-17" });
+  });
+
+  it("keeps the expected dates for Eid al-Fitr (1 Shawwal in India)", () => {
+    expect(Object.fromEntries(Object.entries(FESTIVAL_DATES.eid).map(([y, v]) => [y, v.eid]))).toEqual({ 2026: "3-21", 2027: "3-10", 2028: "2-27", 2029: "2-15", 2030: "2-5" });
+    expect(Object.fromEntries(Object.entries(FESTIVAL_DATES.eid).map(([y, v]) => [y, v.eve]))).toEqual({ 2026: "3-20", 2027: "3-9", 2028: "2-26", 2029: "2-14", 2030: "2-4" });
+  });
+
+  it("labels Eid as expected, with its Hijri date", () => {
+    const o = occurrence("eid", 2027);
+    expect(o.label).toBe("Expected Mar 10, 2027");
+    expect(o.hijri).toBe("1 Shawwal 1448 AH");
   });
 
   it("keeps Christmas on 24 and 25 December", () => {

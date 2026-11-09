@@ -92,6 +92,25 @@ Lancaster, California), and put any close calls in `OVERRIDES` with the reason.
 - Christmas (Christian): fixed civil date, 25 December every year, with Christmas Eve (Midnight Mass) on 24 December;
   no lunar rule, so no source disagreement for the date. Churches that follow the Julian calendar (some Orthodox
   churches) keep 7 January; the app's note says to check with your own church.
+- Eid al-Fitr (Muslim; Hijri moon): an EXPECTED date for 1 Shawwal in India, never a promise. India keeps the day after
+  the Shawwal crescent is sighted (Markazi Ruyat-e-Hilal committees at Jama Masjid, Delhi and Mumbai, and local
+  committees; Kerala's Qazis and Samastha sight separately), and has usually kept Eid a day after Saudi Arabia, which
+  goes by calculation. Rule (hijri.mjs, a new rule type): the tabular Islamic calendar picks which new moon belongs
+  to the year; then, for each evening from the day of the astronomical new moon, the crescent is tested at New Delhi
+  sunset with Odeh's naked-eye criterion (V >= 5.65, from the Moon-Sun altitude difference and the crescent width);
+  Eid is the day after the first evening that passes (`eve` = that evening, Chand Raat). Result 2026-2030: 21 Mar 2026,
+  10 Mar 2027, 27 Feb 2028, 15 Feb 2029, 5 Feb 2030 (Hijri 1 Shawwal 1447-1451). The app labels the date
+  "Expected ..." and shows the Hijri date and a note. Checks: the rule gives the Indian day for every year it was
+  tried against reports (2024: 11 Apr, Delhi's Jama Masjid reported no sighting on 9 Apr; Kerala, Kashmir and Ladakh reported
+  sighting and kept 10 Apr; 2025: 31 Mar; 2026: 21 Mar, Delhi and Mumbai not sighted on 19 Mar, Kerala sighted at
+  Chettippadi and kept 20 Mar). For 2028-2029 Drik Panchang (New Delhi) gives 27 Feb 2028 and calendardate gives
+  15 Feb 2029, which agree. Saudi-style calendars (time.now: 9 Mar 2027, 26 Feb 2028, 14 Feb 2029, 4 Feb 2030;
+  OfficeHolidays gives 9 Mar 2027 for most Indian states and 10 Mar for Punjab and Telangana) are one day earlier,
+  as in 2026 (Saudi 20 Mar, India 21 Mar); on 8 Mar 2027 the Moon is only about 3.5 hours old at Delhi sunset, so
+  no Indian committee can sight it and 10 Mar is the expectation, but the page says the date may differ.
+  Close calls to watch: 2028 (V = 5.7 on 26 Feb, just over the line: Eid could be 28 Feb if not sighted) and 2030
+  (V = 4.6 on 3 Feb, about the same as 9 Apr 2024 when Kerala and Kashmir reported a sighting: Eid could be 4 Feb
+  in some places). Re-check every year once the moon-sighting committees announce.
 - Janmashtami: Krishna Paksha Ashtami (amanta Shravana) on the day it overlaps Nishita Kaal (8th muhurta of
   the night) most; if it touches none (2026: Ashtami ends 12:14 am), the day it holds at sunrise. The date is
   the day the vigil starts; the midnight puja is just after midnight, so sites that date by the midnight
