@@ -10,7 +10,7 @@ export default async function AccountPage() {
   const user = await getUser();
   if (!user) redirect("/login");
   const [subscription, profile] = await Promise.all([getSubscription(user.id), getProfile(user)]);
-  const country = headers().get("x-vercel-ip-country") || "";
+  const country = (await headers()).get("x-vercel-ip-country") || "";
   const detectedRegion = country === "IN" || !country ? "india" : "international";
   return <AccountClient email={user.email} subscription={subscription} detectedRegion={detectedRegion} profile={profile} />;
 }

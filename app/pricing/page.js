@@ -5,8 +5,9 @@ import PricingClient from "./PricingClient";
 
 export const dynamic = "force-dynamic";
 
-export default async function PricingPage({ searchParams }) {
-  const country = headers().get("x-vercel-ip-country") || "";
+export default async function PricingPage(props) {
+  const searchParams = await props.searchParams;
+  const country = (await headers()).get("x-vercel-ip-country") || "";
   const detectedRegion = country === "IN" || !country ? "india" : "international";
   const user = await getUser();
   const member = await isEntitledToRituals();

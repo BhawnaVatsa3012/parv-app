@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 // Refreshes the Supabase auth session cookie on every request that isn't
 // a static asset. Critical: if this throws (e.g. env vars unset), the
 // whole site — including the free Stories pages — must NOT go down.
-export async function middleware(request) {
+export async function proxy(request) {
   let response = NextResponse.next({ request: { headers: request.headers } });
 
   try {
