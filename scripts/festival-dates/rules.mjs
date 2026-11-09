@@ -85,6 +85,8 @@ export function rules(Y) {
   // --- Buddha Purnima (Buddhist): Vaishakha Purnima (amanta Vaishakha = 1, tithi 15) on the day Purnima holds at
   // sunrise; if it holds at no sunrise, the day it runs. ---
   out.buddha = { buddha: sunriseTithi(Y, 3, 25, 50, 1, 15) };
+  // --- Christmas (Christian): fixed on 25 December (Midnight Mass on the night of the 24th); no lunar rule. ---
+  out.christmas = { eve: { y: Y, m: 11, d: 24 }, christmas: { y: Y, m: 11, d: 25 } };
   // --- Holi (Phalguna = 11) ---
   // Holika Dahan: the first evening Purnima reaches Pradosh Kaal (in Bhadra
   // Puchha if Bhadra covers the evening). Holi (Dhulandi) is the day after.
