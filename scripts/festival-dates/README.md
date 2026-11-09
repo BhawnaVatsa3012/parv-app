@@ -28,6 +28,12 @@ Lancaster, California), and put any close calls in `OVERRIDES` with the reason.
   Chaturthi also in publicholidays.in (2026–28), Temples in India Info and muhuratam.in (2029) and
   Calendardate/Hindusphere (2028, 2030); Anant Chaturdashi 2026–2030 against Dekho Panchang (Delhi).
   Calendardate lists 12 Sep for 2029 (no city given); every India source with a city says 11 Sep.
+- Janmashtami: Krishna Paksha Ashtami (amanta Shravana) on the day it overlaps Nishita Kaal (8th muhurta of
+  the night) most; if it touches none (2026: Ashtami ends 12:14 am), the day it holds at sunrise. The date is
+  the day the vigil starts; the midnight puja is just after midnight, so sites that date by the midnight
+  (Calendardate, Temples in India Info for 2027) show the next day. Dahi Handi = the next day.
+  Checked 2026–2030 against Dekho Panchang (Delhi), Wikipedia (2026), muhuratam.in (2028). Some temples
+  (Banke Bihari) keep the day Ashtami holds at sunrise, which can be a day later; not in the calendar.
 - Chhath: Kartik Shukla Shashthi at sunrise (2023: Sandhya Arghya 19 Nov).
 - Teej: Shravana / Bhadrapada Shukla Tritiya at sunrise.
 - Sharad Navratri: Ghatasthapana = Ashwin Shukla Pratipada at sunrise (or the kshaya day: 30 Sep 2027);

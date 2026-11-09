@@ -137,6 +137,14 @@ export function rules(Y) {
   const govardhan = sunriseTithi(lakshmi.y, lakshmi.m, lakshmi.d + 1, 3, 7, 1);
   const bhaidooj = bestOverlap(govardhan.y, govardhan.m, govardhan.d, 3, 7, [2], (o) => fifth(o, 3)); // aparahna
   out.diwali = { dhanteras, naraka, lakshmi, kali, govardhan, bhaidooj };
+  // --- Janmashtami: Krishna Paksha Ashtami of amanta Shravana (4), kept on the day Ashtami
+  // overlaps Nishita Kaal (the 8th muhurta of the night) most; the date is the day the
+  // vigil starts, so the midnight puja falls just after midnight into the next calendar day.
+  // If Ashtami touches no Nishita it is the day it holds at sunrise (2026: Ashtami ends 12:14 am).
+  const nishita = (o) => { const ss = sunset(o.y, o.m, o.d), N = nextRise(o.y, o.m, o.d) - ss; return [new Date(ss.getTime() + (N * 7) / 15), new Date(ss.getTime() + (N * 8) / 15)]; };
+  const janmashtami = bestOverlap(Y, 7, 1, 45, 4, [23], nishita) || sunriseTithi(Y, 7, 1, 45, 4, 23);
+  // Dahi Handi / Gopalkala is the day after.
+  out.janmashtami = { janmashtami, dahihandi: addDays(janmashtami, 1) };
   // --- Chhath: Sandhya Arghya on Kartika Shukla Shashthi by the sunrise rule
   // (2023: Shashthi began 18 Nov, Sandhya Arghya was 19 Nov). ---
   const sandhya = sunriseTithi(bhaidooj.y, bhaidooj.m, bhaidooj.d + 1, 8, 7, 6);
