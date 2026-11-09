@@ -1,6 +1,6 @@
 // Festival date rules (computed for New Delhi, IST). Each rule returns the
 // named dates of a festival for one Gregorian year, as {y, m, d}.
-import { DELHI as C, sankranti, sunrise, sunset, moonrise, addDays, lunarMonth, minutesOf, tithiAt, tithiStart, tithiEnd, ymd } from "./astro.mjs";
+import { DELHI as C, phaseTime, sankranti, sunrise, sunset, moonrise, addDays, lunarMonth, minutesOf, tithiAt, tithiStart, tithiEnd, ymd } from "./astro.mjs";
 import { skippedTithi } from "./panchang.generated.mjs";
 
 const nextRise = (y, m, d) => sunrise(y, m, d + 1);
@@ -149,6 +149,20 @@ export function rules(Y) {
   // calendars), on the day it overlaps Nishita Kaal most; the vigil begins that evening.
   const shivratri = bestOverlap(Y, 1, 5, 45, 10, [29], nishita) || sunriseTithi(Y, 1, 5, 45, 10, 29);
   out.shivratri = { shivratri };
+  // --- Raksha Bandhan: Purnima of amanta Shravana (4), tied in Aparahna (the fourth fifth of
+  // daytime) and not in Bhadra (the Vishti karana, the first half of Purnima, ending when the
+  // Moon is 174 degrees ahead of the Sun). If Bhadra covers all of that Aparahna, the next
+  // day if Purnima is still there at its sunrise (2026: Purnima 27 Aug 9:09 am to 28 Aug 9:49 am).
+  const shravanaPurnima = bestOverlap(Y, 6, 15, 60, 4, [15], (o) => fifth(o, 3));
+  const [ap0, ap1] = fifth(shravanaPurnima, 3);
+  const from = new Date(ap0.getTime() - 40 * 36e5);
+  const bhadraEnd = phaseTime(174, from), purnimaEnd = phaseTime(180, from);
+  let rakhi = shravanaPurnima;
+  if (Math.min(purnimaEnd, ap1) - Math.max(bhadraEnd, ap0) <= 0) {
+    const next = addDays(shravanaPurnima, 1);
+    if (tithiAt(sunrise(next.y, next.m, next.d)) === 15) rakhi = next;
+  }
+  out.rakshabandhan = { purnima: shravanaPurnima, rakhi };
   // --- Chhath: Sandhya Arghya on Kartika Shukla Shashthi by the sunrise rule
   // (2023: Shashthi began 18 Nov, Sandhya Arghya was 19 Nov). ---
   const sandhya = sunriseTithi(bhaidooj.y, bhaidooj.m, bhaidooj.d + 1, 8, 7, 6);

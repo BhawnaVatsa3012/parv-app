@@ -20,6 +20,8 @@ export const rs = (c, body, dir, t) => { const r = A.SearchRiseSet(body, obs(c),
 export const sunrise = (y, m, d, c = DELHI) => rs(c, A.Body.Sun, +1, zonedMidnight(y, m, d, c.tz));
 export const sunset = (y, m, d, c = DELHI) => rs(c, A.Body.Sun, -1, sunrise(y, m, d, c));
 export const moonrise = (y, m, d, c = DELHI) => rs(c, A.Body.Moon, +1, zonedMidnight(y, m, d, c.tz));
+// Moment (after `from`, within `limitDays`) the Moon is `deg` degrees ahead of the Sun.
+export const phaseTime = (deg, from, limitDays = 3) => A.SearchMoonPhase(deg, from, limitDays)?.date;
 export const ymd = (t, c = DELHI) => zonedYMD(t, c.tz);
 export const addDays = ({ y, m, d }, n) => { const t = new Date(Date.UTC(y, m, d + n)); return { y: t.getUTCFullYear(), m: t.getUTCMonth(), d: t.getUTCDate() }; };
 // amanta month (0 = Chaitra … 11 = Phalguna) and adhik flag for an instant
