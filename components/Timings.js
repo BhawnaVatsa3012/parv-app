@@ -11,6 +11,7 @@ const KEY = {
   chhath: [["sandhya", "Sandhya Arghya — sunset", "sunset"], ["usha", "Usha Arghya — sunrise", "sunrise"]],
   shivratri: [["shivratri", "Nishita puja (just after midnight)", "nishita"]],
   janmashtami: [["janmashtami", "Nishita puja (just after midnight)", "nishita"]],
+  pongal: [["pongal", "Sankranti day: cook the pot after sunrise", "sunrise"]],
   onam: [["thiruvonam", "Thiruvonam puja: Madhyahna", "madhyahna"]],
   karvachauth: [["karva", "Moonrise (break the fast after the moon is seen)", "moonrise"]],
   ganesh: [["ganesh", "Ganesh puja — Madhyahna", "madhyahna"]],

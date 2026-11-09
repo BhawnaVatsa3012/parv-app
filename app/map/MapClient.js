@@ -8,13 +8,13 @@ import { feature } from "topojson-client";
 import { HI, UI, HUE } from "@/lib/design";
 import { Hi, useLang } from "@/components/ui/Lang";
 
-const FEST = { diwali: "Diwali", holi: "Holi", teej: "Teej", newyear: "New Year Cluster", sankranti: "Makar Sankranti", bhaidooj: "Bhai Dooj", chhath: "Chhath Puja", ganesh: "Ganesh Chaturthi", janmashtami: "Janmashtami", shivratri: "Maha Shivratri", rakshabandhan: "Raksha Bandhan", karvachauth: "Karva Chauth", onam: "Onam", navratri: "Navratri & Dussehra" };
+const FEST = { diwali: "Diwali", holi: "Holi", teej: "Teej", newyear: "New Year Cluster", sankranti: "Makar Sankranti", bhaidooj: "Bhai Dooj", chhath: "Chhath Puja", ganesh: "Ganesh Chaturthi", janmashtami: "Janmashtami", shivratri: "Maha Shivratri", rakshabandhan: "Raksha Bandhan", karvachauth: "Karva Chauth", onam: "Onam", pongal: "Pongal", navratri: "Navratri & Dussehra" };
 
 // Where each regional story is set (from lib/data.js regions).
 const PLACES = [
   ["Ayodhya, Uttar Pradesh", 26.8, 82.2, [["diwali", "Uttar Pradesh"]]],
   ["Kolkata, West Bengal", 22.57, 88.36, [["rakshabandhan", "West Bengal (Tagore's rakhi)"], ["navratri", "West Bengal (Durga Puja)"], ["diwali", "Bengal"], ["bhaidooj", "West Bengal"], ["newyear", "West Bengal (Poila Boishakh)"]]],
-  ["Chennai, Tamil Nadu", 13.08, 80.27, [["rakshabandhan", "Tamil Nadu & Karnataka (Avani Avittam)"], ["janmashtami", "Tamil Nadu (Gokulashtami)"], ["navratri", "Tamil Nadu (Golu)"], ["diwali", "Tamil Nadu"], ["newyear", "Tamil Nadu (Puthandu)"], ["sankranti", "Tamil Nadu (Pongal)"]]],
+  ["Chennai, Tamil Nadu", 13.08, 80.27, [["pongal", "Tamil Nadu (Thai Pongal)"], ["rakshabandhan", "Tamil Nadu & Karnataka (Avani Avittam)"], ["janmashtami", "Tamil Nadu (Gokulashtami)"], ["navratri", "Tamil Nadu (Golu)"], ["diwali", "Tamil Nadu"], ["newyear", "Tamil Nadu (Puthandu)"], ["sankranti", "Tamil Nadu (Pongal)"]]],
   ["Ahmedabad, Gujarat", 23.02, 72.57, [["karvachauth", "Gujarat & Maharashtra (a newer custom)"], ["navratri", "Gujarat (Garba)"], ["diwali", "Gujarat"], ["sankranti", "Gujarat (Uttarayan)"]]],
   ["Mumbai, Maharashtra", 19.08, 72.88, [["rakshabandhan", "Maharashtra (Narali Purnima)"], ["ganesh", "Maharashtra (Mumbai)"], ["janmashtami", "Maharashtra (Dahi Handi)"], ["chhath", "Delhi & Mumbai"], ["diwali", "Maharashtra"], ["bhaidooj", "Maharashtra"], ["newyear", "Maharashtra (Gudi Padwa)"], ["newyear", "Sindhi community (Cheti Chand)"], ["sankranti", "Maharashtra & Karnataka"]]],
   ["Barsana, Braj", 27.65, 77.38, [["holi", "Braj (Mathura)"]]],
@@ -51,6 +51,7 @@ const PLACES = [
   ["Tiruvannamalai, Tamil Nadu", 12.23, 79.07, [["shivratri", "Tamil Nadu (Tiruvannamalai & Chidambaram)"]]],
   ["Chidambaram, Tamil Nadu", 11.4, 79.69, [["shivratri", "Tamil Nadu (Tiruvannamalai & Chidambaram)"]]],
   ["Puri, Odisha", 19.81, 85.83, [["rakshabandhan", "Odisha (Gamha Purnima)"]]],
+  ["Madurai, Tamil Nadu", 9.93, 78.12, [["pongal", "Madurai (Jallikattu)"]]],
   ["Pune, Maharashtra", 18.52, 73.86, [["ganesh", "Maharashtra (Pune)"]]],
   ["Panaji, Goa", 15.5, 73.83, [["ganesh", "Goa (Chavath)"]]],
   ["Pillaiyarpatti, Tamil Nadu", 10.1, 78.7, [["ganesh", "Tamil Nadu (Pillaiyarpatti)"]]],
