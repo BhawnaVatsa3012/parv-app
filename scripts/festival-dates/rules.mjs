@@ -63,6 +63,9 @@ export function rules(Y) {
     meji: mk.bengal,
     poush: mk.civil,
   };
+  // --- Pongal (Tamil): the Tamil month Thai begins on the Makar Sankranti day (Drik rule: before sunset,
+  // same day, else next). Four days: Bhogi, Thai Pongal, Mattu Pongal, Kaanum Pongal. ---
+  out.pongal = { bhogi: addDays(mk.drik, -1), pongal: mk.drik, mattu: addDays(mk.drik, 1), kaanum: addDays(mk.drik, 2) };
   // --- New Year cluster ---
   const padwa = sunriseTithi(Y, 2, 1, 60, 0, 1);
   const ms = solar(0, new Date(Date.UTC(Y, 2, 25)));

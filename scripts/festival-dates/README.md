@@ -28,6 +28,14 @@ Lancaster, California), and put any close calls in `OVERRIDES` with the reason.
   Chaturthi also in publicholidays.in (2026–28), Temples in India Info and muhuratam.in (2029) and
   Calendardate/Hindusphere (2028, 2030); Anant Chaturdashi 2026–2030 against Dekho Panchang (Delhi).
   Calendardate lists 12 Sep for 2029 (no city given); every India source with a city says 11 Sep.
+- Pongal: the Tamil month Thai begins on the Makar Sankranti day (Drik rule, same as Puthandu: before sunset
+  that day, else the next day); Bhogi is the day before, Mattu Pongal and Kaanum Pongal the 1st and 2nd day
+  after. Thai Pongal 2026–2030 is 14 Jan 2026, 15 Jan 2027, 15 Jan 2028, 14 Jan 2029, 14 Jan 2030: matches
+  Temples in India Info (all five, with the Sankranti moments), Drik Panchang (New Delhi; 2030), Free Press
+  Journal (2026 dates for all four days), publicholidays.in (2027, 2028) and officeholidays (2027).
+  2026 is disputed: publicholidays.in and officeholidays show the Tamil Nadu holiday on 15 Jan 2026, and the
+  Sri Lankan report (Newsonair) calls 15 Jan the main day, because Makar Sankranti was at 3:13 pm on 14 Jan
+  by Drik and a Tamil Vakya panchangam can place it after sunset. Not overridden; 2026 has passed.
 - Onam: Thiruvonam is the day the Moon is in Shravana (nakshatra 22, Lahiri) at midday (Madhyahna), for a
   Kochi observer, while the sidereal Sun is in Simha (Chingam, 120 to 150 degrees). Uthradom is the day before,
   Avittam and Chathayam the 1st and 2nd day after. Atham is the Hasta (13) sunrise day 8 to 11 days earlier;
