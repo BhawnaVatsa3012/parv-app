@@ -8,14 +8,14 @@ import { feature } from "topojson-client";
 import { HI, UI, HUE } from "@/lib/design";
 import { Hi, useLang } from "@/components/ui/Lang";
 
-const FEST = { diwali: "Diwali", holi: "Holi", teej: "Teej", newyear: "New Year Cluster", sankranti: "Makar Sankranti", bhaidooj: "Bhai Dooj", chhath: "Chhath Puja", ganesh: "Ganesh Chaturthi", janmashtami: "Janmashtami", shivratri: "Maha Shivratri", vaisakhi: "Vaisakhi", rakshabandhan: "Raksha Bandhan", karvachauth: "Karva Chauth", onam: "Onam", pongal: "Pongal", navratri: "Navratri & Dussehra" };
+const FEST = { diwali: "Diwali", holi: "Holi", teej: "Teej", newyear: "New Year Cluster", sankranti: "Makar Sankranti", bhaidooj: "Bhai Dooj", chhath: "Chhath Puja", ganesh: "Ganesh Chaturthi", janmashtami: "Janmashtami", shivratri: "Maha Shivratri", vaisakhi: "Vaisakhi", mahavir: "Mahavir Jayanti", rakshabandhan: "Raksha Bandhan", karvachauth: "Karva Chauth", onam: "Onam", pongal: "Pongal", navratri: "Navratri & Dussehra" };
 
 // Where each regional story is set (from lib/data.js regions).
 const PLACES = [
   ["Ayodhya, Uttar Pradesh", 26.8, 82.2, [["diwali", "Uttar Pradesh"]]],
   ["Kolkata, West Bengal", 22.57, 88.36, [["rakshabandhan", "West Bengal (Tagore's rakhi)"], ["navratri", "West Bengal (Durga Puja)"], ["diwali", "Bengal"], ["bhaidooj", "West Bengal"], ["newyear", "West Bengal (Poila Boishakh)"]]],
   ["Chennai, Tamil Nadu", 13.08, 80.27, [["pongal", "Tamil Nadu (Thai Pongal)"], ["rakshabandhan", "Tamil Nadu & Karnataka (Avani Avittam)"], ["janmashtami", "Tamil Nadu (Gokulashtami)"], ["navratri", "Tamil Nadu (Golu)"], ["diwali", "Tamil Nadu"], ["newyear", "Tamil Nadu (Puthandu)"], ["sankranti", "Tamil Nadu (Pongal)"]]],
-  ["Ahmedabad, Gujarat", 23.02, 72.57, [["karvachauth", "Gujarat & Maharashtra (a newer custom)"], ["navratri", "Gujarat (Garba)"], ["diwali", "Gujarat"], ["sankranti", "Gujarat (Uttarayan)"]]],
+  ["Ahmedabad, Gujarat", 23.02, 72.57, [["karvachauth", "Gujarat & Maharashtra (a newer custom)"], ["navratri", "Gujarat (Garba)"], ["diwali", "Gujarat"], ["sankranti", "Gujarat (Uttarayan)"], ["mahavir", "Gujarat (Ahmedabad & Palitana)"]]],
   ["Mumbai, Maharashtra", 19.08, 72.88, [["rakshabandhan", "Maharashtra (Narali Purnima)"], ["ganesh", "Maharashtra (Mumbai)"], ["janmashtami", "Maharashtra (Dahi Handi)"], ["chhath", "Delhi & Mumbai"], ["diwali", "Maharashtra"], ["bhaidooj", "Maharashtra"], ["newyear", "Maharashtra (Gudi Padwa)"], ["newyear", "Sindhi community (Cheti Chand)"], ["sankranti", "Maharashtra & Karnataka"]]],
   ["Barsana, Braj", 27.65, 77.38, [["holi", "Braj (Mathura)"]]],
   ["Shantiniketan, West Bengal", 23.68, 87.68, [["holi", "West Bengal"]]],
@@ -52,6 +52,11 @@ const PLACES = [
   ["Hasan Abdal, Pakistan", 33.82, 72.69, [["vaisakhi", "Pakistan (Nankana Sahib & Hasan Abdal)"]]],
   ["Nankana Sahib, Pakistan", 31.45, 73.71, [["vaisakhi", "Pakistan (Nankana Sahib & Hasan Abdal)"]]],
   ["Surrey, British Columbia", 49.19, -122.85, [["vaisakhi", "Diaspora (Surrey, Canada & the UK)"]]],
+  ["Kundalpur, Bihar", 25.08, 85.43, [["mahavir", "Bihar (Kundalpur, Vaishali & Pawapuri)"]]],
+  ["Pawapuri, Bihar", 25.1, 85.53, [["mahavir", "Bihar (Kundalpur, Vaishali & Pawapuri)"]]],
+  ["Shri Mahaveerji, Rajasthan", 26.8, 77.0, [["mahavir", "Rajasthan (Shri Mahaveerji)"]]],
+  ["Palitana, Gujarat", 21.52, 71.82, [["mahavir", "Gujarat (Ahmedabad & Palitana)"]]],
+  ["Jabalpur, Madhya Pradesh", 23.18, 79.95, [["mahavir", "Madhya Pradesh (Jabalpur)"]]],
   ["Varanasi, Uttar Pradesh", 25.32, 82.97, [["karvachauth", "Uttar Pradesh (Chauth Mata & the karwa)"], ["shivratri", "Uttar Pradesh (Varanasi)"]]],
   ["Ujjain, Madhya Pradesh", 23.18, 75.78, [["shivratri", "Madhya Pradesh (Ujjain)"]]],
   ["Srinagar, Kashmir", 34.08, 74.8, [["shivratri", "Jammu & Kashmir (Herath)"]]],
@@ -60,7 +65,7 @@ const PLACES = [
   ["Chidambaram, Tamil Nadu", 11.4, 79.69, [["shivratri", "Tamil Nadu (Tiruvannamalai & Chidambaram)"]]],
   ["Puri, Odisha", 19.81, 85.83, [["rakshabandhan", "Odisha (Gamha Purnima)"]]],
   ["Madurai, Tamil Nadu", 9.93, 78.12, [["pongal", "Madurai (Jallikattu)"]]],
-  ["Pune, Maharashtra", 18.52, 73.86, [["ganesh", "Maharashtra (Pune)"]]],
+  ["Pune, Maharashtra", 18.52, 73.86, [["ganesh", "Maharashtra (Pune)"], ["mahavir", "Maharashtra (Pune)"]]],
   ["Panaji, Goa", 15.5, 73.83, [["ganesh", "Goa (Chavath)"]]],
   ["Pillaiyarpatti, Tamil Nadu", 10.1, 78.7, [["ganesh", "Tamil Nadu (Pillaiyarpatti)"]]],
   ["Sagar Island, West Bengal", 21.65, 88.08, [["sankranti", "West Bengal & Odisha"]]],

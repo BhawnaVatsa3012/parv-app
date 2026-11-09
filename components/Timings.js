@@ -23,6 +23,7 @@ const NO_TITHI = new Set(["vaisakhi"]);
 
 // A short note under a festival's timings, where the date needs explaining.
 const NOTE = {
+  mahavir: "Jains keep the day on which Chaitra Shukla Trayodashi holds at sunrise. Calendars can differ by a day in a year when the tithi begins and ends close to sunrise; your temple or sangh will announce the day.",
   vaisakhi: "Vaisakhi follows the sun's entry into Mesha (Aries), not the moon. Sikh institutions announce the day: it is 13 or 14 April, and in some years Punjab has kept the 13th when the Delhi calculation gives the 14th.",
 };
 

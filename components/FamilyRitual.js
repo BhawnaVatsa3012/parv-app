@@ -133,7 +133,7 @@ export default function FamilyRitual({ festivalId, ritualIndex, rt, c, notes: in
           <div style={{ textAlign: "center", padding: "16px 8px", borderTop: `1px solid ${c.base}`, borderBottom: `1px solid ${c.base}`, background: c.tint, display: "flex", flexDirection: "column", gap: 6 }}>
             {rt.mantra.sanskrit && (
               // The text in its own script. lang picks the font: "sa" (default, Devanagari), "pa" (Gurmukhi), "ar" (Arabic, right to left).
-              <div className={SCRIPT_FONT[rt.mantra.lang || "sa"]} lang={rt.mantra.lang || "sa"} dir={rt.mantra.lang === "ar" ? "rtl" : undefined} style={{ fontSize: 20, lineHeight: 1.6 }}>{rt.mantra.sanskrit}</div>
+              <div className={SCRIPT_FONT[rt.mantra.lang || "sa"]} lang={rt.mantra.lang || "sa"} dir={rt.mantra.lang === "ar" ? "rtl" : undefined} style={{ fontSize: 20, lineHeight: 1.6, whiteSpace: "pre-line" }}>{rt.mantra.sanskrit}</div>
             )}
             <div style={{ fontSize: 14, fontStyle: "italic", color: c.deep }}>{rt.mantra.translit}</div>
             <div style={{ fontSize: 12.5, lineHeight: 1.5, color: "var(--color-neutral-700)" }}>{rt.mantra.meaning}</div>
