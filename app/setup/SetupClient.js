@@ -6,9 +6,11 @@ import Screen from "@/components/ui/Screen";
 import { Bunting } from "@/components/ui/Decor";
 import { Hi } from "@/components/ui/Lang";
 import CityPicker from "@/components/CityPicker";
+import CalendarChoice from "@/components/CalendarChoice";
+import { TRADITIONS, TRADITION_NOTE, defaultLayersFor, effectiveLayers } from "@/lib/layers";
 
-// One-time setup after first sign-in: name and city (step I),
-// then optional family details (step II).
+// One-time setup after first sign-in: name and city (step I), which calendars
+// to show (step II), then optional family details (step III).
 export default function SetupClient({ email, profile }) {
   const router = useRouter();
   const [step, setStep] = useState(profile?.city_id ? 1 : 0);
@@ -16,6 +18,9 @@ export default function SetupClient({ email, profile }) {
   const [city, setCity] = useState(profile?.city_id || "");
   const [community, setCommunity] = useState(profile?.community || "");
   const [languages, setLanguages] = useState(profile?.languages || "");
+  // The tradition only picks the starting calendars; it is not saved.
+  const [tradition, setTradition] = useState("");
+  const [layers, setLayers] = useState(effectiveLayers(profile?.calendar_layers));
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState("");
 
@@ -46,7 +51,27 @@ export default function SetupClient({ email, profile }) {
       go: () => (!city ? setErr("Pick your city to continue") : save({ name, city_id: city }, () => setStep(1))),
     },
     {
-      num: "II", title: "Your family's way", hi: "आपके परिवार की परंपरा",
+      num: "II", title: "Your calendars", hi: "आपके पंचांग",
+      body: "Parv lists festivals of every tradition. Choose which calendars you also want day by day. Pick your tradition for a starting point, then change anything you like. You can change this later in Profile.",
+      form: (
+        <>
+          <div className="field">
+            <label htmlFor="tradition">I follow</label>
+            <select id="tradition" className="input" value={tradition} style={{ minHeight: 44, fontSize: 15 }}
+              onChange={(e) => { setTradition(e.target.value); if (e.target.value) setLayers(defaultLayersFor(e.target.value)); }}>
+              <option value="">Choose, to set a starting point</option>
+              {TRADITIONS.map((t) => <option key={t.id} value={t.id}>{t.label}</option>)}
+            </select>
+            {TRADITION_NOTE[tradition] && <p style={{ margin: "6px 0 0", fontSize: 12, lineHeight: 1.5, color: "var(--color-neutral-700)" }}>{TRADITION_NOTE[tradition]}</p>}
+          </div>
+          <CalendarChoice value={layers} onChange={setLayers} idPrefix="setup-cal" />
+        </>
+      ),
+      cta: "Continue",
+      go: () => save({ calendar_layers: layers }, () => setStep(2)),
+    },
+    {
+      num: "III", title: "Your family's way", hi: "आपके परिवार की परंपरा",
       body: "Optional. Every family celebrates a little differently. Tell us your tradition and Parv can adapt rituals to match — you approve every change. You can delete this any time from Profile.",
       form: (
         <>
@@ -72,8 +97,8 @@ export default function SetupClient({ email, profile }) {
       <div style={{ paddingTop: "env(safe-area-inset-top)" }}><Bunting /></div>
       <div style={{ minHeight: "calc(100dvh - 14px)", display: "flex", flexDirection: "column", padding: "18px 24px 28px" }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-          <div style={{ display: "flex", gap: 6 }} aria-label={`Step ${step + 1} of 2`}>
-            {[0, 1].map((i) => <span key={i} style={{ width: 26, height: 2, background: i <= step ? "var(--color-accent)" : "var(--color-neutral-300)" }} />)}
+          <div style={{ display: "flex", gap: 6 }} aria-label={`Step ${step + 1} of 3`}>
+            {[0, 1, 2].map((i) => <span key={i} style={{ width: 26, height: 2, background: i <= step ? "var(--color-accent)" : "var(--color-neutral-300)" }} />)}
           </div>
           {s.skip && <button className="btn btn-ghost" onClick={s.skip}>Skip</button>}
         </div>

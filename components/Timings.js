@@ -67,7 +67,7 @@ export default function Timings({ festivalId, year, homeCityId, c }) {
             {new Date(Date.UTC(y, m, d, 12)).toLocaleDateString("en-GB", { timeZone: "UTC", weekday: "short", day: "numeric", month: "short" })}
           </span>
           <span style={{ display: "flex", flexDirection: "column", gap: 2 }}>
-            {!KEY_ONLY.has(festivalId) && !NO_TITHI.has(festivalId) && <span>{p.tithiInfo.paksha} {p.tithiInfo.name} <span style={{ color: "var(--color-neutral-700)" }}>· until {until(p.tithiEndsAt, tz, d)}</span></span>}
+            {!KEY_ONLY.has(festivalId) && !NO_TITHI.has(festivalId) && <span>Tithi: {p.tithiInfo.paksha} {p.tithiInfo.name} <span style={{ color: "var(--color-neutral-700)" }}>· until {until(p.tithiEndsAt, tz, d)}</span></span>}
             <span style={{ color: "var(--color-neutral-700)" }}>Sunrise {fmtTime(p.sunrise, tz)} · Sunset {fmtTime(p.sunset, tz)}</span>
             {key && key[2] === "pradosh" && (
               <span style={{ color: c.deep }}>{key[1]}: {fmtTime(p.pradosh.start, tz)} – {fmtTime(p.pradosh.end, tz)}</span>

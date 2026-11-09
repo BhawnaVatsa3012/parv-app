@@ -4,13 +4,19 @@ import Link from "next/link";
 import { dayPanchang, rangePanchang, paranaWindow, fmtTime, zonedYMD } from "@/lib/panchang";
 import { OBSERVANCES } from "@/lib/observances";
 import { cityById, DEFAULT_CITY } from "@/lib/cities";
+import { HUE } from "@/lib/design";
+import { hijriOf, hijriLabel } from "@/lib/hijri";
 import { Hi } from "@/components/ui/Lang";
 import CitySwitch from "@/components/CitySwitch";
 
 const DAY_FMT = (y, m, d, opts) => new Date(Date.UTC(y, m, d, 12)).toLocaleDateString("en-GB", { timeZone: "UTC", ...opts });
 
-// Today's panchang for the user's city, with the day's observance if any.
-export default function TodayCard({ homeCityId, next }) {
+// Today for the user's city: festivals on now (always), plus whatever the
+// chosen calendar layers add (Hijri date, Hindu Panchang observance). Tithi and
+// moon details sit in a collapsed "Lunar details" section.
+export default function TodayCard({ homeCityId, next, onNow = [], layers = ["panchang"] }) {
+  const showPanchang = layers.includes("panchang");
+  const showHijri = layers.includes("hijri");
   const home = cityById(homeCityId) || DEFAULT_CITY;
   const [cityId, setCityId] = useState(home.id);
   const [info, setInfo] = useState(null);
@@ -21,26 +27,27 @@ export default function TodayCard({ homeCityId, next }) {
     const { y, m, d } = zonedYMD(new Date(), city.tz);
     const p = dayPanchang(y, m, d, city);
     let upcoming = null;
-    if (!p.observances.length) {
+    if (showPanchang && !p.observances.length) {
       upcoming = rangePanchang(y, m, d + 1, 20, city).find((q) => q.observances.length) || null;
     }
     const extra = {};
-    if (p.observances.includes("ekadashi")) extra.parana = paranaWindow(p, city);
+    if (showPanchang && p.observances.includes("ekadashi")) extra.parana = paranaWindow(p, city);
     // Near a tithi boundary, published panchangs can list the day differently.
     const nearEdge = p.skippedTithi || (p.tithiEndsAt && p.tithiEndsAt - p.sunrise < 90 * 60000);
-    setInfo({ p, upcoming, extra, nearEdge });
-  }, [city]);
+    setInfo({ p, upcoming, extra, nearEdge, hijri: showHijri ? hijriOf(y, m, d) : null });
+  }, [city, showPanchang, showHijri]);
 
   if (!info) {
     return <div className="card" style={{ minHeight: 160, background: "transparent" }} aria-busy="true" />;
   }
 
-  const { p, upcoming, extra, nearEdge } = info;
+  const { p, upcoming, extra, nearEdge, hijri } = info;
   const { y, m, d } = p.date;
   const t = p.tithiInfo;
-  const obsId = p.observances[0];
+  const obsId = showPanchang ? p.observances[0] : null;
   const obs = obsId && OBSERVANCES[obsId];
-  const hue = obs?.hue ?? 65;
+  const fest = onNow[0] || null; // a festival on today, whatever the layers
+  const hue = obs?.hue ?? (fest ? HUE[fest.id] ?? 65 : 65);
   const tz = city.tz;
 
   const keyTime = !obs ? null
@@ -56,18 +63,31 @@ export default function TodayCard({ homeCityId, next }) {
       <div className="kicker" style={{ color: `oklch(0.45 0.13 ${hue})` }}>
         Today · {DAY_FMT(y, m, d, { weekday: "long", day: "numeric", month: "long" })}
       </div>
-      <div style={{ display: "flex", alignItems: "baseline", gap: 8, flexWrap: "wrap" }}>
-        <span style={{ fontFamily: "var(--font-heading)", fontSize: 26, lineHeight: 1.1 }}>{obs ? obs.name : `${t.paksha} ${t.name}`}</span>
-        <Hi size={14}>{obs ? obs.hi : `${t.pakshaHi} ${t.hi}`}</Hi>
-      </div>
-      {obs && <div style={{ fontSize: 12.5, color: "var(--color-neutral-700)", marginTop: -6 }}>{t.paksha} {t.name}</div>}
-      {obs ? (
+      {onNow.map((f) => (
+        <Link key={f.id} href={`/festival/${f.id}`} style={{ display: "flex", alignItems: "baseline", gap: 8, flexWrap: "wrap", padding: "8px 10px", borderRadius: "var(--radius-md)", background: f.c.tint, color: f.c.deep, textDecoration: "none" }}>
+          <span style={{ fontFamily: "var(--font-heading)", fontSize: 22, lineHeight: 1.1 }}>{f.name}</span>
+          <span style={{ fontSize: 12.5 }}>{f.ongoing ? "is on now" : "is today"}</span>
+          <span style={{ marginLeft: "auto", fontSize: 13 }}>Read the story →</span>
+        </Link>
+      ))}
+      {hijri && (
+        <div className="tnum" style={{ fontSize: 14 }}>
+          Hijri date: <b style={{ fontWeight: 600 }}>{hijriLabel(hijri)}</b>
+          <div style={{ fontSize: 11.5, color: "var(--color-neutral-700)" }}>Approximate: the month starts with the moon sighting.</div>
+        </div>
+      )}
+      {obs && (
         <>
+          <div style={{ display: "flex", alignItems: "baseline", gap: 8, flexWrap: "wrap" }}>
+            <span style={{ fontFamily: "var(--font-heading)", fontSize: 26, lineHeight: 1.1 }}>{obs.name}</span>
+            <Hi size={14}>{obs.hi}</Hi>
+          </div>
           <p style={{ margin: 0, fontSize: 14, lineHeight: 1.55, textAlign: "justify", hyphens: "auto" }}>{obs.story}</p>
           <p style={{ margin: 0, fontSize: 13, lineHeight: 1.5, color: "var(--color-neutral-800)" }}>{obs.practice}</p>
           <div style={{ fontSize: 13.5, padding: "8px 10px", background: `oklch(0.95 0.035 ${hue})`, color: `oklch(0.4 0.12 ${hue})`, borderRadius: "var(--radius-md)" }}>{keyTime}</div>
         </>
-      ) : (
+      )}
+      {!obs && !fest && (
         <p style={{ margin: 0, fontSize: 13.5, lineHeight: 1.5, color: "var(--color-neutral-800)" }}>
           A quiet day in the calendar.
           {upcoming && <> Next: <b style={{ fontWeight: 600 }}>{OBSERVANCES[upcoming.observances[0]].name}</b> on {DAY_FMT(upcoming.date.y, upcoming.date.m, upcoming.date.d, { weekday: "short", day: "numeric", month: "short" })}.</>}
@@ -78,10 +98,23 @@ export default function TodayCard({ homeCityId, next }) {
         <span>Sunrise {fmtTime(p.sunrise, tz)}</span>
         <span>Sunset {fmtTime(p.sunset, tz)}</span>
       </div>
-      {nearEdge && obs && (
-        <div style={{ fontSize: 11.5, fontStyle: "italic", color: "var(--color-neutral-700)" }}>
-          The tithi changes close to sunrise today, so some panchangs list this on the next or previous day.
-        </div>
+      {showPanchang && (
+        <details style={{ fontSize: 13 }}>
+          <summary style={{ cursor: "pointer", color: "var(--color-neutral-800)" }}>Lunar details</summary>
+          <div className="tnum" style={{ display: "flex", flexDirection: "column", gap: 4, padding: "8px 0 0" }}>
+            <div>
+              <span style={{ fontFamily: "var(--font-heading)", fontSize: 18 }}>{t.paksha} {t.name}</span> <Hi size={12}>{t.pakshaHi} {t.hi}</Hi>
+            </div>
+            <div style={{ color: "var(--color-neutral-700)" }}>Tithi at sunrise. Ends at {fmtTime(p.tithiEndsAt, tz)}{p.tithiEndsAt && zonedYMD(p.tithiEndsAt, tz).d !== d ? " (tomorrow)" : ""}.</div>
+            {obs && <div style={{ color: "var(--color-neutral-700)" }}>Observance today: {obs.name}.</div>}
+            <div style={{ color: "var(--color-neutral-700)" }}>Moonrise {p.moonrise && zonedYMD(p.moonrise, tz).d === d ? fmtTime(p.moonrise, tz) : "none today"}</div>
+            {nearEdge && obs && (
+              <div style={{ fontSize: 11.5, fontStyle: "italic", color: "var(--color-neutral-700)" }}>
+                The tithi changes close to sunrise today, so some panchangs list this on the next or previous day.
+              </div>
+            )}
+          </div>
+        </details>
       )}
       <CitySwitch city={city} homeId={home.id} onChange={setCityId} />
     </section>

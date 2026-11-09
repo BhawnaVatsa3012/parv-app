@@ -13,6 +13,7 @@ import Timings from "@/components/Timings";
 import Checklist from "@/components/Checklist";
 import FamilyRitual from "@/components/FamilyRitual";
 import { occurrence, years as festYears, fillDates } from "@/lib/occurrence";
+import { systemOf, SYSTEM_LABEL } from "@/lib/layers";
 
 const label = { fontSize: 10, letterSpacing: ".1em", textTransform: "uppercase", color: "var(--color-neutral-700)", marginBottom: 3 };
 const heading = { fontFamily: "var(--font-heading)" };
@@ -95,6 +96,10 @@ export default function FestivalPageClient({ params, year, entitled, price: dete
             </div>
             <div className="tnum" style={{ fontSize: 13, color: "var(--color-neutral-300)", marginTop: 4 }}>
               {occ ? occ.label : ""}{occ?.hijri ? ` · ${occ.hijri}` : ""}{data.dateNote ? ` (${data.dateNote})` : ""}
+            </div>
+            {/* The date is shown in the festival's own calendar, whichever calendar layers the reader picked. */}
+            <div data-testid="own-calendar" style={{ fontSize: 12, color: "var(--color-neutral-300)", marginTop: 2 }}>
+              Date kept by the {SYSTEM_LABEL[systemOf(festivals.find((f) => f.id === id) || {})]}
             </div>
           </div>
         </div>

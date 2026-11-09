@@ -5,6 +5,8 @@ import { festivals } from "@/lib/data";
 import { HI } from "@/lib/design";
 import { cityById, cityLabel } from "@/lib/cities";
 import CityPicker from "@/components/CityPicker";
+import CalendarChoice from "@/components/CalendarChoice";
+import { effectiveLayers, layersSummary } from "@/lib/layers";
 import { Hi } from "@/components/ui/Lang";
 
 const row = { display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10, padding: "12px 0", borderBottom: "1px solid var(--color-divider)" };
@@ -20,7 +22,7 @@ async function save(fields) {
 // Name, city, reminders, followed festivals and family details.
 export default function ProfileSettings({ profile: initial, onName, member = false }) {
   const [p, setP] = useState(initial || {});
-  const [open, setOpen] = useState(""); // "name" | "city" | "family" | ""
+  const [open, setOpen] = useState(""); // "name" | "city" | "calendars" | "family" | ""
   const [name, setName] = useState(initial?.name || "");
   const [community, setCommunity] = useState(initial?.community || "");
   const [languages, setLanguages] = useState(initial?.languages || "");
@@ -65,6 +67,16 @@ export default function ProfileSettings({ profile: initial, onName, member = fal
       {open === "city" && (
         <div style={{ padding: "10px 0", borderBottom: "1px solid var(--color-divider)" }}>
           <CityPicker value={p.city_id} onChange={(id) => update({ city_id: id }, () => setOpen(""))} autoFocus />
+        </div>
+      )}
+
+      <div style={row}>
+        <span style={{ display: "flex", flexDirection: "column" }}><span style={{ fontSize: 14 }}>My calendars</span><span style={sub}>{layersSummary(effectiveLayers(p.calendar_layers))} · festivals always shown</span></span>
+        <button className="btn btn-ghost" onClick={() => setOpen(open === "calendars" ? "" : "calendars")}>{open === "calendars" ? "Close" : "Change"}</button>
+      </div>
+      {open === "calendars" && (
+        <div style={{ padding: "10px 0", borderBottom: "1px solid var(--color-divider)" }}>
+          <CalendarChoice value={effectiveLayers(p.calendar_layers)} onChange={(l) => update({ calendar_layers: l })} idPrefix="pf-cal" />
         </div>
       )}
 
