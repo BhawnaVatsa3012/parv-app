@@ -62,6 +62,17 @@ Lancaster, California), and put any close calls in `OVERRIDES` with the reason.
   overlaps Nishita Kaal most, the same rule as Janmashtami. Checked 2026–2030 against Dekho Panchang
   (Delhi) for 2026, 2027, 2029, 2030; 2028 (23 Feb) against publicholidays.in, Calendardate and timeanddate
   (Dekho's 2028 page was not retrieved). timeanddate lists all five years and agrees.
+- Vaisakhi (Sikh, solar): the civil date (IST, Delhi) on which the Sun enters sidereal Mesha (Mesha Sankranti,
+  the same moment used for Baisakhi in the New Year cluster). Result 2026–2030: 14 Apr 2026, 14 Apr 2027, 13 Apr
+  2028, 14 Apr 2029, 14 Apr 2030. The Mesha Sankranti moment for 2026 is 9:38 am IST on 14 April (9:39 am by
+  Drik Panchang, as quoted by Asianet Newsable); 2025 3:30 am on 14 April (IndiaTV citing Drik).
+  Dates match Temples in India Info (all five years), publicholidays.in (2026–28), officeholidays (2026, 2027) and
+  PTC News (14 April 2026, Khalsa Sajna Diwas). 2029 has only Temples in India Info and our own calculation for
+  India (muhuratam's New York page also says 14 April; the Kathmandu panchang puts Mesha Sankranti on 14 April).
+  A disagreement to watch: in 2025 the sankranti fell at 3:30 am on 14 April, yet the Punjab holiday and the Golden
+  Temple celebrations were on 13 April (officeholidays Punjab, IANS 13 Apr 2025); the same pattern (a sankranti
+  just after midnight) is repeated in 2029 (3:56 am, 14 April), so Punjab may well keep 13 April 2029. The page
+  says the day is announced by Sikh bodies and shows a note. Not overridden.
 - Janmashtami: Krishna Paksha Ashtami (amanta Shravana) on the day it overlaps Nishita Kaal (8th muhurta of
   the night) most; if it touches none (2026: Ashtami ends 12:14 am), the day it holds at sunrise. The date is
   the day the vigil starts; the midnight puja is just after midnight, so sites that date by the midnight

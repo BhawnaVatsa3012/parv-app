@@ -8,7 +8,7 @@ import { feature } from "topojson-client";
 import { HI, UI, HUE } from "@/lib/design";
 import { Hi, useLang } from "@/components/ui/Lang";
 
-const FEST = { diwali: "Diwali", holi: "Holi", teej: "Teej", newyear: "New Year Cluster", sankranti: "Makar Sankranti", bhaidooj: "Bhai Dooj", chhath: "Chhath Puja", ganesh: "Ganesh Chaturthi", janmashtami: "Janmashtami", shivratri: "Maha Shivratri", rakshabandhan: "Raksha Bandhan", karvachauth: "Karva Chauth", onam: "Onam", pongal: "Pongal", navratri: "Navratri & Dussehra" };
+const FEST = { diwali: "Diwali", holi: "Holi", teej: "Teej", newyear: "New Year Cluster", sankranti: "Makar Sankranti", bhaidooj: "Bhai Dooj", chhath: "Chhath Puja", ganesh: "Ganesh Chaturthi", janmashtami: "Janmashtami", shivratri: "Maha Shivratri", vaisakhi: "Vaisakhi", rakshabandhan: "Raksha Bandhan", karvachauth: "Karva Chauth", onam: "Onam", pongal: "Pongal", navratri: "Navratri & Dussehra" };
 
 // Where each regional story is set (from lib/data.js regions).
 const PLACES = [
@@ -44,6 +44,14 @@ const PLACES = [
   ["Mathura & Vrindavan, Uttar Pradesh", 27.55, 77.65, [["janmashtami", "Uttar Pradesh (Mathura & Vrindavan)"]]],
   ["Dwarka, Gujarat", 22.24, 68.97, [["janmashtami", "Gujarat (Dwarka)"]]],
   ["Udupi, Karnataka", 13.34, 74.75, [["janmashtami", "Karnataka (Udupi)"]]],
+  ["Anandpur Sahib, Punjab", 31.24, 76.5, [["vaisakhi", "Punjab (Anandpur Sahib)"]]],
+  ["Talwandi Sabo, Punjab", 29.98, 75.08, [["vaisakhi", "Punjab (Talwandi Sabo)"]]],
+  ["Kangra, Himachal Pradesh", 32.1, 76.27, [["vaisakhi", "Himachal Pradesh & Haryana (fairs and fields)"]]],
+  ["Paonta Sahib, Himachal Pradesh", 30.44, 77.62, [["vaisakhi", "Himachal Pradesh & Haryana (fairs and fields)"]]],
+  ["Pinjore, Haryana", 30.79, 76.92, [["vaisakhi", "Himachal Pradesh & Haryana (fairs and fields)"]]],
+  ["Hasan Abdal, Pakistan", 33.82, 72.69, [["vaisakhi", "Pakistan (Nankana Sahib & Hasan Abdal)"]]],
+  ["Nankana Sahib, Pakistan", 31.45, 73.71, [["vaisakhi", "Pakistan (Nankana Sahib & Hasan Abdal)"]]],
+  ["Surrey, British Columbia", 49.19, -122.85, [["vaisakhi", "Diaspora (Surrey, Canada & the UK)"]]],
   ["Varanasi, Uttar Pradesh", 25.32, 82.97, [["karvachauth", "Uttar Pradesh (Chauth Mata & the karwa)"], ["shivratri", "Uttar Pradesh (Varanasi)"]]],
   ["Ujjain, Madhya Pradesh", 23.18, 75.78, [["shivratri", "Madhya Pradesh (Ujjain)"]]],
   ["Srinagar, Kashmir", 34.08, 74.8, [["shivratri", "Jammu & Kashmir (Herath)"]]],

@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Lora:ital,wght@0,400;0,600;1,400&family=Tiro+Devanagari+Hindi&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Lora:ital,wght@0,400;0,600;1,400&family=Tiro+Devanagari+Hindi&family=Noto+Sans+Gurmukhi&family=Noto+Naskh+Arabic&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -9,6 +9,8 @@ a { color: var(--color-accent-700); }
 a:hover { color: var(--color-accent-800); }
 
 .font-hi { font-family: 'Tiro Devanagari Hindi', var(--font-body); }
+.font-pa { font-family: 'Noto Sans Gurmukhi', var(--font-body); }
+.font-ar { font-family: 'Noto Naskh Arabic', var(--font-body); }
 .kicker { font-size: 10px; letter-spacing: .12em; text-transform: uppercase; }
 .tnum { font-variant-numeric: tabular-nums; }
 .no-scrollbar { scrollbar-width: none; }

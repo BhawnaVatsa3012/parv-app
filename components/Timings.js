@@ -18,6 +18,14 @@ const KEY = {
   navratri: [["ghatasthapana", "Ghatasthapana — first third of the day", "pratah"], ["dashami", "Vijayadashami puja — Aparahna", "aparahna"]],
 };
 
+// Festivals that follow the sun, a fixed date or the Hijri moon, not a tithi: no Hindu tithi line.
+const NO_TITHI = new Set(["vaisakhi"]);
+
+// A short note under a festival's timings, where the date needs explaining.
+const NOTE = {
+  vaisakhi: "Vaisakhi follows the sun's entry into Mesha (Aries), not the moon. Sikh institutions announce the day: it is 13 or 14 April, and in some years Punjab has kept the 13th when the Delhi calculation gives the 14th.",
+};
+
 // Nakshatra-based festivals: the ten days are not tithi days, so only the key day is shown.
 const KEY_ONLY = new Set(["onam"]);
 
@@ -55,7 +63,7 @@ export default function Timings({ festivalId, year, homeCityId, c }) {
             {new Date(Date.UTC(y, m, d, 12)).toLocaleDateString("en-GB", { timeZone: "UTC", weekday: "short", day: "numeric", month: "short" })}
           </span>
           <span style={{ display: "flex", flexDirection: "column", gap: 2 }}>
-            {!KEY_ONLY.has(festivalId) && <span>{p.tithiInfo.paksha} {p.tithiInfo.name} <span style={{ color: "var(--color-neutral-700)" }}>· until {until(p.tithiEndsAt, tz, d)}</span></span>}
+            {!KEY_ONLY.has(festivalId) && !NO_TITHI.has(festivalId) && <span>{p.tithiInfo.paksha} {p.tithiInfo.name} <span style={{ color: "var(--color-neutral-700)" }}>· until {until(p.tithiEndsAt, tz, d)}</span></span>}
             <span style={{ color: "var(--color-neutral-700)" }}>Sunrise {fmtTime(p.sunrise, tz)} · Sunset {fmtTime(p.sunset, tz)}</span>
             {key && key[2] === "pradosh" && (
               <span style={{ color: c.deep }}>{key[1]}: {fmtTime(p.pradosh.start, tz)} – {fmtTime(p.pradosh.end, tz)}</span>
@@ -73,6 +81,7 @@ export default function Timings({ festivalId, year, homeCityId, c }) {
           </span>
         </div>
       ))}
+      {NOTE[festivalId] && <div style={{ fontSize: 12, lineHeight: 1.45, color: c.deep }}>{NOTE[festivalId]}</div>}
       <div style={{ fontSize: 11.5, fontStyle: "italic", color: "var(--color-neutral-700)" }}>
         {city.country === "India"
           ? "Calculated for your city. Family and temple traditions may set a different muhurat."
