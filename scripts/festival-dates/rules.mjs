@@ -79,6 +79,9 @@ export function rules(Y) {
   // Mesha Sankranti used for Baisakhi above. Sikh bodies announce the day; Punjab has sometimes kept
   // the 13th when this gives the 14th (2025: sankranti 3:30 am on 14 April, Punjab holiday 13 April). ---
   out.vaisakhi = { vaisakhi: ms.civil };
+  // --- Mahavir Jayanti (Jain): Chaitra Shukla Trayodashi (amanta Chaitra = 0, tithi 13) on the day it holds at
+  // sunrise (udaya tithi); if it holds at no sunrise, the day it runs. ---
+  out.mahavir = { mahavir: sunriseTithi(Y, 2, 20, 45, 0, 13) };
   // --- Holi (Phalguna = 11) ---
   // Holika Dahan: the first evening Purnima reaches Pradosh Kaal (in Bhadra
   // Puchha if Bhadra covers the evening). Holi (Dhulandi) is the day after.

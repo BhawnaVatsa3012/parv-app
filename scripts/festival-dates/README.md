@@ -73,6 +73,15 @@ Lancaster, California), and put any close calls in `OVERRIDES` with the reason.
   Temple celebrations were on 13 April (officeholidays Punjab, IANS 13 Apr 2025); the same pattern (a sankranti
   just after midnight) is repeated in 2029 (3:56 am, 14 April), so Punjab may well keep 13 April 2029. The page
   says the day is announced by Sikh bodies and shows a note. Not overridden.
+- Mahavir Jayanti (Jain): Chaitra Shukla Trayodashi (amanta Chaitra, tithi 13) on the day it holds at sunrise in Delhi
+  (udaya tithi). Result 2026–2030: 31 Mar 2026, 19 Apr 2027, 7 Apr 2028, 26 Apr 2029, 16 Apr 2030, matching
+  qppstudio (all five years), publicholidays.in (2026–28), bhaktibharat (2026–28 where listed), Drik Panchang for New
+  Delhi (2027: Trayodashi 7:42 am 18 Apr to 6:08 am 19 Apr) and, for 2026, Free Press Journal and Asianet
+  Newsable (Trayodashi 7:09 am 30 Mar to 6:55 am 31 Mar, 'official Jain calendar' 31 Mar). One disagreement:
+  officeholidays.com lists Sunday 18 April 2027, while Trayodashi holds at sunrise on 19 April by only about 17
+  minutes (it is the tithi for most of the 18th daytime). Not overridden; the page tells readers to confirm with their
+  sangh. Some 2026 articles asked '30 or 31 March' because the tithi began at 7:09 am on the 30th; 31 March is right
+  by the sunrise rule.
 - Janmashtami: Krishna Paksha Ashtami (amanta Shravana) on the day it overlaps Nishita Kaal (8th muhurta of
   the night) most; if it touches none (2026: Ashtami ends 12:14 am), the day it holds at sunrise. The date is
   the day the vigil starts; the midnight puja is just after midnight, so sites that date by the midnight
