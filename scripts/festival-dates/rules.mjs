@@ -1,6 +1,6 @@
 // Festival date rules (computed for New Delhi, IST). Each rule returns the
 // named dates of a festival for one Gregorian year, as {y, m, d}.
-import { DELHI as C, phaseTime, sankranti, sunrise, sunset, moonrise, addDays, lunarMonth, minutesOf, tithiAt, tithiStart, tithiEnd, ymd } from "./astro.mjs";
+import { DELHI as C, KOCHI, nakshatra, sidSun, phaseTime, sankranti, sunrise, sunset, moonrise, addDays, lunarMonth, minutesOf, tithiAt, tithiStart, tithiEnd, ymd } from "./astro.mjs";
 import { skippedTithi } from "./panchang.generated.mjs";
 
 const nextRise = (y, m, d) => sunrise(y, m, d + 1);
@@ -174,6 +174,20 @@ export function rules(Y) {
   }
   if (!karva) karva = sunriseTithi(Y, 9, 1, 40, 6, 19);
   out.karvachauth = { karva };
+  // --- Onam (Kerala, observed for Kochi): Thiruvonam is the day the Moon is in Shravana (nakshatra 22)
+  // at midday (Madhyahna) while the sidereal Sun is in Simha (Chingam, 120-150 degrees). ---
+  let thiruvonam = null;
+  for (const o of days(Y, 7, 10, 50)) {
+    const sr = sunrise(o.y, o.m, o.d, KOCHI), ss = sunset(o.y, o.m, o.d, KOCHI);
+    const noon = new Date((sr.getTime() + ss.getTime()) / 2), lon = sidSun(noon);
+    if (lon >= 120 && lon < 150 && nakshatra(noon) === 22) { thiruvonam = o; break; }
+  }
+  // Atham, the first of the ten days: the Hasta (13) sunrise day, 8 to 11 days before; if Hasta is skipped
+  // at sunrise, the day before the first Chitra (14) sunrise.
+  let atham = null;
+  for (let k = 11; k >= 8; k--) { const x = addDays(thiruvonam, -k); if (nakshatra(sunrise(x.y, x.m, x.d, KOCHI)) === 13) { atham = x; break; } }
+  if (!atham) for (let k = 11; k >= 8; k--) { const x = addDays(thiruvonam, -k); if (nakshatra(sunrise(x.y, x.m, x.d, KOCHI)) === 14) { atham = addDays(x, -1); break; } }
+  out.onam = { atham, uthradom: addDays(thiruvonam, -1), thiruvonam, avittam: addDays(thiruvonam, 1), chathayam: addDays(thiruvonam, 2) };
   // --- Chhath: Sandhya Arghya on Kartika Shukla Shashthi by the sunrise rule
   // (2023: Shashthi began 18 Nov, Sandhya Arghya was 19 Nov). ---
   const sandhya = sunriseTithi(bhaidooj.y, bhaidooj.m, bhaidooj.d + 1, 8, 7, 6);

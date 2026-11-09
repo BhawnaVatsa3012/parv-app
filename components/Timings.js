@@ -11,10 +11,14 @@ const KEY = {
   chhath: [["sandhya", "Sandhya Arghya — sunset", "sunset"], ["usha", "Usha Arghya — sunrise", "sunrise"]],
   shivratri: [["shivratri", "Nishita puja (just after midnight)", "nishita"]],
   janmashtami: [["janmashtami", "Nishita puja (just after midnight)", "nishita"]],
+  onam: [["thiruvonam", "Thiruvonam puja: Madhyahna", "madhyahna"]],
   karvachauth: [["karva", "Moonrise (break the fast after the moon is seen)", "moonrise"]],
   ganesh: [["ganesh", "Ganesh puja — Madhyahna", "madhyahna"]],
   navratri: [["ghatasthapana", "Ghatasthapana — first third of the day", "pratah"], ["dashami", "Vijayadashami puja — Aparahna", "aparahna"]],
 };
+
+// Nakshatra-based festivals: the ten days are not tithi days, so only the key day is shown.
+const KEY_ONLY = new Set(["onam"]);
 
 // "2:02 am" on the same day, or "2:02 am next day" when it runs past midnight.
 function until(date, tz, d) {
@@ -36,7 +40,7 @@ export default function Timings({ festivalId, year, homeCityId, c }) {
       const p = dayPanchang(y, m, d, city);
       const k = (KEY[festivalId] || []).find(([name]) => { const n = occ.named[name]; return n && n.y === y && n.m === m && n.d === d; });
       return { y, m, d, p, key: k ? [null, k[1], k[2]] : null };
-    }));
+    }).filter((r) => !KEY_ONLY.has(festivalId) || r.key));
   }, [city, festivalId, year]); // eslint-disable-line react-hooks/exhaustive-deps
 
   if (!days.length) return null;
@@ -50,7 +54,7 @@ export default function Timings({ festivalId, year, homeCityId, c }) {
             {new Date(Date.UTC(y, m, d, 12)).toLocaleDateString("en-GB", { timeZone: "UTC", weekday: "short", day: "numeric", month: "short" })}
           </span>
           <span style={{ display: "flex", flexDirection: "column", gap: 2 }}>
-            <span>{p.tithiInfo.paksha} {p.tithiInfo.name} <span style={{ color: "var(--color-neutral-700)" }}>· until {until(p.tithiEndsAt, tz, d)}</span></span>
+            {!KEY_ONLY.has(festivalId) && <span>{p.tithiInfo.paksha} {p.tithiInfo.name} <span style={{ color: "var(--color-neutral-700)" }}>· until {until(p.tithiEndsAt, tz, d)}</span></span>}
             <span style={{ color: "var(--color-neutral-700)" }}>Sunrise {fmtTime(p.sunrise, tz)} · Sunset {fmtTime(p.sunset, tz)}</span>
             {key && key[2] === "pradosh" && (
               <span style={{ color: c.deep }}>{key[1]}: {fmtTime(p.pradosh.start, tz)} – {fmtTime(p.pradosh.end, tz)}</span>

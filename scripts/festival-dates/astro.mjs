@@ -21,6 +21,9 @@ export const sunrise = (y, m, d, c = DELHI) => rs(c, A.Body.Sun, +1, zonedMidnig
 export const sunset = (y, m, d, c = DELHI) => rs(c, A.Body.Sun, -1, sunrise(y, m, d, c));
 export const moonrise = (y, m, d, c = DELHI) => rs(c, A.Body.Moon, +1, zonedMidnight(y, m, d, c.tz));
 // Moment (after `from`, within `limitDays`) the Moon is `deg` degrees ahead of the Sun.
+export const KOCHI = { lat: 9.9312, lon: 76.2673, tz: "Asia/Kolkata" };
+// Sidereal nakshatra 1..27 (Ashwini = 1) of the Moon at time t
+export const nakshatra = (t) => Math.floor((((A.EclipticGeoMoon(t).lon - ayan(t)) % 360 + 360) % 360) / (360 / 27)) + 1;
 export const phaseTime = (deg, from, limitDays = 3) => A.SearchMoonPhase(deg, from, limitDays)?.date;
 export const ymd = (t, c = DELHI) => zonedYMD(t, c.tz);
 export const addDays = ({ y, m, d }, n) => { const t = new Date(Date.UTC(y, m, d + n)); return { y: t.getUTCFullYear(), m: t.getUTCMonth(), d: t.getUTCDate() }; };

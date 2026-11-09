@@ -28,6 +28,15 @@ Lancaster, California), and put any close calls in `OVERRIDES` with the reason.
   Chaturthi also in publicholidays.in (2026–28), Temples in India Info and muhuratam.in (2029) and
   Calendardate/Hindusphere (2028, 2030); Anant Chaturdashi 2026–2030 against Dekho Panchang (Delhi).
   Calendardate lists 12 Sep for 2029 (no city given); every India source with a city says 11 Sep.
+- Onam: Thiruvonam is the day the Moon is in Shravana (nakshatra 22, Lahiri) at midday (Madhyahna), for a
+  Kochi observer, while the sidereal Sun is in Simha (Chingam, 120 to 150 degrees). Uthradom is the day before,
+  Avittam and Chathayam the 1st and 2nd day after. Atham is the Hasta (13) sunrise day 8 to 11 days earlier;
+  if Hasta is skipped at sunrise, the day before the first Chitra sunrise. That makes the first of the ten days
+  nakshatra-based, so the span runs 9 to 11 days in some years. Thiruvonam 2026–2030 matches qppstudio (all
+  five), Drik Panchang (New Delhi page: 26 Aug 2026 and 22 Aug 2029), officeholidays (2026, 2027),
+  publicholidays.in (2027, 2028; its 2026 row shows 27 Aug, which disagrees with all the others), and
+  Daanyam/Drik Thiruvananthapuram for 2026. The 2026 Atham (16 Aug) and Uthradam (25 Aug) match Drik. 2027
+  Thiruvonam nakshatra begins 2:58 am 12 Sep (Temples in India Info). Atham for 2027–2030 is computed only.
 - Karva Chauth: Krishna Chaturthi of amanta Ashwin (purnimanta Kartik), on the day Chaturthi is present at
   Delhi moonrise (the first such night if two). Matches Temples in India Info (undated city) for 2026 (29 Oct),
   2027 (18 Oct), 2028 (7 Oct), 2029 (26 Oct), 2030 (15 Oct); 2026 also Free Press Journal (citing Drik). 2027 is

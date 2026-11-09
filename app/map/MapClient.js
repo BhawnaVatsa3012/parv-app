@@ -8,7 +8,7 @@ import { feature } from "topojson-client";
 import { HI, UI, HUE } from "@/lib/design";
 import { Hi, useLang } from "@/components/ui/Lang";
 
-const FEST = { diwali: "Diwali", holi: "Holi", teej: "Teej", newyear: "New Year Cluster", sankranti: "Makar Sankranti", bhaidooj: "Bhai Dooj", chhath: "Chhath Puja", ganesh: "Ganesh Chaturthi", janmashtami: "Janmashtami", shivratri: "Maha Shivratri", rakshabandhan: "Raksha Bandhan", karvachauth: "Karva Chauth", navratri: "Navratri & Dussehra" };
+const FEST = { diwali: "Diwali", holi: "Holi", teej: "Teej", newyear: "New Year Cluster", sankranti: "Makar Sankranti", bhaidooj: "Bhai Dooj", chhath: "Chhath Puja", ganesh: "Ganesh Chaturthi", janmashtami: "Janmashtami", shivratri: "Maha Shivratri", rakshabandhan: "Raksha Bandhan", karvachauth: "Karva Chauth", onam: "Onam", navratri: "Navratri & Dussehra" };
 
 // Where each regional story is set (from lib/data.js regions).
 const PLACES = [
@@ -26,7 +26,11 @@ const PLACES = [
   ["Patna, Bihar", 25.59, 85.14, [["teej", "Uttar Pradesh & Bihar"], ["bhaidooj", "Uttar Pradesh & Bihar"]]],
   ["Bengaluru, Karnataka", 12.97, 77.59, [["rakshabandhan", "Tamil Nadu & Karnataka (Avani Avittam)"], ["newyear", "Karnataka, AP & Telangana (Ugadi)"]]],
   ["Hyderabad, Telangana", 17.39, 78.49, [["karvachauth", "Andhra Pradesh & Telangana (Atla Tadde)"], ["ganesh", "Telangana (Khairatabad, Hyderabad)"], ["navratri", "Telangana (Bathukamma)"], ["sankranti", "Andhra Pradesh & Telangana"], ["bhaidooj", "South India"]]],
-  ["Thiruvananthapuram, Kerala", 8.52, 76.94, [["newyear", "Kerala (Vishu)"]]],
+  ["Thrikkakara, Kochi", 10.03, 76.33, [["onam", "Ernakulam (Thrikkakara)"]]],
+  ["Thrissur, Kerala", 10.53, 76.21, [["onam", "Thrissur (Pulikali)"]]],
+  ["Aranmula, Kerala", 9.32, 76.69, [["onam", "Pathanamthitta (Aranmula)"]]],
+  ["Kannur, Kerala", 11.87, 75.37, [["onam", "North Malabar (Onapottan)"]]],
+  ["Thiruvananthapuram, Kerala", 8.52, 76.94, [["onam", "Kerala homes (Pookkalam & Onasadya)"], ["newyear", "Kerala (Vishu)"]]],
   ["Guwahati, Assam", 26.14, 91.74, [["newyear", "Assam (Rongali Bihu)"], ["sankranti", "Assam (Magh Bihu)"]]],
   ["Amritsar, Punjab", 31.63, 74.87, [["karvachauth", "Punjab & Haryana (Sargi)"], ["newyear", "Punjab (Baisakhi)"], ["sankranti", "Punjab (Lohri)"]]],
   ["Mysuru, Karnataka", 12.3, 76.64, [["navratri", "Karnataka (Mysuru Dasara)"]]],
