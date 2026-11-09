@@ -94,7 +94,7 @@ export default function FestivalPageClient({ params, year, entitled, price: dete
               <Hi size={19} color={c.line}>{HI[id]}</Hi>
             </div>
             <div className="tnum" style={{ fontSize: 13, color: "var(--color-neutral-300)", marginTop: 4 }}>
-              {occ ? occ.label : ""}{data.dateNote ? ` (${data.dateNote})` : ""}
+              {occ ? occ.label : ""}{occ?.hijri ? ` · ${occ.hijri}` : ""}{data.dateNote ? ` (${data.dateNote})` : ""}
             </div>
           </div>
         </div>

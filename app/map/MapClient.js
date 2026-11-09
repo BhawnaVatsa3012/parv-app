@@ -8,7 +8,7 @@ import { feature } from "topojson-client";
 import { HI, UI, HUE } from "@/lib/design";
 import { Hi, useLang } from "@/components/ui/Lang";
 
-const FEST = { diwali: "Diwali", holi: "Holi", teej: "Teej", newyear: "New Year Cluster", sankranti: "Makar Sankranti", bhaidooj: "Bhai Dooj", chhath: "Chhath Puja", ganesh: "Ganesh Chaturthi", janmashtami: "Janmashtami", shivratri: "Maha Shivratri", vaisakhi: "Vaisakhi", mahavir: "Mahavir Jayanti", buddha: "Buddha Purnima", christmas: "Christmas", rakshabandhan: "Raksha Bandhan", karvachauth: "Karva Chauth", onam: "Onam", pongal: "Pongal", navratri: "Navratri & Dussehra" };
+const FEST = { diwali: "Diwali", holi: "Holi", teej: "Teej", newyear: "New Year Cluster", sankranti: "Makar Sankranti", bhaidooj: "Bhai Dooj", chhath: "Chhath Puja", ganesh: "Ganesh Chaturthi", janmashtami: "Janmashtami", shivratri: "Maha Shivratri", vaisakhi: "Vaisakhi", mahavir: "Mahavir Jayanti", buddha: "Buddha Purnima", christmas: "Christmas", eid: "Eid al-Fitr", rakshabandhan: "Raksha Bandhan", karvachauth: "Karva Chauth", onam: "Onam", pongal: "Pongal", navratri: "Navratri & Dussehra" };
 
 // Where each regional story is set (from lib/data.js regions).
 const PLACES = [
@@ -70,6 +70,11 @@ const PLACES = [
   ["Kohima, Nagaland", 25.67, 94.11, [["christmas", "Nagaland & Mizoram"]]],
   ["Aizawl, Mizoram", 23.73, 92.72, [["christmas", "Nagaland & Mizoram"]]],
   ["Shillong, Meghalaya", 25.58, 91.89, [["christmas", "Meghalaya (Shillong)"]]],
+  ["Hyderabad, Telangana (Charminar)", 17.36, 78.47, [["eid", "Telangana (Hyderabad)"]]],
+  ["Lucknow, Uttar Pradesh", 26.85, 80.95, [["eid", "Uttar Pradesh (Lucknow)"]]],
+  ["Malappuram, Kerala", 11.07, 76.07, [["eid", "Kerala (Malabar)"]]],
+  ["Srinagar, Kashmir (Hazratbal)", 34.13, 74.84, [["eid", "Jammu & Kashmir"]]],
+  ["Mumbai, Maharashtra (Mohammad Ali Road)", 18.95, 72.83, [["eid", "Maharashtra (Mumbai)"]]],
   ["Varanasi, Uttar Pradesh", 25.32, 82.97, [["karvachauth", "Uttar Pradesh (Chauth Mata & the karwa)"], ["shivratri", "Uttar Pradesh (Varanasi)"]]],
   ["Ujjain, Madhya Pradesh", 23.18, 75.78, [["shivratri", "Madhya Pradesh (Ujjain)"]]],
   ["Srinagar, Kashmir", 34.08, 74.8, [["shivratri", "Jammu & Kashmir (Herath)"]]],
