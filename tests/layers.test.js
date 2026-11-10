@@ -11,6 +11,8 @@ describe("calendar layer defaults by tradition", () => {
     expect(defaultLayersFor("muslim")).toEqual(["hijri"]);
     expect(defaultLayersFor("christian")).toEqual([]);
     ["sikh", "jain", "buddhist"].forEach((t) => expect(defaultLayersFor(t), t).toEqual(["panchang"]));
+    expect(defaultLayersFor("tribal")).toEqual([]);
+    expect(TRADITIONS.map((t) => t.label)).toContain("Tribal and folk");
   });
   it("covers every tradition offered at setup, and falls back to Hindu Panchang", () => {
     TRADITIONS.forEach((t) => expect(Array.isArray(defaultLayersFor(t.id)), t.id).toBe(true));
@@ -47,6 +49,7 @@ describe("festival's own calendar", () => {
     expect(by.eid).toBe("hijri");
     expect(by.christmas).toBe("gregorian");
     expect(by.vaisakhi).toBe("solar");
+    expect(by.bihu).toBe("solar");
     expect(by.diwali).toBe("lunar");
     expect(by.mahavir).toBe("lunar");
     expect(by.buddha).toBe("lunar");

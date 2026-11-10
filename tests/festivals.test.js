@@ -6,9 +6,9 @@ import { occurrence, years, fillDates } from "@/lib/occurrence";
 import { checklistItems } from "@/lib/checklists";
 import { HI, HUE } from "@/lib/design";
 
-const COMMUNITIES = ["Hindu", "Sikh", "Jain", "Buddhist", "Christian", "Muslim"];
+const COMMUNITIES = ["Hindu", "Sikh", "Jain", "Buddhist", "Christian", "Muslim", "Tribal and folk"];
 // One free story per community (a label only: nothing reads freeStory yet).
-const FREE = ["diwali", "vaisakhi", "mahavir", "buddha", "christmas", "eid"];
+const FREE = ["diwali", "vaisakhi", "mahavir", "buddha", "christmas", "eid", "bihu"];
 // Older entries with short stories or a region left unmapped; held to the looser checks only.
 const LEGACY = new Set(["bhaidooj", "teej", "newyear"]);
 
@@ -65,6 +65,31 @@ describe("festival library", () => {
 
   it("keeps Christmas on 24 and 25 December", () => {
     for (const y of [2026, 2027, 2028, 2029, 2030]) expect(FESTIVAL_DATES.christmas[y]).toEqual({ eve: "12-24", christmas: "12-25" });
+  });
+
+  it("keeps the Rongali Bihu days: Goru on the sankranti date, Manuh the next day, Gosain the third", () => {
+    const pick = (k) => Object.fromEntries(Object.entries(FESTIVAL_DATES.bihu).map(([y, v]) => [y, v[k]]));
+    expect(pick("goru")).toEqual({ 2026: "4-14", 2027: "4-14", 2028: "4-13", 2029: "4-14", 2030: "4-14" });
+    expect(pick("manuh")).toEqual({ 2026: "4-15", 2027: "4-15", 2028: "4-14", 2029: "4-15", 2030: "4-15" });
+    expect(pick("gosain")).toEqual({ 2026: "4-16", 2027: "4-16", 2028: "4-15", 2029: "4-16", 2030: "4-16" });
+    // The older New Year cluster entry uses the same Assamese days.
+    for (const y of [2026, 2027, 2028, 2029, 2030]) {
+      expect(FESTIVAL_DATES.newyear[y].gorubihu).toBe(FESTIVAL_DATES.bihu[y].goru);
+      expect(FESTIVAL_DATES.newyear[y].bihu).toBe(FESTIVAL_DATES.bihu[y].manuh);
+    }
+    expect(occurrence("bihu", 2026).label).toBe("Apr 14\u201316, 2026");
+    expect(occurrence("bihu", 2028).label).toBe("Apr 13\u201315, 2028");
+  });
+
+  it("tags Bihu as tribal and folk, keeps Bwisagu as a separate story, and writes no Assamese script", () => {
+    const f = festivals.find((x) => x.id === "bihu");
+    expect(f.community).toBe("Tribal and folk");
+    expect(f.freeStory).toBe(true);
+    const names = storyData.bihu.regions.map((r) => r.name);
+    expect(names.some((n) => /Bwisagu/.test(n))).toBe(true);
+    expect(storyData.bihu.regions.find((r) => /Bwisagu/.test(r.name)).text).toMatch(/not as a local name for Bohag Bihu/);
+    const all = JSON.stringify(storyData.bihu);
+    expect(all).not.toMatch(/[\u0980-\u09FF]/);
   });
 
   it("keeps the generated dates for Vaisakhi", () => {
