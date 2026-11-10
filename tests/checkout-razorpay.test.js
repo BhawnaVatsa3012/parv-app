@@ -2,7 +2,27 @@ import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 
 // Both the Supabase session client and the Razorpay SDK are mocked: no network, no keys.
 const getUser = vi.fn();
-vi.mock("@/lib/supabase/server", () => ({ createClient: () => ({ auth: { getUser } }) }));
+// In-memory subscriptions table for the "already subscribed?" lookup.
+let subRows;
+let subQueryError;
+const filtersSeen = [];
+const from = vi.fn(() => {
+  const f = [];
+  const b = {
+    select: () => b,
+    eq: (k, v) => { f.push([k, [v]]); return b; },
+    in: (k, vs) => { f.push([k, vs]); return b; },
+    limit: () => b,
+    then: (res, rej) => {
+      filtersSeen.push(f);
+      if (subQueryError) return Promise.resolve({ data: null, error: subQueryError }).then(res, rej);
+      const data = subRows.filter((r) => f.every(([k, vs]) => vs.includes(r[k])));
+      return Promise.resolve({ data, error: null }).then(res, rej);
+    },
+  };
+  return b;
+});
+vi.mock("@/lib/supabase/server", () => ({ createClient: () => ({ auth: { getUser }, from }) }));
 
 const create = vi.fn();
 const ctor = vi.fn();
@@ -20,6 +40,10 @@ beforeEach(() => {
   Object.assign(process.env, ENV);
   getUser.mockResolvedValue({ data: { user: { id: "user-1", email: "a@example.com" } } });
   create.mockResolvedValue({ id: "sub_NEW1" });
+  subRows = [];
+  subQueryError = null;
+  filtersSeen.length = 0;
+  from.mockClear();
 });
 afterEach(() => { for (const k of Object.keys(ENV)) delete process.env[k]; });
 
@@ -75,12 +99,76 @@ describe("creating the subscription", () => {
     expect(body).toEqual({ error: "Could not create subscription" });
   });
 
-  // DOCUMENTED BEHAVIOUR / RISK (see report): the route does not check for an
-  // existing active subscription, so a second click or tab creates another one.
-  it("KNOWN RISK: two calls create two separate Razorpay subscriptions for the same user", async () => {
-    create.mockResolvedValueOnce({ id: "sub_A" }).mockResolvedValueOnce({ id: "sub_B" });
+});
+
+describe("duplicate subscriptions", () => {
+  const row = (over) => ({ user_id: "user-1", provider: "razorpay", provider_subscription_id: "sub_X", status: "active", ...over });
+
+  it.each([
+    ["active", "active"],
+    ["on_hold (payment pending / retrying)", "on_hold"],
+  ])("returns 409 with a clear message and creates nothing when the user already has a %s subscription", async (_l, status) => {
+    subRows = [row({ status })];
+    const res = await POST();
+    expect(res.status).toBe(409);
+    const body = await res.json();
+    expect(body.error).toBe("You already have an active subscription.");
+    expect(body.code).toBe("already_subscribed");
+    expect(create).not.toHaveBeenCalled();
+    expect(ctor).not.toHaveBeenCalled();
+  });
+
+  it("counts the manual owner grant as active, so a test click never creates a charge", async () => {
+    subRows = [row({ provider_subscription_id: "manual-owner-grant", status: "active" })];
+    const res = await POST();
+    expect(res.status).toBe(409);
+    expect(create).not.toHaveBeenCalled();
+  });
+
+  it("counts an active subscription from any provider", async () => {
+    subRows = [row({ provider: "dodo", provider_subscription_id: "sub_dodo" })];
+    expect((await POST()).status).toBe(409);
+    expect(create).not.toHaveBeenCalled();
+  });
+
+  it.each(["cancelled", "expired"])("a %s subscription does not block a new one (genuine re-subscribe)", async (status) => {
+    subRows = [row({ status })];
+    const res = await POST();
+    expect(res.status).toBe(200);
+    expect(create).toHaveBeenCalledTimes(1);
+  });
+
+  it("another user's active subscription does not block this user", async () => {
+    subRows = [row({ user_id: "someone-else" })];
+    expect((await POST()).status).toBe(200);
+    expect(create).toHaveBeenCalledTimes(1);
+  });
+
+  it("looks up only the signed-in user's rows", async () => {
     await POST();
-    await POST();
-    expect(create).toHaveBeenCalledTimes(2);
+    const f = Object.fromEntries(filtersSeen[0]);
+    expect(f.user_id).toEqual(["user-1"]);
+    expect(f.status.sort()).toEqual(["active", "on_hold"]);
+  });
+
+  it("fails closed with 503 (no subscription created) if the existing-subscription check errors", async () => {
+    vi.spyOn(console, "error").mockImplementation(() => {});
+    subQueryError = { message: "db down" };
+    const res = await POST();
+    expect(res.status).toBe(503);
+    expect(create).not.toHaveBeenCalled();
+  });
+
+  it("a signed-out user gets 401 before any lookup", async () => {
+    getUser.mockResolvedValue({ data: { user: null } });
+    expect((await POST()).status).toBe(401);
+    expect(from).not.toHaveBeenCalled();
+  });
+
+  it("two sequential clicks: the second is refused once the first has activated", async () => {
+    expect((await POST()).status).toBe(200);
+    subRows = [row({ provider_subscription_id: "sub_NEW1" })]; // webhook has recorded the first
+    expect((await POST()).status).toBe(409);
+    expect(create).toHaveBeenCalledTimes(1);
   });
 });
