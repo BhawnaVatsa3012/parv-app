@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Script from "next/script";
 
 // Opens Razorpay's own checkout (UPI, cards, netbanking). Card and UPI
@@ -8,7 +8,13 @@ export default function RazorpaySubscribeButton({ label, from = "", disabled = f
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
+  // A ref (not just state) so a fast double click cannot start two requests
+  // before React re-renders the button as disabled.
+  const inFlight = useRef(false);
+
   async function handleClick() {
+    if (inFlight.current) return;
+    inFlight.current = true;
     setLoading(true);
     setError("");
     try {
@@ -27,12 +33,13 @@ export default function RazorpaySubscribeButton({ label, from = "", disabled = f
           if (from) q.set("from", from);
           window.location.href = `/pricing?${q}`;
         },
-        modal: { ondismiss: () => setLoading(false) },
+        modal: { ondismiss: () => { inFlight.current = false; setLoading(false); } },
         theme: { color: "#b68235" },
       });
       rzp.open();
     } catch (err) {
       setError(err.message);
+      inFlight.current = false;
       setLoading(false);
     }
   }
