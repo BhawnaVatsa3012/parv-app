@@ -8,7 +8,7 @@ import { feature } from "topojson-client";
 import { HI, UI, HUE } from "@/lib/design";
 import { Hi, useLang } from "@/components/ui/Lang";
 
-const FEST = { diwali: "Diwali", holi: "Holi", teej: "Teej", newyear: "New Year Cluster", sankranti: "Makar Sankranti", bhaidooj: "Bhai Dooj", chhath: "Chhath Puja", ganesh: "Ganesh Chaturthi", janmashtami: "Janmashtami", shivratri: "Maha Shivratri", vaisakhi: "Vaisakhi", mahavir: "Mahavir Jayanti", buddha: "Buddha Purnima", christmas: "Christmas", eid: "Eid al-Fitr", rakshabandhan: "Raksha Bandhan", karvachauth: "Karva Chauth", onam: "Onam", pongal: "Pongal", navratri: "Navratri & Dussehra" };
+const FEST = { diwali: "Diwali", holi: "Holi", teej: "Teej", newyear: "New Year Cluster", sankranti: "Makar Sankranti", bhaidooj: "Bhai Dooj", chhath: "Chhath Puja", ganesh: "Ganesh Chaturthi", janmashtami: "Janmashtami", shivratri: "Maha Shivratri", vaisakhi: "Vaisakhi", bihu: "Rongali Bihu", mahavir: "Mahavir Jayanti", buddha: "Buddha Purnima", christmas: "Christmas", eid: "Eid al-Fitr", rakshabandhan: "Raksha Bandhan", karvachauth: "Karva Chauth", onam: "Onam", pongal: "Pongal", navratri: "Navratri & Dussehra" };
 
 // Where each regional story is set (from lib/data.js regions).
 const PLACES = [
@@ -31,7 +31,7 @@ const PLACES = [
   ["Aranmula, Kerala", 9.32, 76.69, [["onam", "Pathanamthitta (Aranmula)"]]],
   ["Kannur, Kerala", 11.87, 75.37, [["onam", "North Malabar (Onapottan)"]]],
   ["Thiruvananthapuram, Kerala", 8.52, 76.94, [["onam", "Kerala homes (Pookkalam & Onasadya)"], ["newyear", "Kerala (Vishu)"]]],
-  ["Guwahati, Assam", 26.14, 91.74, [["newyear", "Assam (Rongali Bihu)"], ["sankranti", "Assam (Magh Bihu)"]]],
+  ["Guwahati, Assam", 26.14, 91.74, [["newyear", "Assam (Rongali Bihu)"], ["sankranti", "Assam (Magh Bihu)"], ["bihu", "Assam (Guwahati & the Brahmaputra valley)"]]],
   ["Amritsar, Punjab", 31.63, 74.87, [["karvachauth", "Punjab & Haryana (Sargi)"], ["newyear", "Punjab (Baisakhi)"], ["sankranti", "Punjab (Lohri)"]]],
   ["Mysuru, Karnataka", 12.3, 76.64, [["navratri", "Karnataka (Mysuru Dasara)"]]],
   ["Kullu, Himachal Pradesh", 31.96, 77.11, [["navratri", "Himachal Pradesh (Kullu Dussehra)"]]],
@@ -75,6 +75,12 @@ const PLACES = [
   ["Malappuram, Kerala", 11.07, 76.07, [["eid", "Kerala (Malabar)"]]],
   ["Srinagar, Kashmir (Hazratbal)", 34.13, 74.84, [["eid", "Jammu & Kashmir"]]],
   ["Mumbai, Maharashtra (Mohammad Ali Road)", 18.95, 72.83, [["eid", "Maharashtra (Mumbai)"]]],
+  ["Majuli, Assam", 26.95, 94.17, [["bihu", "Assam (Majuli & Jorhat)"]]],
+  ["Jorhat, Assam", 26.75, 94.2, [["bihu", "Assam (Majuli & Jorhat)"]]],
+  ["Dibrugarh, Assam", 27.48, 94.91, [["bihu", "Assam (Dibrugarh & Upper Assam)"]]],
+  ["North Lakhimpur, Assam", 27.24, 94.1, [["bihu", "Assam (Lakhimpur: Deori and Mising)"]]],
+  ["Kokrajhar, Assam", 26.4, 90.27, [["bihu", "Assam (Kokrajhar: Bwisagu, a Bodo festival of its own)"]]],
+  ["London, United Kingdom", 51.51, -0.13, [["bihu", "Diaspora (London, North America & beyond)"]]],
   ["Varanasi, Uttar Pradesh", 25.32, 82.97, [["karvachauth", "Uttar Pradesh (Chauth Mata & the karwa)"], ["shivratri", "Uttar Pradesh (Varanasi)"]]],
   ["Ujjain, Madhya Pradesh", 23.18, 75.78, [["shivratri", "Madhya Pradesh (Ujjain)"]]],
   ["Srinagar, Kashmir", 34.08, 74.8, [["shivratri", "Jammu & Kashmir (Herath)"]]],

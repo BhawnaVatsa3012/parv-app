@@ -73,6 +73,29 @@ Lancaster, California), and put any close calls in `OVERRIDES` with the reason.
   Temple celebrations were on 13 April (officeholidays Punjab, IANS 13 Apr 2025); the same pattern (a sankranti
   just after midnight) is repeated in 2029 (3:56 am, 14 April), so Punjab may well keep 13 April 2029. The page
   says the day is announced by Sikh bodies and shows a note. Not overridden.
+- Rongali (Bohag) Bihu (Assam; solar; community tag 'Tribal and folk'): Goru Bihu = the last day of Chot, taken as the
+  civil date (IST, Delhi) of Mesha Sankranti (same moment as Vaisakhi); Manuh Bihu (1 Bohag) = the next day; Gosain Bihu
+  = the third day. Result 2026-2030: Goru 14 Apr 2026, 14 Apr 2027, 13 Apr 2028, 14 Apr 2029, 14 Apr 2030; Manuh and
+  Gosain one and two days later (2028: Manuh 14 Apr, Gosain 15 Apr). Mesha Sankranti moments (IST): 14 Apr 2026 9:38 am
+  (Drik 9:39), 14 Apr 2027 3:32 pm, 13 Apr 2028 9:47 pm (Drik Panchang, New Delhi page, same minute), 14 Apr 2029
+  3:56 am, 14 Apr 2030 9:59 am (Temples in India Info, 9:59 am). Checks: the Assam government holiday list for 2026
+  (The Current India: 14 Apr '30th Chot', 15 Apr '1st Bohag', 16 Apr '2nd Bohag'); publicholidays.in (Assam: Bohag Bihu
+  14 Apr 2026 with the holiday on 15 Apr, 14 and 15 Apr 2027, 14 Apr 2028); OfficeHolidays (Assam: 14, 15, 16 Apr in
+  2025, 2026 and 2027); Outlook India and Hindu Blog (Goru 14, Manuh 15, Gosain 16 Apr 2026); India Today NE (Gosain
+  Bihu observed 16 Apr 2026; Goru Bihu on Saturday 13 Apr 2024, when the sankranti fell at 9:15 pm on the 13th, which is
+  the only year found that tests the rule against a late-evening sankranti); ETV Bharat (Goru Bihu Monday 14 Apr 2025,
+  sankranti 3:30 am that day). Disagreements and weak spots: (1) 2028: our rule gives Goru 13 Apr, Manuh 14 Apr; the
+  only published source found, publicholidays.in, lists a single Bohag Bihu day, 14 Apr 2028 (an estimate, marked so
+  by the site), which fits Manuh Bihu on the 14th but is not a Goru Bihu date; no 2028 Assam government list exists
+  yet. Sites that give a fixed '14 April' for Bihu (Wikipedia, London Bihu, several news explainers) do not mean this
+  year-by-year rule. (2) 2029 and 2030 rest on the rule and the Delhi sankranti moments only (2029: sankranti 3:56 am on
+  the 14th, as in 2025, when Goru Bihu was the 14th); the Assam government list for those years is not out. (3) The
+  Assamese calendar is Surya Siddhanta-based and its sankranti can differ from the Drik moment used here by hours: only
+  a sankranti within a few hours of midnight (2024, 2028, 2029) could move the day. (4) The names and order of the days
+  after Gosain Bihu differ between sources (Wikipedia: Goru, Manuh, Kutum, Mela, Sera; Outlook: Goru, Manuh, Gosai,
+  Kutum, Senehi, Mela, Chera); only Goru, Manuh and Gosain are marked. The Deori keep Bisu on the first Wednesday of
+  Bohag (15 and 16 Apr 2026, NorthEast Now) and the Bodo Bwisagu starts on the last day of Chaitra; neither is a date
+  rule here. Magh (Bhogali) Bihu is the 'meji' day of the Makar Sankranti cluster (existing entry); Kati Bihu is not built.
 - Mahavir Jayanti (Jain): Chaitra Shukla Trayodashi (amanta Chaitra, tithi 13) on the day it holds at sunrise in Delhi
   (udaya tithi). Result 2026–2030: 31 Mar 2026, 19 Apr 2027, 7 Apr 2028, 26 Apr 2029, 16 Apr 2030, matching
   qppstudio (all five years), publicholidays.in (2026–28), bhaktibharat (2026–28 where listed), Drik Panchang for New

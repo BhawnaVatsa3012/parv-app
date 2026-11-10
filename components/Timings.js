@@ -19,7 +19,7 @@ const KEY = {
 };
 
 // Festivals that follow the sun, a fixed date or the Hijri moon, not a tithi: no Hindu tithi line.
-const NO_TITHI = new Set(["vaisakhi", "christmas", "eid"]);
+const NO_TITHI = new Set(["vaisakhi", "christmas", "eid", "bihu"]);
 
 // A short note under a festival's timings, where the date needs explaining.
 const NOTE = {
@@ -27,6 +27,7 @@ const NOTE = {
   mahavir: "Jains keep the day on which Chaitra Shukla Trayodashi holds at sunrise. Calendars can differ by a day in a year when the tithi begins and ends close to sunrise; your temple or sangh will announce the day.",
   eid: "This is the expected day, not a promise: Eid al-Fitr is the day after the Shawwal crescent is sighted, which is decided on the evening before (Chand Raat) by moon-sighting committees such as the Markazi Ruyat-e-Hilal committees at Jama Masjid in Delhi and Mumbai. The day can differ by a day between places, and Kerala has often kept Eid a day before the rest of India. Your mosque will announce it.",
   christmas: "Christmas is on 25 December every year; Midnight Mass is on the night of 24 December. Some Orthodox and other churches keep Christmas on other dates, so check with your own church.",
+  bihu: "Rongali Bihu follows the sun's entry into Mesha (Aries), not the moon. Goru Bihu is the last day of Chot, taken here as the date of that moment in New Delhi; Manuh Bihu is the next day and Gosain Bihu the third. The Assam government announces the holidays, and in some years (2028) the days fall a day earlier, on 13 to 15 April. The Deori keep Bisu on the first Wednesday of Bohag, and Bwisagu is a Bodo festival of its own with its own days.",
   vaisakhi: "Vaisakhi follows the sun's entry into Mesha (Aries), not the moon. Sikh institutions announce the day: it is 13 or 14 April, and in some years Punjab has kept the 13th when the Delhi calculation gives the 14th.",
 };
 

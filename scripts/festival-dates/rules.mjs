@@ -80,6 +80,11 @@ export function rules(Y) {
   // Mesha Sankranti used for Baisakhi above. Sikh bodies announce the day; Punjab has sometimes kept
   // the 13th when this gives the 14th (2025: sankranti 3:30 am on 14 April, Punjab holiday 13 April). ---
   out.vaisakhi = { vaisakhi: ms.civil };
+  // --- Rongali (Bohag) Bihu of Assam (solar): Goru Bihu is the last day of Chot, taken as the civil date (IST)
+  // of Mesha Sankranti; Manuh Bihu (1 Bohag) the day after; Gosain Bihu the third day. Matches the Assam
+  // government holiday list for 2026 (14, 15, 16 April) and Goru Bihu on 13 April 2024, when the sankranti
+  // fell at 9:15 pm on the 13th. ---
+  out.bihu = { goru: ms.civil, manuh: addDays(ms.civil, 1), gosain: addDays(ms.civil, 2) };
   // --- Mahavir Jayanti (Jain): Chaitra Shukla Trayodashi (amanta Chaitra = 0, tithi 13) on the day it holds at
   // sunrise (udaya tithi); if it holds at no sunrise, the day it runs. ---
   out.mahavir = { mahavir: sunriseTithi(Y, 2, 20, 45, 0, 13) };
