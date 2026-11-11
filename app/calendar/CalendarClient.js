@@ -9,6 +9,7 @@ import { monthPanchang, tithiShort, zonedYMD } from "@/lib/panchang";
 import { OBSERVANCES } from "@/lib/observances";
 import { cityById, DEFAULT_CITY } from "@/lib/cities";
 import { hijriOf, hijriSpan, hijriLabel, HIJRI_NOTE } from "@/lib/hijri";
+import { hijriKeyDaysForMonth, HIJRI_KEYDAY_NOTE, HIJRI_KEYDAY_LEGEND } from "@/lib/hijriMarkers";
 import { layerLabel } from "@/lib/layers";
 import Screen from "@/components/ui/Screen";
 import { Hi } from "@/components/ui/Lang";
@@ -69,6 +70,7 @@ export default function CalendarClient({ homeCityId, layers = ["panchang"] }) {
   const first = new Date(Date.UTC(y, m, 1)).getUTCDay();
   const n = new Date(Date.UTC(y, m + 1, 0)).getUTCDate();
   const marks = marksForMonth(activeIds, y, m);
+  const keyDays = showHijri ? hijriKeyDaysForMonth(y, m) : {};
   // Festivals with a day in this month, with that occurrence's date label.
   const inMonth = new Set(Object.values(marks).flat());
   const monthFests = active.filter((f) => inMonth.has(f.id)).map((f) => {
@@ -118,6 +120,7 @@ export default function CalendarClient({ homeCityId, layers = ["panchang"] }) {
             const mc = ids ? col(ids[0]) : null;
             const r = showPanchang && rows ? rows[d - 1] : null;
             const hj = showHijri ? hijriOf(y, m, d) : null;
+            const kd = keyDays[d] || null;
             const isToday = today && today.y === y && today.m === m && today.d === d;
             const isSel = sel === d;
             const fNames = ids ? ids.map((x) => festivals.find((f) => f.id === x)?.name).filter(Boolean) : [];
@@ -125,6 +128,7 @@ export default function CalendarClient({ homeCityId, layers = ["panchang"] }) {
               `${d} ${MON[m]}`,
               r && `${r.info.paksha} ${r.info.name}`,
               hj && `${hijriLabel(hj)}, approximate`,
+              kd && `${kd.title}, approximate, depends on moon sighting`,
               ...(r ? r.observances.map((o) => OBSERVANCES[o].name) : []),
               ...fNames,
               isToday && "today",
@@ -151,8 +155,8 @@ export default function CalendarClient({ homeCityId, layers = ["panchang"] }) {
                 {showPanchang && <span aria-hidden="true" style={{ fontSize: 9.5, lineHeight: "12px", height: 12, color: "var(--color-neutral-700)", letterSpacing: ".02em" }}>
                   {r ? (r.tithi === 15 ? "◯" : r.tithi === 30 ? "●" : tithiShort(r.tithi)) : ""}
                 </span>}
-                {hj && <span aria-hidden="true" style={{ fontSize: 9.5, lineHeight: "12px", height: 12, color: "var(--color-neutral-700)", letterSpacing: ".02em", marginTop: showPanchang ? 1 : 0 }}>
-                  {hj.d === 1 ? hj.monthShort : hj.d}
+                {hj && <span aria-hidden="true" style={{ fontSize: 9.5, lineHeight: "12px", height: 12, whiteSpace: "nowrap", color: "var(--color-neutral-700)", letterSpacing: ".02em", marginTop: showPanchang ? 1 : 0 }}>
+                  {kd ? <b style={{ fontWeight: 700, color: "var(--color-accent-700)" }}>☾ {kd.short}</b> : hj.d === 1 ? hj.monthShort : hj.d}
                 </span>}
                 <span aria-hidden="true" style={{ display: "flex", gap: 2, height: 5, marginTop: 1 }}>
                   {r && r.observances.slice(0, 3).map((o) => <span key={o} style={{ width: 5, height: 5, borderRadius: "50%", background: dot(o) }} />)}
@@ -176,13 +180,14 @@ export default function CalendarClient({ homeCityId, layers = ["panchang"] }) {
             <span key={o} style={{ display: "flex", alignItems: "center", gap: 5 }}><span style={{ width: 7, height: 7, borderRadius: "50%", background: dot(o) }} />{OBSERVANCES[o].name}</span>
           ))}
           <span style={{ display: "flex", alignItems: "center", gap: 5 }}><span style={{ width: 11, height: 11, borderRadius: "50%", border: "1px solid var(--color-accent)" }} />Festival day</span>
+          {showHijri && <span style={{ display: "flex", alignItems: "center", gap: 5 }}><b aria-hidden="true" style={{ color: "var(--color-accent-700)" }}>☾</b>{HIJRI_KEYDAY_LEGEND}: Ramadan begins, Eid al-Fitr, Eid al-Adha, Islamic New Year. {HIJRI_KEYDAY_NOTE}</span>}
         </div>
 
         <div style={{ marginBottom: 22 }}>
           {sel ? (
             showPanchang
-              ? <DayDetail y={y} m={m} d={sel} city={city} festivalIds={marks[sel] || []} hijri={showHijri ? hijriOf(y, m, sel) : null} />
-              : <DaySimple y={y} m={m} d={sel} festivalIds={marks[sel] || []} hijri={showHijri ? hijriOf(y, m, sel) : null} />
+              ? <DayDetail y={y} m={m} d={sel} city={city} festivalIds={marks[sel] || []} hijri={showHijri ? hijriOf(y, m, sel) : null} keyDay={keyDays[sel] || null} />
+              : <DaySimple y={y} m={m} d={sel} festivalIds={marks[sel] || []} hijri={showHijri ? hijriOf(y, m, sel) : null} keyDay={keyDays[sel] || null} />
           ) : (
             <p style={{ fontSize: 13.5, color: "var(--color-neutral-700)", margin: 0 }}>{showPanchang ? "Tap any day to see its panchang." : "Tap any day to see what falls on it."}</p>
           )}
