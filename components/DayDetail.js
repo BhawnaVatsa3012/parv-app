@@ -7,6 +7,7 @@ import { dayPanchang, rangePanchang, paranaWindow, fmtTime, zonedYMD, tithiName 
 import { OBSERVANCES } from "@/lib/observances";
 import { Hi } from "@/components/ui/Lang";
 import { hijriLabel } from "@/lib/hijri";
+import HijriKeyDay from "@/components/HijriKeyDay";
 
 const DAY_FMT = (y, m, d) => new Date(Date.UTC(y, m, d, 12)).toLocaleDateString("en-GB", { timeZone: "UTC", weekday: "long", day: "numeric", month: "long", year: "numeric" });
 
@@ -25,7 +26,7 @@ function when(date, tz, day) {
 
 // Full panchang for one day in one city: tithi with its end time, sunrise,
 // sunset, moonrise, and each observance with its key time.
-export default function DayDetail({ y, m, d, city, festivalIds = [], hijri = null }) {
+export default function DayDetail({ y, m, d, city, festivalIds = [], hijri = null, keyDay = null }) {
   const [info, setInfo] = useState(null);
 
   useEffect(() => {
@@ -68,6 +69,7 @@ export default function DayDetail({ y, m, d, city, festivalIds = [], hijri = nul
     <section aria-label={`Panchang for ${DAY_FMT(day.y, day.m, day.d)}`} className="card" style={{ gap: 10, padding: 16, background: "color-mix(in srgb, var(--color-bg) 70%, transparent)", borderTop: `3px solid oklch(0.66 0.16 ${hue})` }}>
       <div className="kicker" style={{ color: `oklch(0.45 0.13 ${hue})` }}>{DAY_FMT(day.y, day.m, day.d)} · {city.name}</div>
       {hijri && <div className="tnum" style={{ fontSize: 13, color: "var(--color-neutral-800)" }}>Hijri: {hijriLabel(hijri)} <span style={{ color: "var(--color-neutral-700)" }}>· approximate, depends on moon sighting</span></div>}
+      <HijriKeyDay y={y} marker={keyDay} festivalIds={festivalIds} />
       <div style={{ display: "flex", alignItems: "baseline", gap: 8, flexWrap: "wrap" }}>
         <span style={{ fontFamily: "var(--font-heading)", fontSize: 24, lineHeight: 1.1 }}>{t.paksha} {t.name}</span>
         <Hi size={14}>{t.pakshaHi} {t.hi}</Hi>
