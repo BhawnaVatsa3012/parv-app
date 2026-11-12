@@ -1,11 +1,11 @@
-import LegalPage, { H, P, UL, TC } from "@/components/LegalPage";
+import LegalPage, { H, P, UL, LEGAL } from "@/components/LegalPage";
 
 export const metadata = { title: "Refund and Cancellation Policy — Parv" };
 
 export default function Refund() {
   return (
-    <LegalPage title="Refunds and Cancellation" updated="10 November 2026">
-      <P>This policy explains how to cancel Parv membership and when you can get money back. It is part of our Terms of Service.</P>
+    <LegalPage title="Refunds and Cancellation" updated="13 November 2026">
+      <P>This policy explains how to cancel Parv membership and when you can get money back. It is part of our Terms of Service. Prices are as shown at checkout.</P>
 
       <H>Cancelling</H>
       <UL items={[
@@ -18,9 +18,9 @@ export default function Refund() {
 
       <H>Refunds</H>
       <UL items={[
-        <>If you are charged by mistake, charged twice, or charged after you cancelled, tell us within <TC>refund window, e.g. 7 days of the charge</TC> and we will refund the extra charge in full.</>,
-        <>For a first payment where you have not used member features, we will refund on request within <TC>refund window for first payment</TC>.</>,
-        <>Otherwise, a subscription payment for a period you have already started is <TC>refundable / not refundable / refundable pro rata</TC>.</>,
+        "Monthly plan: no refund for the current billing month. You can cancel at any time to stop future renewals.",
+        "Yearly plan (where offered): you can ask for a refund within 7 days of the first purchase or of a renewal. We do not refund part of a year (no pro-rata refunds), so after those 7 days there is no refund.",
+        "If you are charged twice, or charged after you cancelled, tell us and we will correct it and refund the extra charge.",
         "If we end the paid service, we will refund the unused part of any period already paid.",
       ]} />
       <P>Nothing here limits rights you have under Indian consumer law.</P>
@@ -28,7 +28,7 @@ export default function Refund() {
       <H>How refunds are paid</H>
       <UL items={[
         "Refunds go back to the original payment method through the same provider that took the payment: Razorpay for India, Dodo Payments for international payments.",
-        <>We start an approved refund within <TC>processing time, e.g. 5 business days</TC>. After that, your bank or card issuer usually takes a further 5 to 10 business days to show it. We don’t control that part.</>,
+        "Approved refunds are processed within 5 to 7 working days after approval. How soon the money shows in your account after that depends on your bank or card issuer, which we don’t control.",
         "Currency conversion and any bank fees on your side are decided by your bank.",
       ]} />
 
@@ -37,8 +37,8 @@ export default function Refund() {
 
       <H>How to ask</H>
       <UL items={[
-        <>Email <TC>contact email</TC> from the address you sign in with, and include the date and amount of the payment (and the payment ID if you have it).</>,
-        <>Grievance Officer: <TC>name and email</TC></>,
+        <>Email {LEGAL.email} from the address you sign in with, and include the date and amount of the payment (and the payment ID if you have it).</>,
+        <>Grievance Officer: {LEGAL.grievanceOfficer}, {LEGAL.email}, {LEGAL.address}. We acknowledge complaints within {LEGAL.ackTime} and resolve them within {LEGAL.resolveTime} of receiving them.</>,
       ]} />
     </LegalPage>
   );
