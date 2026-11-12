@@ -1,11 +1,11 @@
-import LegalPage, { H, P, UL, TC } from "@/components/LegalPage";
+import LegalPage, { H, P, UL, TC, A, LEGAL } from "@/components/LegalPage";
 
 export const metadata = { title: "Privacy Policy — Parv" };
 
 export default function Privacy() {
   return (
-    <LegalPage title="Privacy Policy" updated="10 November 2026">
-      <P><TC>legal entity name and registered address</TC> (“Parv”, “we”) runs the Parv app. This page explains what we collect, why, who helps us handle it, and the choices you have. We try to collect only what the app needs.</P>
+    <LegalPage title="Privacy Policy" updated="13 November 2026">
+      <P>{LEGAL.operatorDesc}, of {LEGAL.address} (“Parv”, “we”), runs the Parv app. This page explains what we collect, why, who helps us handle it, and the choices you have. We try to collect only what the app needs.</P>
 
       <H>What we collect</H>
       <UL items={[
@@ -38,11 +38,11 @@ export default function Privacy() {
 
       <H>AI (Anthropic)</H>
       <P>Only when a member taps to adapt a ritual, we send Anthropic (the maker of Claude) the festival and ritual text, the family notes for that ritual, and your city, state or country, community and home languages if set. We do not send your name or email address. Anthropic returns a draft, which you can accept or ignore. Nothing is saved to your account unless you approve it.</P>
-      <P>Anthropic processes this data under its own terms and privacy policy. <TC>confirm Anthropic data-retention and training terms that apply to the API account</TC></P>
+      <P>Anthropic’s published terms for its commercial products (which include its API) say that, by default, it does not use the inputs or outputs to train its models, and that it automatically deletes them from its systems within 30 days of receipt or generation. There are exceptions: Anthropic may keep data longer where it is needed to enforce its usage policy (for content its safety systems flag, up to 2 years), or where the law requires. Anthropic may use content for training only if you explicitly send it feedback, or choose to allow it. These are Anthropic’s terms, which it can change; see <A href="https://privacy.claude.com/en/articles/7996866-how-long-do-you-store-my-organization-s-data">how Anthropic stores organisation data</A> and <A href="https://privacy.claude.com/en/articles/7996868-is-my-data-used-for-model-training">whether data is used for model training</A> (read on 13 November 2026).</P>
 
       <H>Who else handles your data</H>
       <UL items={[
-        <>Supabase: our database and sign-in service, where your account and data are stored. Region: <TC>Supabase project region</TC>.</>,
+        <>Supabase: our database and sign-in service, where your account and data are stored. Our project is hosted in Mumbai, India (AWS ap-south-1 region).</>,
         "Vercel: hosts the app.",
         "Razorpay (India) and Dodo Payments (international): process payments. Razorpay receives a reference to your Parv account with the subscription; Dodo receives your email address and the same reference.",
         "Resend: sends reminder emails to members who turn them on.",
@@ -51,7 +51,11 @@ export default function Privacy() {
       <P>These providers process data for us and under their own terms. Some are based outside India, so your data may be handled in other countries. We may also share data if the law requires it.</P>
 
       <H>How long we keep it</H>
-      <P>We keep your data while your account exists. Family notes, adapted rituals and family details are kept until you delete them. We keep payment and subscription records as long as needed for accounting, tax and dispute purposes. <TC>retention period for subscription records, and for deleted accounts</TC></P>
+      <UL items={[
+        "Account data (your email, profile, city, followed festivals, checklists, family notes and adapted rituals) is kept while your account is active. Family notes, adapted rituals and family details are also removed whenever you delete them yourself.",
+        "If you ask us to delete your account, we delete your account data within 30 days of the request.",
+        <>Payment and invoice records are kept for as long as Indian tax law requires. For GST records that is 72 months (6 years) from the due date of the annual return for the year concerned (Section 36, Central Goods and Services Tax Act, 2017). <TC>period required under the Income-tax Act, 2025 and whether Parv is GST-registered</TC></>,
+      ]} />
 
       <H>Your choices and rights</H>
       <UL items={[
@@ -75,8 +79,8 @@ export default function Privacy() {
 
       <H>Contact and grievance officer</H>
       <UL items={[
-        <>Email: <TC>contact email</TC></>,
-        <>Grievance Officer: <TC>name</TC>, <TC>email</TC>, <TC>postal address</TC></>,
+        <>Email: {LEGAL.email}</>,
+        <>Grievance Officer: {LEGAL.grievanceOfficer}, {LEGAL.email}, {LEGAL.address}. We acknowledge complaints within {LEGAL.ackTime} and resolve them within {LEGAL.resolveTime} of receiving them.</>,
       ]} />
     </LegalPage>
   );

@@ -10,6 +10,22 @@ export function TC({ children }) {
   );
 }
 
+// Operator and contact details, shared by all three legal pages so they cannot drift apart.
+export const LEGAL = {
+  operator: "Bhawna Mishra",
+  operatorDesc: "Bhawna Mishra, an individual operating Parv as a sole proprietor",
+  address: "Adarsh Dairy Road, Malad West, Mumbai, Maharashtra 400064",
+  email: "vatsa.bhawna@gmail.com",
+  grievanceOfficer: "Bhawna Mishra",
+  ackTime: "24 hours",
+  resolveTime: "7 days",
+  court: "Mumbai, Maharashtra",
+};
+
+export function A({ href, children }) {
+  return <a href={href} target="_blank" rel="noopener noreferrer" style={{ color: "var(--color-accent-700)", textDecoration: "underline", textUnderlineOffset: 2 }}>{children}</a>;
+}
+
 export const LEGAL_LINKS = [
   { href: "/terms", label: "Terms" },
   { href: "/privacy", label: "Privacy" },

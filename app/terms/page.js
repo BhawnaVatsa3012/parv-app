@@ -1,11 +1,11 @@
-import LegalPage, { H, P, UL, TC } from "@/components/LegalPage";
+import LegalPage, { H, P, UL, LEGAL } from "@/components/LegalPage";
 
 export const metadata = { title: "Terms of Service — Parv" };
 
 export default function Terms() {
   return (
-    <LegalPage title="Terms of Service" updated="10 November 2026">
-      <P>These terms are the agreement between you and <TC>legal entity name and registered address</TC> (“Parv”, “we”, “us”). By signing in or using Parv you agree to them. If you don’t agree, please don’t use the app.</P>
+    <LegalPage title="Terms of Service" updated="13 November 2026">
+      <P>These terms are the agreement between you and {LEGAL.operatorDesc}, of {LEGAL.address} (“Parv”, “we”, “us”). By signing in or using Parv you agree to them. If you don’t agree, please don’t use the app.</P>
 
       <H>1. What Parv is</H>
       <P>Parv is an app of festival stories, with regional variations, and (for members) rituals: samagri lists, step-by-step puja, mantras, attire, preparation checklists and reminders. Stories we mark as free are free. Rituals and other features we mark as members-only need a paid subscription.</P>
@@ -21,12 +21,12 @@ export default function Terms() {
 
       <H>3. Membership and payments</H>
       <UL items={[
-        "Membership is a monthly subscription that renews automatically until you cancel. The price and currency are shown on the Membership page before you pay.",
+        "Membership is a subscription that renews automatically until you cancel. It is sold as a monthly plan and, where we offer it, a yearly plan. Prices and currency are as shown at checkout, on the Membership page, before you pay.",
         "Payments from India are processed by Razorpay. Payments from other countries are processed by Dodo Payments. You pay through their checkout, under their terms. Parv does not see or store your card, UPI or bank details.",
         "You can cancel from Profile at any time. Cancelling stops future renewals; you keep member access until the end of the period you have already paid for.",
         "If a renewal payment fails, your membership may be put on hold and member features switch off until payment succeeds. Free stories stay available.",
         "Taxes, where they apply, are shown at checkout or by the payment provider.",
-        "Our Refund and Cancellation Policy forms part of these terms.",
+        "Our Refund and Cancellation Policy (the Refunds page) forms part of these terms. In short: the monthly plan is not refundable for the current billing month, and the yearly plan can be refunded within 7 days of the first purchase or a renewal.",
       ]} />
       <P>We may change prices or features. We will give notice before a price change affects your next renewal, and you can cancel before it applies.</P>
 
@@ -68,13 +68,13 @@ export default function Terms() {
       <P>We may update these terms. We will change the date above and, for material changes, tell you in the app or by email. Using Parv after a change means you accept it.</P>
 
       <H>13. Governing law and disputes</H>
-      <P>These terms are governed by the laws of India. Courts at <TC>city / jurisdiction</TC> have jurisdiction, without affecting any right you have to go to a consumer forum where you live. Please write to us first so we can try to fix the problem.</P>
+      <P>These terms are governed by the laws of India. Courts at {LEGAL.court} have jurisdiction, without affecting any right you have to go to a consumer forum where you live. Please write to us first so we can try to fix the problem.</P>
 
       <H>14. Contact and grievances</H>
       <UL items={[
-        <>Support email: <TC>contact email</TC></>,
-        <>Grievance Officer: <TC>name</TC>, <TC>email</TC>, <TC>postal address</TC></>,
-        <>We aim to acknowledge complaints within <TC>acknowledgement time, e.g. 48 hours</TC> and resolve them within <TC>resolution time, e.g. 30 days</TC>.</>,
+        <>Support email: {LEGAL.email}</>,
+        <>Grievance Officer: {LEGAL.grievanceOfficer}, {LEGAL.email}, {LEGAL.address}</>,
+        <>We acknowledge complaints within {LEGAL.ackTime} and resolve them within {LEGAL.resolveTime} of receiving them.</>,
       ]} />
     </LegalPage>
   );
