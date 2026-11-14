@@ -1,6 +1,7 @@
 import { headers } from "next/headers";
 import { getUser } from "@/lib/session";
 import { isEntitledToRituals } from "@/lib/entitlements";
+import { resolvePlan, planIdFor, PLANS } from "@/lib/plans";
 import PricingClient from "./PricingClient";
 
 export const dynamic = "force-dynamic";
@@ -21,6 +22,8 @@ export default async function PricingPage({ searchParams }) {
       paymentId={clean(searchParams?.pid)}
       via={clean(searchParams?.via)}
       from={clean(searchParams?.from)}
+      paidPlan={resolvePlan(searchParams?.plan)?.key || ""}
+      yearlyAvailable={Boolean(planIdFor(PLANS.yearly))}
     />
   );
 }

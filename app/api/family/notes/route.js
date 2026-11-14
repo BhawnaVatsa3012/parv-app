@@ -1,7 +1,7 @@
 import { requireUser, readJson, json, bad, str } from "@/lib/api";
 import { addNote, deleteNote, deleteAllFamily } from "@/lib/store";
 import { isEntitledToRituals } from "@/lib/entitlements";
-import { storyData } from "@/lib/data";
+import { storyData } from "@/lib/stories";
 
 // Add a family note to a ritual (or one of its steps).
 export async function POST(request) {

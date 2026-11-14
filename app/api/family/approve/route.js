@@ -1,7 +1,7 @@
 import { requireUser, readJson, json, bad, strList } from "@/lib/api";
 import { saveFamilyRitual, deleteFamilyRitual } from "@/lib/store";
 import { isEntitledToRituals } from "@/lib/entitlements";
-import { storyData } from "@/lib/data";
+import { storyData } from "@/lib/stories";
 
 // Saves the family's version of a ritual once the user approves it.
 export async function POST(request) {

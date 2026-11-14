@@ -1,6 +1,7 @@
 import { getUser } from "@/lib/session";
 import { getProfile } from "@/lib/store";
-import { effectiveLayers } from "@/lib/layers";
+import { isEntitledToRituals } from "@/lib/entitlements";
+import { layersForReader } from "@/lib/access";
 import CalendarClient from "./CalendarClient";
 
 export const dynamic = "force-dynamic";
@@ -10,6 +11,7 @@ export const metadata = { title: "Calendar — Parv" };
 // (Hindu Panchang, Hijri date), in the user's saved city.
 export default async function CalendarPage() {
   const user = await getUser();
-  const profile = await getProfile(user);
-  return <CalendarClient homeCityId={profile?.city_id || null} layers={effectiveLayers(profile?.calendar_layers)} />;
+  const [profile, member] = await Promise.all([getProfile(user), isEntitledToRituals()]);
+  // Every festival date stays free. Hindu Panchang and Hijri layers are paid.
+  return <CalendarClient homeCityId={profile?.city_id || null} layers={layersForReader(member, profile?.calendar_layers)} layersLocked={!member} />;
 }

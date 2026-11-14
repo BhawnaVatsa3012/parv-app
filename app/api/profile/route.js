@@ -1,7 +1,7 @@
 import { requireUser, readJson, json, bad, str, strList } from "@/lib/api";
 import { getProfile, saveProfile } from "@/lib/store";
 import { cityById } from "@/lib/cities";
-import { festivals } from "@/lib/data";
+import { festivals } from "@/lib/festivalList";
 import { normalizeLayers } from "@/lib/layers";
 
 const FEST_IDS = festivals.map((f) => f.id);

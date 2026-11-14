@@ -1,11 +1,34 @@
 import { NextResponse } from "next/server";
 import Razorpay from "razorpay";
 import { createClient } from "@/lib/supabase/server";
+import { resolvePlan, planIdFor } from "@/lib/plans";
 
-export async function POST() {
-  if (!process.env.RAZORPAY_KEY_ID || !process.env.RAZORPAY_KEY_SECRET || !process.env.RAZORPAY_PLAN_ID) {
+// Body: { plan: "monthly" | "yearly" } (no body or no plan means monthly).
+// The plan is checked against an allowlist (lib/plans.js) and its Razorpay plan
+// ID comes from the server's environment. A plan ID sent by the client is ignored.
+export async function POST(request) {
+  if (!process.env.RAZORPAY_KEY_ID || !process.env.RAZORPAY_KEY_SECRET) {
     return NextResponse.json(
       { error: "Subscriptions aren't set up yet — check back soon." },
+      { status: 503 }
+    );
+  }
+
+  let choice;
+  try {
+    const body = request ? await request.json() : null;
+    choice = body && typeof body === "object" && !Array.isArray(body) && "plan" in body ? body.plan : undefined;
+  } catch {
+    choice = undefined; // empty or non-JSON body: the default plan
+  }
+  const plan = choice === undefined || choice === null ? resolvePlan("monthly") : resolvePlan(choice);
+  if (!plan) {
+    return NextResponse.json({ error: "Choose the monthly or yearly plan.", code: "invalid_plan" }, { status: 400 });
+  }
+  const planId = planIdFor(plan);
+  if (!planId) {
+    return NextResponse.json(
+      { error: plan.key === "monthly" ? "Subscriptions aren't set up yet — check back soon." : "The yearly plan is coming soon.", code: "plan_unavailable", plan: plan.key },
       { status: 503 }
     );
   }
@@ -51,9 +74,9 @@ export async function POST() {
 
   try {
     const subscription = await razorpay.subscriptions.create({
-      plan_id: process.env.RAZORPAY_PLAN_ID,
+      plan_id: planId,
       customer_notify: 1,
-      total_count: 120, // ~10 years of monthly cycles; Razorpay requires a cap
+      total_count: plan.totalCount, // ~10 years of cycles (120 monthly, 10 yearly); Razorpay requires a cap
       notes: { supabase_user_id: user.id },
     });
 

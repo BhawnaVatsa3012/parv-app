@@ -2,20 +2,18 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { festivals } from "@/lib/data";
+import { festivals } from "@/lib/festivalList";
 import { HI, UI, orderFestivals, nameFromEmail } from "@/lib/design";
 import Screen from "@/components/ui/Screen";
 import { Bunting, Plate } from "@/components/ui/Decor";
 import { Hi } from "@/components/ui/Lang";
 import Splash from "@/components/Splash";
 import TodayCard from "@/components/TodayCard";
-import { checklistItems } from "@/lib/checklists";
 import Icon from "@/components/ui/Icon";
-import { effectiveLayers } from "@/lib/layers";
 
 const heading = { fontFamily: "var(--font-heading)" };
 
-export default function HomeClient({ email, profile, checklists = {}, member = false }) {
+export default function HomeClient({ email, profile, checklists = {}, member = false, prep: prepInfo = {}, layers = [], layersLocked = false }) {
   const router = useRouter();
   // Splash plays once per browser session.
   const [showSplash, setShowSplash] = useState(null);
@@ -35,8 +33,9 @@ export default function HomeClient({ email, profile, checklists = {}, member = f
   // Preparation nudge: the next followed festival within 14 days.
   const followed = profile?.followed?.length ? profile.followed : null;
   const prep = upcoming.find((f) => f.days <= 14 && (!followed || followed.includes(f.id)));
-  const prepItems = prep ? checklistItems(prep.id).filter((i) => !i.samagri) : [];
-  const prepDone = prep ? (checklists[prep.id]?.done || []).filter((k) => prepItems.some((i) => i.key === k)).length : 0;
+  const prepKeys = prep ? prepInfo[prep.id]?.keys || [] : [];
+  const prepTotal = prep ? prepInfo[prep.id]?.total || 0 : 0;
+  const prepDone = prep ? (checklists[prep.id]?.done || []).filter((k) => prepKeys.includes(k)).length : 0;
   const initial = (name[0] || "P").toUpperCase();
 
   return (
@@ -65,13 +64,13 @@ export default function HomeClient({ email, profile, checklists = {}, member = f
 
           <div style={{ padding: "20px 20px 0", display: "flex", flexDirection: "column", gap: 10 }}>
             <div style={{ fontSize: 13, color: "var(--color-neutral-700)" }}>Namaste, {name}</div>
-            <TodayCard homeCityId={profile?.city_id} next={next} onNow={upcoming.filter((f) => f.days === 0)} layers={effectiveLayers(profile?.calendar_layers)} />
+            <TodayCard homeCityId={profile?.city_id} next={next} onNow={upcoming.filter((f) => f.days === 0)} layers={layers} layersLocked={layersLocked} />
             {prep && (
               // Members see their checklist progress; free users are shown
               // the countdown and led to the membership page.
               <Link href={member ? `/festival/${prep.id}#prepare` : `/pricing?from=${prep.id}`} className="card hover-accent" style={{ flexDirection: "row", alignItems: "center", gap: 12, textDecoration: "none", color: "var(--color-text)", padding: "12px 14px", background: "transparent" }}>
                 <span style={{ flex: "none", width: 42, height: 42, borderRadius: "50%", border: `1.5px solid ${prep.c.base}`, display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "var(--font-heading)", fontSize: 15, color: prep.c.deep }} className="tnum">
-                  {member ? `${prepDone}/${prepItems.length}` : <Icon name="lock" size={16} />}
+                  {member ? `${prepDone}/${prepKeys.length}` : <Icon name="lock" size={16} />}
                 </span>
                 <span style={{ flex: 1, display: "flex", flexDirection: "column", gap: 2 }}>
                   <span style={{ fontFamily: "var(--font-heading)", fontSize: 18, fontWeight: 600, lineHeight: 1.15 }}>
@@ -79,8 +78,8 @@ export default function HomeClient({ email, profile, checklists = {}, member = f
                   </span>
                   <span style={{ fontSize: 12.5, color: "var(--color-neutral-700)" }}>
                     {!member
-                      ? `Get ready with a ${checklistItems(prep.id).length}-step checklist and reminders · see membership`
-                      : prepDone === prepItems.length ? "You're all set. Open your checklist" : `${prepItems.length - prepDone} things left to prepare · open your checklist`}
+                      ? `Get ready with a ${prepTotal}-step checklist and reminders · see membership`
+                      : prepDone === prepKeys.length ? "You're all set. Open your checklist" : `${prepKeys.length - prepDone} things left to prepare · open your checklist`}
                   </span>
                 </span>
               </Link>

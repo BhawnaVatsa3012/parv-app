@@ -3,11 +3,16 @@ import { LAYERS, FUTURE_LAYERS } from "@/lib/layers";
 
 // "Which calendars do you want to see?" Checkboxes for each layer. Festival
 // dates are always shown; the layers add day-by-day detail.
-export default function CalendarChoice({ value, onChange, idPrefix = "cal" }) {
+export default function CalendarChoice({ value, onChange, idPrefix = "cal", locked = false }) {
   const toggle = (id) => onChange(value.includes(id) ? value.filter((x) => x !== id) : LAYERS.map((l) => l.id).filter((x) => x === id || value.includes(x)));
   return (
     <fieldset style={{ border: 0, margin: 0, padding: 0, display: "flex", flexDirection: "column", gap: 8 }}>
       <legend style={{ fontSize: 14, padding: 0, marginBottom: 6 }}>Which calendars do you want to see?</legend>
+      {locked && (
+        <p data-testid="layers-choice-locked" style={{ margin: "0 0 4px", fontSize: 12.5, lineHeight: 1.5, color: "var(--color-accent-700)" }}>
+          Calendar layers are part of Parv. Your choice is saved and switches on when you unlock. Festival dates are always free.
+        </p>
+      )}
       {LAYERS.map((l) => (
         <label key={l.id} htmlFor={`${idPrefix}-${l.id}`} style={{ display: "flex", gap: 10, alignItems: "flex-start", padding: "10px 12px", border: `1px solid ${value.includes(l.id) ? "var(--color-accent)" : "var(--color-divider)"}`, borderRadius: "var(--radius-md)", cursor: "pointer" }}>
           <input id={`${idPrefix}-${l.id}`} type="checkbox" checked={value.includes(l.id)} onChange={() => toggle(l.id)} style={{ marginTop: 3 }} />

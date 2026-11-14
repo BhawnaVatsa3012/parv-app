@@ -1,10 +1,9 @@
 "use client";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { festivals, storyData } from "@/lib/data";
+import { festivals } from "@/lib/festivalList";
 import { HI, UI, ROMAN, col, DARK_SKY } from "@/lib/design";
-import { orderRegions } from "@/lib/regions";
 import Screen from "@/components/ui/Screen";
 import { Bunting, Plate } from "@/components/ui/Decor";
 import { Hi } from "@/components/ui/Lang";
@@ -12,42 +11,27 @@ import Icon from "@/components/ui/Icon";
 import Timings from "@/components/Timings";
 import Checklist from "@/components/Checklist";
 import FamilyRitual from "@/components/FamilyRitual";
-import { occurrence, years as festYears, fillDates } from "@/lib/occurrence";
+import UnlockCard from "@/components/UnlockCard";
+import { occurrence, years as festYears } from "@/lib/occurrence";
 import { systemOf, SYSTEM_LABEL } from "@/lib/layers";
 
 const label = { fontSize: 10, letterSpacing: ".1em", textTransform: "uppercase", color: "var(--color-neutral-700)", marginBottom: 3 };
 const heading = { fontFamily: "var(--font-heading)" };
 
-export default function FestivalPageClient({ params, year, entitled, price: detectedPrice = "₹99", profile, checklist, family }) {
+// `data` is already gated by the server (see gateStory in lib/access.js): story text,
+// ritual steps and checklist items this reader may not see are simply not in it.
+export default function FestivalPageClient({ params, year, entitled, data, intl = false, layersOpen = false, profile, checklist, family, prepItems = [], prepCount = 0 }) {
   const router = useRouter();
   const id = params.id;
-  // Story and ritual text carries date tokens ("{lakshmi}, {year}"); fill
-  // them with the dates of the year being shown.
-  const data = useMemo(() => {
-    const d = storyData[id];
-    if (!d || !year) return d;
-    return {
-      ...d,
-      regions: d.regions.map((r) => ({ ...r, date: fillDates(r.date, id, year) })),
-      rituals: (d.rituals || []).map((rt) => ({ ...rt, when: fillDates(rt.when, id, year) })),
-    };
-  }, [id, year]);
   const occ = year ? occurrence(id, year) : null;
   const otherYears = festYears(id).filter((y) => y !== year);
   const meta = festivals.find((f) => f.id === id)?.meta || "";
   const c = col(id);
-  const state = profile?.state || null;
-  const regions = useMemo(() => orderRegions(id, data?.regions, state), [id, data, state]);
+  const regions = data?.regions || [];
   const [tab, setTab] = useState("stories");
   const [openR, setOpenR] = useState(0); // first in list = the reader's region when there is one
-  const [price, setPrice] = useState(detectedPrice);
 
   useEffect(() => {
-    try {
-      const r = localStorage.getItem("parv-region");
-      if (r === "india") setPrice("₹99");
-      if (r === "international") setPrice("$3.99");
-    } catch (e) {}
     if (window.location.hash === "#prepare") setTab("prepare");
   }, []);
 
@@ -63,8 +47,7 @@ export default function FestivalPageClient({ params, year, entitled, price: dete
   }
 
   const rituals = data.rituals || [];
-  const locked = !entitled;
-  const r0 = rituals[0] || { steps: [] };
+  const locked = !data.ritualsOpen;
   const tabStyle = (on, first) => ({
     all: "unset", cursor: "pointer", display: "flex", justifyContent: "center", alignItems: "center", gap: 5, padding: "10px 0", fontSize: 13.5,
     color: on ? c.deep : "var(--color-neutral-700)", boxShadow: on ? `inset 0 0 0 1px ${c.base}` : "none",
@@ -121,7 +104,13 @@ export default function FestivalPageClient({ params, year, entitled, price: dete
 
           {tab === "stories" && (
             <>
-              <Timings festivalId={id} year={year} homeCityId={profile?.city_id} c={c} />
+              {layersOpen
+                ? <Timings festivalId={id} year={year} homeCityId={profile?.city_id} c={c} />
+                : (
+                  <div style={{ margin: "14px 0 4px" }}>
+                    <UnlockCard compact intl={intl} from={id} title="Tithi, sunrise and sunset timings" body="The date above is free for everyone. The panchang details behind it, such as tithi, timings and key muhurat, are part of Parv." />
+                  </div>
+                )}
               {otherYears.length > 0 && (
                 <div className="tnum" style={{ display: "flex", flexWrap: "wrap", gap: "4px 10px", fontSize: 12, color: "var(--color-neutral-700)", margin: "8px 0 0" }}>
                   <span>Other years:</span>
@@ -131,7 +120,7 @@ export default function FestivalPageClient({ params, year, entitled, price: dete
                 </div>
               )}
               <div style={{ fontSize: 12, color: "var(--color-neutral-700)", margin: "14px 0 2px" }}>
-                {regions.length} regional stories · tap to read
+                {regions.length} regional stories · tap to read{!data.storyOpen && " · first one is free to read"}
               </div>
               {regions.map((r, i) => {
                 const open = openR === i;
@@ -152,11 +141,21 @@ export default function FestivalPageClient({ params, year, entitled, price: dete
                       </span>
                       <Icon name="chevronDown" size={18} style={{ transition: "transform .2s", transform: `rotate(${open ? 180 : 0}deg)` }} />
                     </button>
-                    {open && (
+                    {open && r.locked && (
+                      <div style={{ padding: "0 0 18px 42px", animation: "fadeIn .25s" }}>
+                        <UnlockCard compact intl={intl} from={id} title={`Read all of ${data.title}`} body="This regional story is part of Parv. The first story on each festival is free to read." />
+                      </div>
+                    )}
+                    {open && !r.locked && (
                       <div style={{ padding: "0 0 18px 42px", animation: "fadeIn .25s" }}>
                         {r.feel && <p style={{ margin: "0 0 10px", ...heading, fontSize: 18, fontStyle: "italic", lineHeight: 1.3 }}>{r.feel}</p>}
                         <p style={{ margin: "0 0 10px", fontSize: 14.5, lineHeight: 1.65, textAlign: "justify", hyphens: "auto" }}>{r.text}</p>
                         {r.source && <div style={{ fontSize: 11.5, fontStyle: "italic", color: "var(--color-neutral-700)" }}>Source — {r.source}</div>}
+                        {r.preview && (
+                          <div style={{ marginTop: 14 }}>
+                            <UnlockCard compact intl={intl} from={id} title={`Read the other ${regions.length - 1} stories`} body="You have read the free preview. The rest of this festival's stories are part of Parv." />
+                          </div>
+                        )}
                       </div>
                     )}
                   </div>
@@ -179,34 +178,19 @@ export default function FestivalPageClient({ params, year, entitled, price: dete
 
           {tab === "rituals" && locked && (
             <div style={{ padding: "20px 0 0", display: "flex", flexDirection: "column", gap: 12 }}>
-              <h3 style={{ margin: 0, fontSize: 25, lineHeight: 1.15 }}>{r0.heading}</h3>
-              {r0.when && <div><div style={label}>When</div><div style={{ fontSize: 14, lineHeight: 1.5 }}>{r0.when}</div></div>}
-              <div aria-hidden="true" style={{ display: "flex", flexDirection: "column", gap: 8, WebkitMaskImage: "linear-gradient(black 10%,transparent 95%)", maskImage: "linear-gradient(black 10%,transparent 95%)", filter: "blur(.6px)", userSelect: "none" }}>
-                {(r0.steps || []).slice(0, 3).map((t, i) => (
-                  <div key={i} style={{ display: "grid", gridTemplateColumns: "26px 1fr", gap: 6, fontSize: 14, lineHeight: 1.5 }}>
-                    <span style={{ ...heading, fontSize: 17, color: "var(--color-accent-700)" }}>{i + 1}</span><span>{t}</span>
-                  </div>
-                ))}
-              </div>
-              <div className="card" style={{ borderColor: "var(--color-accent)", gap: 10, padding: 18 }}>
-                <div style={{ display: "flex", alignItems: "center", gap: 8, color: "var(--color-accent-700)" }}>
-                  <Icon name="lock" size={16} /><span className="card-kicker" style={{ color: "inherit" }}>Parv membership</span>
-                </div>
-                <div className="card-title" style={{ fontSize: 21 }}>
-                  {rituals.length === 1 ? "1 ritual" : `${rituals.length} rituals`} for {data.title}, with samagri, steps and mantras
-                </div>
-                <div style={{ fontSize: 13.5, lineHeight: 1.55, color: "var(--color-neutral-800)", textAlign: "justify", hyphens: "auto" }}>
-                  Stories stay free, always. Rituals — the samagri, steps and mantras for every festival, adapted to your family's way — are part of Parv's subscription.
-                </div>
-                <Link href={`/pricing?from=${id}`} className="btn btn-primary btn-block" style={{ minHeight: 46, fontSize: 16 }}>
-                  Unlock Rituals · {price}/month
-                </Link>
-              </div>
+              {data.ritualHeading && <h3 style={{ margin: 0, fontSize: 25, lineHeight: 1.15 }}>{data.ritualHeading}</h3>}
+              {data.ritualWhen && <div><div style={label}>When</div><div style={{ fontSize: 14, lineHeight: 1.5 }}>{data.ritualWhen}</div></div>}
+              <UnlockCard
+                intl={intl}
+                from={id}
+                title={`${data.ritualCount === 1 ? "1 ritual" : `${data.ritualCount} rituals`} for ${data.title}, with samagri, steps and mantras`}
+                body="Rituals, with the samagri, steps and mantras for every festival, adapted to your family's way, are part of Parv."
+              />
             </div>
           )}
 
           {tab === "prepare" && (
-            <Checklist festivalId={id} year={year} festivalName={data.title} entitled={entitled} initial={checklist} c={c} price={price} />
+            <Checklist festivalId={id} year={year} festivalName={data.title} entitled={entitled} initial={checklist} c={c} items={prepItems} count={prepCount} intl={intl} />
           )}
         </div>
       </div>

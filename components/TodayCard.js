@@ -7,6 +7,7 @@ import { cityById, DEFAULT_CITY } from "@/lib/cities";
 import { HUE } from "@/lib/design";
 import { hijriOf, hijriLabel } from "@/lib/hijri";
 import { Hi } from "@/components/ui/Lang";
+import Icon from "@/components/ui/Icon";
 import CitySwitch from "@/components/CitySwitch";
 
 const DAY_FMT = (y, m, d, opts) => new Date(Date.UTC(y, m, d, 12)).toLocaleDateString("en-GB", { timeZone: "UTC", ...opts });
@@ -14,7 +15,7 @@ const DAY_FMT = (y, m, d, opts) => new Date(Date.UTC(y, m, d, 12)).toLocaleDateS
 // Today for the user's city: festivals on now (always), plus whatever the
 // chosen calendar layers add (Hijri date, Hindu Panchang observance). Tithi and
 // moon details sit in a collapsed "Lunar details" section.
-export default function TodayCard({ homeCityId, next, onNow = [], layers = ["panchang"] }) {
+export default function TodayCard({ homeCityId, next, onNow = [], layers = ["panchang"], layersLocked = false }) {
   const showPanchang = layers.includes("panchang");
   const showHijri = layers.includes("hijri");
   const home = cityById(homeCityId) || DEFAULT_CITY;
@@ -115,6 +116,12 @@ export default function TodayCard({ homeCityId, next, onNow = [], layers = ["pan
             )}
           </div>
         </details>
+      )}
+      {layersLocked && (
+        <div data-testid="lunar-locked" style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 13, color: "var(--color-neutral-800)" }}>
+          <Icon name="lock" size={14} />
+          <span>Lunar details, tithi and the day's panchang are part of Parv. <Link href="/pricing">Unlock with Parv</Link></span>
+        </div>
       )}
       <CitySwitch city={city} homeId={home.id} onChange={setCityId} />
     </section>

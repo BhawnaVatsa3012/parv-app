@@ -1,56 +1,38 @@
 "use client";
 import { useRef, useState } from "react";
-import Link from "next/link";
-import { checklistItems, doBy } from "@/lib/checklists";
+import { doBy } from "@/lib/checklistDates";
+import UnlockCard from "@/components/UnlockCard";
 import Icon from "@/components/ui/Icon";
 
 const fmt = (d) => d.toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short" });
 
 // A festival's preparation checklist, grouped by "do by" date, saved to the
-// user's account. Part of the membership: non-members see the first few
-// items and an unlock prompt (the save API refuses them too).
-export default function Checklist({ festivalId, year, festivalName, entitled, initial, c, price }) {
-  if (!entitled) return <LockedChecklist festivalId={festivalId} festivalName={festivalName} c={c} price={price} />;
-  return <OpenChecklist festivalId={festivalId} year={year} festivalName={festivalName} entitled initial={initial} c={c} />;
+// user's account. Part of the membership. The server sends `items` only to
+// members (non-members get an empty list and just the `count`), and the save
+// API refuses non-members too.
+export default function Checklist({ festivalId, year, festivalName, entitled, initial, c, items = [], count = 0, intl = false }) {
+  if (!entitled) return <LockedChecklist festivalId={festivalId} festivalName={festivalName} count={count} intl={intl} />;
+  return <OpenChecklist festivalId={festivalId} year={year} festivalName={festivalName} initial={initial} c={c} items={items} />;
 }
 
-function LockedChecklist({ festivalId, festivalName, c, price }) {
-  const all = checklistItems(festivalId);
-  const preview = all.filter((i) => !i.samagri).slice(0, 3);
+function LockedChecklist({ festivalId, festivalName, count, intl }) {
   return (
     <div id="prepare" style={{ padding: "16px 0 0", display: "flex", flexDirection: "column", gap: 12 }}>
       <h3 style={{ margin: 0, fontSize: 25 }}>Get ready for {festivalName}</h3>
       <div style={{ fontSize: 13, color: "var(--color-neutral-700)" }}>
-        {all.length} things to do, each with a &ldquo;do by&rdquo; date counting down to the day.
+        {count} things to do, each with a &ldquo;do by&rdquo; date counting down to the day.
       </div>
-      <div aria-hidden="true" style={{ display: "flex", flexDirection: "column", WebkitMaskImage: "linear-gradient(black 10%,transparent 95%)", maskImage: "linear-gradient(black 10%,transparent 95%)", filter: "blur(.6px)", userSelect: "none" }}>
-        {preview.map((i) => (
-          <div key={i.key} style={{ display: "flex", alignItems: "flex-start", gap: 10, padding: "8px 0", borderTop: "1px solid var(--color-divider)", fontSize: 14, lineHeight: 1.45 }}>
-            <span style={{ flex: "none", width: 18, height: 18, marginTop: 2, borderRadius: 3, border: "1.5px solid var(--color-neutral-400)" }} />
-            <span>{i.text}</span>
-          </div>
-        ))}
-      </div>
-      <div className="card" style={{ borderColor: "var(--color-accent)", gap: 10, padding: 18 }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 8, color: "var(--color-accent-700)" }}>
-          <Icon name="lock" size={16} /><span className="card-kicker" style={{ color: "inherit" }}>Parv membership</span>
-        </div>
-        <div className="card-title" style={{ fontSize: 21 }}>Your {festivalName} checklist, with reminders</div>
-        <div style={{ fontSize: 13.5, lineHeight: 1.55, color: "var(--color-neutral-800)" }}>
-          Tick things off as you go, add your own, and get an email 10, 3 and 1 day before — with what&rsquo;s still left. Part of the membership, with Rituals.
-        </div>
-        <Link href={`/pricing?from=${festivalId}`} className="btn btn-primary btn-block" style={{ minHeight: 46, fontSize: 16 }}>
-          Unlock{price ? ` · ${price}/month` : ""}
-        </Link>
-      </div>
+      <UnlockCard
+        intl={intl}
+        from={festivalId}
+        title={`Your ${festivalName} checklist, with reminders`}
+        body="Tick things off as you go, add your own, and get an email 10, 3 and 1 day before, with what's still left. Preparation tools are part of Parv."
+      />
     </div>
   );
 }
 
-function OpenChecklist({ festivalId, year, festivalName, entitled, initial, c }) {
-  const all = checklistItems(festivalId);
-  const items = all.filter((i) => entitled || !i.samagri);
-  const lockedN = all.length - items.length;
+function OpenChecklist({ festivalId, year, festivalName, initial, c, items }) {
   const [done, setDone] = useState(new Set(initial?.done || []));
   const [custom, setCustom] = useState(initial?.custom || []);
   const [draft, setDraft] = useState("");
@@ -130,12 +112,6 @@ function OpenChecklist({ festivalId, year, festivalName, entitled, initial, c })
           {g.items.map((i) => row(i))}
         </div>
       ))}
-      {lockedN > 0 && (
-        <div style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 13, color: "var(--color-neutral-700)", padding: "8px 0", borderTop: "1px solid var(--color-divider)" }}>
-          <Icon name="lock" size={14} />
-          <span>+{lockedN} samagri items from the Rituals. <Link href={`/pricing?from=${festivalId}`}>Unlock with membership</Link></span>
-        </div>
-      )}
       <form onSubmit={add} style={{ display: "flex", gap: 8, marginTop: 4 }}>
         <input className="input" value={draft} onChange={(e) => setDraft(e.target.value)} placeholder="Add your own item" maxLength={160} aria-label="Add your own item" style={{ minHeight: 40 }} />
         <button className="btn btn-secondary" type="submit" style={{ flex: "none" }}>Add</button>

@@ -172,3 +172,65 @@ describe("duplicate subscriptions", () => {
     expect(create).toHaveBeenCalledTimes(1);
   });
 });
+
+describe("plan choice (monthly | yearly)", () => {
+  const req = (body, raw) => new Request("http://localhost/api/checkout/razorpay", { method: "POST", headers: { "Content-Type": "application/json" }, body: raw ?? JSON.stringify(body) });
+  const YEARLY = "RAZORPAY_PLAN_ID_YEARLY";
+  afterEach(() => { delete process.env[YEARLY]; });
+
+  it("monthly uses RAZORPAY_PLAN_ID with 120 cycles", async () => {
+    process.env[YEARLY] = "plan_YEAR";
+    expect((await POST(req({ plan: "monthly" }))).status).toBe(200);
+    expect(create).toHaveBeenCalledWith(expect.objectContaining({ plan_id: "plan_DUMMY", total_count: 120 }));
+  });
+
+  it("yearly uses RAZORPAY_PLAN_ID_YEARLY with 10 cycles", async () => {
+    process.env[YEARLY] = "plan_YEAR";
+    const res = await POST(req({ plan: "yearly" }));
+    expect(res.status).toBe(200);
+    expect(create).toHaveBeenCalledWith({ plan_id: "plan_YEAR", customer_notify: 1, total_count: 10, notes: { supabase_user_id: "user-1" } });
+  });
+
+  it("yearly with the env var missing: clear 503 'coming soon', no crash, nothing created, auth untouched", async () => {
+    const res = await POST(req({ plan: "yearly" }));
+    expect(res.status).toBe(503);
+    const body = await res.json();
+    expect(body.code).toBe("plan_unavailable");
+    expect(body.error).toMatch(/coming soon/i);
+    expect(create).not.toHaveBeenCalled();
+    expect(getUser).not.toHaveBeenCalled();
+  });
+
+  it("no body, empty body or no plan field means monthly", async () => {
+    expect((await POST()).status).toBe(200);
+    expect((await POST(req(null, ""))).status).toBe(200);
+    expect((await POST(req({}))).status).toBe(200);
+    expect(create).toHaveBeenCalledTimes(3);
+    for (const c of create.mock.calls) expect(c[0].plan_id).toBe("plan_DUMMY");
+  });
+
+  it.each([["weekly"], ["Yearly"], [""], ["constructor"], [7], [["yearly"]], [{ x: 1 }], [false]])(
+    "rejects plan %j with 400 and creates nothing",
+    async (plan) => {
+      const res = await POST(req({ plan }));
+      expect(res.status).toBe(400);
+      expect((await res.json()).code).toBe("invalid_plan");
+      expect(create).not.toHaveBeenCalled();
+    }
+  );
+
+  it("a plan ID sent by the client is never used", async () => {
+    await POST(req({ plan: "monthly", plan_id: "plan_EVIL", planId: "plan_EVIL" }));
+    expect(create.mock.calls[0][0].plan_id).toBe("plan_DUMMY");
+    expect((await POST(req({ plan: "plan_EVIL" }))).status).toBe(400);
+    expect((await POST(req({ plan_id: "plan_EVIL" }))).status).toBe(200); // ignored, defaults to monthly
+    expect(create.mock.calls[1][0].plan_id).toBe("plan_DUMMY");
+  });
+
+  it("the duplicate-subscription guard applies to both plans", async () => {
+    process.env[YEARLY] = "plan_YEAR";
+    subRows = [{ user_id: "user-1", provider: "razorpay", provider_subscription_id: "s", status: "active" }];
+    expect((await POST(req({ plan: "yearly" }))).status).toBe(409);
+    expect(create).not.toHaveBeenCalled();
+  });
+});

@@ -4,7 +4,7 @@ import Script from "next/script";
 
 // Opens Razorpay's own checkout (UPI, cards, netbanking). Card and UPI
 // details are entered on Razorpay's secure form, never in Parv.
-export default function RazorpaySubscribeButton({ label, from = "", disabled = false }) {
+export default function RazorpaySubscribeButton({ label, from = "", disabled = false, plan = "monthly" }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -18,17 +18,21 @@ export default function RazorpaySubscribeButton({ label, from = "", disabled = f
     setLoading(true);
     setError("");
     try {
-      const res = await fetch("/api/checkout/razorpay", { method: "POST" });
-      const data = await res.json();
+      const res = await fetch("/api/checkout/razorpay", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ plan }), // a plan KEY only; the server picks the plan ID
+      });
+      const data = await res.json().catch(() => ({}));
       if (!res.ok) throw new Error(data.error || "Could not start checkout");
 
       const rzp = new window.Razorpay({
         key: data.keyId,
         subscription_id: data.subscriptionId,
         name: "Parv",
-        description: "Rituals membership · monthly",
+        description: `Parv membership · ${plan}`,
         handler: function (resp) {
-          const q = new URLSearchParams({ status: "success", via: "razorpay" });
+          const q = new URLSearchParams({ status: "success", via: "razorpay", plan });
           if (resp?.razorpay_payment_id) q.set("pid", resp.razorpay_payment_id);
           if (from) q.set("from", from);
           window.location.href = `/pricing?${q}`;
