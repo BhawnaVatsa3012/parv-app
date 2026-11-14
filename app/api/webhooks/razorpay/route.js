@@ -135,6 +135,11 @@ export async function POST(request) {
     if (insertErr && insertErr.code === "23505") {
       // Lost a race with a concurrent delivery that created the row first.
       result = await updateExisting();
+    } else if (insertErr && insertErr.code === "23503") {
+      // The user deleted their account (their auth user no longer exists), so
+      // there is nothing to record. Acknowledge so Razorpay stops retrying.
+      console.warn("Razorpay webhook for a deleted user; ignoring:", event);
+      return NextResponse.json({ received: true });
     } else {
       result = { error: insertErr };
     }

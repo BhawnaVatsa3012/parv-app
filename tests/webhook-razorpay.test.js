@@ -8,6 +8,7 @@ import crypto from "node:crypto";
 let rows;
 const writes = [];
 let failWrites = false;
+let failWriteCode;
 const from = vi.fn((table) => {
   expect(table).toBe("subscriptions");
   const filters = [];
@@ -25,7 +26,7 @@ const from = vi.fn((table) => {
         throw new Error("unsupported or(): " + c);
       }));
   const run = () => {
-    if (failWrites && op !== "select") return { error: { message: "boom" } };
+    if (failWrites && op !== "select") return { error: { message: "boom", code: failWriteCode } };
     if (op === "insert") {
       if (rows.some((r) => r.provider === payload.provider && r.provider_subscription_id === payload.provider_subscription_id))
         return { error: { code: "23505", message: "duplicate" } };
@@ -78,6 +79,7 @@ beforeEach(() => {
   rows = [];
   writes.length = 0;
   failWrites = false;
+  failWriteCode = undefined;
   from.mockClear();
 });
 afterEach(() => { delete process.env.RAZORPAY_WEBHOOK_SECRET; });
@@ -396,5 +398,14 @@ describe("malformed input", () => {
   it("an invalid body with a BAD signature is still 401 (signature checked first)", async () => {
     const res = await POST(req(null, { raw: "not json", signature: "0".repeat(64) }));
     expect(res.status).toBe(401);
+  });
+});
+
+describe("deleted account", () => {
+  it("acknowledges (200) an event for a user whose account was deleted, instead of retrying forever", async () => {
+    failWrites = true;
+    failWriteCode = "23503"; // foreign key violation: auth user no longer exists
+    const res = await POST(req(event("subscription.cancelled")));
+    expect(res.status).toBe(200);
   });
 });
