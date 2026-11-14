@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { festivals } from "@/lib/data";
+import { festivals } from "@/lib/festivalList";
 import { col, HI } from "@/lib/design";
 import { dayPanchang, rangePanchang, paranaWindow, fmtTime, zonedYMD, tithiName } from "@/lib/panchang";
 import { OBSERVANCES } from "@/lib/observances";

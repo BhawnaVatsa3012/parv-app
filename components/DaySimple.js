@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { festivals } from "@/lib/data";
+import { festivals } from "@/lib/festivalList";
 import { col, HI } from "@/lib/design";
 import { Hi } from "@/components/ui/Lang";
 import { hijriLabel } from "@/lib/hijri";

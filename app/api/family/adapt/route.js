@@ -1,7 +1,7 @@
 import { requireUser, readJson, json, bad } from "@/lib/api";
 import { getFamily, getProfile } from "@/lib/store";
 import { isEntitledToRituals } from "@/lib/entitlements";
-import { storyData } from "@/lib/data";
+import { storyData } from "@/lib/stories";
 
 const MODEL = process.env.ANTHROPIC_MODEL || "claude-haiku-5-5";
 

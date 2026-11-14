@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useState } from "react";
-import { festivals } from "@/lib/data";
+import { festivals } from "@/lib/festivalList";
 import { HI } from "@/lib/design";
 import { cityById, cityLabel } from "@/lib/cities";
 import CityPicker from "@/components/CityPicker";
@@ -71,12 +71,12 @@ export default function ProfileSettings({ profile: initial, onName, member = fal
       )}
 
       <div style={row}>
-        <span style={{ display: "flex", flexDirection: "column" }}><span style={{ fontSize: 14 }}>My calendars</span><span style={sub}>{layersSummary(effectiveLayers(p.calendar_layers))} · festivals always shown</span></span>
+        <span style={{ display: "flex", flexDirection: "column" }}><span style={{ fontSize: 14 }}>My calendars</span><span style={sub}>{layersSummary(effectiveLayers(p.calendar_layers))} · festivals always shown{!member && " · layers are part of Parv"}</span></span>
         <button className="btn btn-ghost" onClick={() => setOpen(open === "calendars" ? "" : "calendars")}>{open === "calendars" ? "Close" : "Change"}</button>
       </div>
       {open === "calendars" && (
         <div style={{ padding: "10px 0", borderBottom: "1px solid var(--color-divider)" }}>
-          <CalendarChoice value={effectiveLayers(p.calendar_layers)} onChange={(l) => update({ calendar_layers: l })} idPrefix="pf-cal" />
+          <CalendarChoice value={effectiveLayers(p.calendar_layers)} onChange={(l) => update({ calendar_layers: l })} idPrefix="pf-cal" locked={!member} />
         </div>
       )}
 

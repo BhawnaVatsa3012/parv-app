@@ -2,7 +2,9 @@ import { redirect } from "next/navigation";
 import { getUser } from "@/lib/session";
 import { getProfile, getChecklists } from "@/lib/store";
 import { isEntitledToRituals } from "@/lib/entitlements";
-import { festivals } from "@/lib/data";
+import { festivals } from "@/lib/festivalList";
+import { checklistItems } from "@/lib/checklists";
+import { layersForReader } from "@/lib/access";
 import { nextOccurrence } from "@/lib/occurrence";
 import { indiaToday } from "@/lib/today";
 import HomeClient from "./HomeClient";
@@ -22,5 +24,13 @@ export default async function HomePage() {
   const [lists, member] = await Promise.all([Promise.all(ys.map((y) => getChecklists(user, y))), isEntitledToRituals()]);
   const byYear = Object.fromEntries(ys.map((y, i) => [y, lists[i]]));
   const checklists = Object.fromEntries(Object.entries(yearOf).map(([id, y]) => [id, byYear[y]?.[id]]).filter(([, v]) => v));
-  return <HomeClient email={user?.email || ""} profile={profile} checklists={checklists} member={member} />;
+  // Checklist item text stays on the server; the browser only gets counts and the
+  // keys of the non-samagri items (to show a member's progress).
+  const prep = Object.fromEntries(Object.keys(yearOf).map((id) => {
+    const all = checklistItems(id);
+    return [id, { total: all.length, keys: member ? all.filter((i) => !i.samagri).map((i) => i.key) : [] }];
+  }));
+  // Calendar layers are paid: free readers get none (the core date is unaffected).
+  const layers = layersForReader(member, profile?.calendar_layers);
+  return <HomeClient email={user?.email || ""} profile={profile} checklists={checklists} member={member} prep={prep} layers={layers} layersLocked={!member} />;
 }

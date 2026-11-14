@@ -11,7 +11,7 @@ import { TRADITIONS, TRADITION_NOTE, defaultLayersFor, effectiveLayers } from "@
 
 // One-time setup after first sign-in: name and city (step I), which calendars
 // to show (step II), then optional family details (step III).
-export default function SetupClient({ email, profile }) {
+export default function SetupClient({ email, profile, member = false }) {
   const router = useRouter();
   const [step, setStep] = useState(profile?.city_id ? 1 : 0);
   const [name, setName] = useState(profile?.name || nameFromEmail(email));
@@ -64,7 +64,7 @@ export default function SetupClient({ email, profile }) {
             </select>
             {TRADITION_NOTE[tradition] && <p style={{ margin: "6px 0 0", fontSize: 12, lineHeight: 1.5, color: "var(--color-neutral-700)" }}>{TRADITION_NOTE[tradition]}</p>}
           </div>
-          <CalendarChoice value={layers} onChange={setLayers} idPrefix="setup-cal" />
+          <CalendarChoice value={layers} onChange={setLayers} idPrefix="setup-cal" locked={!member} />
         </>
       ),
       cta: "Continue",

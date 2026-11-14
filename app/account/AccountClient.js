@@ -9,7 +9,8 @@ import Icon from "@/components/ui/Icon";
 import ProfileSettings from "@/components/ProfileSettings";
 import { LegalLinks } from "@/components/LegalPage";
 
-const PRICE = { razorpay: "₹99", dodo: "$3.99" };
+// Razorpay members may be on the monthly or yearly plan and the subscriptions table does not record which, so no amount is shown for them.
+const PRICE = { razorpay: "", dodo: "$3.99/month" };
 const fmt = (iso) => (iso ? new Date(iso).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" }) : "");
 
 export default function AccountClient({ email, subscription, detectedRegion, profile }) {
@@ -33,18 +34,18 @@ export default function AccountClient({ email, subscription, detectedRegion, pro
   const [name, setName] = useState(profile?.name || nameFromEmail(email));
   const provider = subscription?.provider;
   const until = fmt(subscription?.current_period_end);
-  const myPrice = region === "india" ? "₹99" : "$3.99";
+  const myPrice = region === "india" ? "₹49" : "$3.99";
 
   const sub =
     status === "active"
-      ? { title: "Active", tag: provider === "dodo" ? "Dodo" : "Razorpay", tagClass: "tag-accent", meta: `${PRICE[provider] || myPrice}/month${until ? ` · renews ${until}` : ""}`, canCancel: true }
+      ? { title: "Active", tag: provider === "dodo" ? "Dodo" : "Razorpay", tagClass: "tag-accent", meta: `${provider === "dodo" ? PRICE.dodo : "Parv membership"}${until ? ` · renews ${until}` : ""}`, canCancel: true }
       : status === "cancelled"
       ? { title: "Cancelled", tag: "Ends soon", tagClass: "tag-neutral", meta: until ? `Access until ${until}` : "Your access ends at the close of the billing period.", buy: "Resubscribe" }
       : status === "on_hold"
       ? { title: "On hold", tag: "Payment issue", tagClass: "tag-neutral", meta: "Your last payment didn't go through. Update it in the payment app you used.", buy: "See membership" }
       : status === "expired"
-      ? { title: "Expired", tag: "Free", tagClass: "tag-neutral", meta: "Stories are free. Rituals need a membership.", buy: `See membership · ${myPrice}/month` }
-      : { title: "Not subscribed", tag: "Free", tagClass: "tag-neutral", meta: "Stories are free. Rituals need a membership.", buy: `See membership · ${myPrice}/month` };
+      ? { title: "Expired", tag: "Free", tagClass: "tag-neutral", meta: "Seven stories are free. The rest, calendar details and Rituals need a membership.", buy: `See membership · ${myPrice}/month` }
+      : { title: "Not subscribed", tag: "Free", tagClass: "tag-neutral", meta: "Seven stories are free. The rest, calendar details and Rituals need a membership.", buy: `See membership · ${myPrice}/month` };
 
   async function confirmCancel() {
     setBusy(true);
@@ -117,7 +118,7 @@ export default function AccountClient({ email, subscription, detectedRegion, pro
         <div style={row}>
           <span style={{ display: "flex", flexDirection: "column" }}>
             <span style={{ fontSize: 14 }}>Billing region</span>
-            <span style={{ fontSize: 11.5, color: "var(--color-neutral-700)" }}>{region === "india" ? "₹99/month via Razorpay" : "$3.99/month via Dodo Payments"}</span>
+            <span style={{ fontSize: 11.5, color: "var(--color-neutral-700)" }}>{region === "india" ? "From ₹49/month via Razorpay" : "$3.99/month via Dodo Payments"}</span>
           </span>
           <div className="seg">
             <label className="seg-opt" style={{ fontSize: 12 }}><input type="radio" name="pf-region" checked={region === "india"} onChange={() => setRegion("india")} />India</label>

@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { createServiceClient } from "@/lib/supabase/server";
-import { festivals } from "@/lib/data";
+import { festivals } from "@/lib/festivalList";
 import { nextOccurrence, daysUntil } from "@/lib/occurrence";
 import { checklistItems, NUDGE_DAYS } from "@/lib/checklists";
 

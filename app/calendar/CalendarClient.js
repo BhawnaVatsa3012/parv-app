@@ -2,7 +2,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { festivals } from "@/lib/data";
+import { festivals } from "@/lib/festivalList";
 import { HI, UI, MON, MON_HI, col, orderFestivals } from "@/lib/design";
 import { marksForMonth, occurrence, LAST_YEAR } from "@/lib/occurrence";
 import { monthPanchang, tithiShort, zonedYMD } from "@/lib/panchang";
@@ -25,7 +25,7 @@ const LAST = { y: LAST_YEAR, m: 11 };
 const key = (y, m) => y * 12 + m;
 const dot = (id) => `oklch(0.6 0.15 ${OBSERVANCES[id].hue})`;
 
-export default function CalendarClient({ homeCityId, layers = ["panchang"] }) {
+export default function CalendarClient({ homeCityId, layers = ["panchang"], layersLocked = false }) {
   const showPanchang = layers.includes("panchang");
   const showHijri = layers.includes("hijri");
   const router = useRouter();
@@ -106,7 +106,9 @@ export default function CalendarClient({ homeCityId, layers = ["panchang"] }) {
         </div>
         {showHijri && <div className="tnum" style={{ textAlign: "center", fontSize: 12, color: "var(--color-neutral-700)", margin: "0 0 8px" }}>{hijriSpan(y, m)} AH (approximate)</div>}
         <div style={{ fontSize: 12, color: "var(--color-neutral-700)", margin: "0 0 8px" }}>
-          Showing: {layers.length ? layers.map(layerLabel).join(" · ") : "festival dates only"} · <Link href="/account">Change calendars</Link>
+          Showing: {layers.length ? layers.map(layerLabel).join(" · ") : "festival dates only"} · {layersLocked
+            ? <span data-testid="layers-locked">Panchang and Hijri details are part of Parv. <Link href="/pricing">Unlock with Parv</Link></span>
+            : <Link href="/account">Change calendars</Link>}
         </div>
         {showPanchang && <div style={{ margin: "0 0 10px" }}>
           <CitySwitch city={city} homeId={home.id} onChange={setCityId} />
