@@ -8,6 +8,7 @@ import { Hi, useLang } from "@/components/ui/Lang";
 import Icon from "@/components/ui/Icon";
 import ProfileSettings from "@/components/ProfileSettings";
 import { LegalLinks } from "@/components/LegalPage";
+import { CANCEL_REASONS, CANCEL_COMMENT_MAX } from "@/lib/cancelFeedback";
 
 // Razorpay members may be on the monthly or yearly plan and the subscriptions table does not record which, so no amount is shown for them.
 const PRICE = { razorpay: "", dodo: "$3.99/month" };
@@ -19,6 +20,12 @@ export default function AccountClient({ email, subscription, detectedRegion, pro
   const [dialog, setDialog] = useState(false);
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState("");
+  const [reason, setReason] = useState("");
+  const [comment, setComment] = useState("");
+  const [delDialog, setDelDialog] = useState(false);
+  const [delText, setDelText] = useState("");
+  const [delBusy, setDelBusy] = useState(false);
+  const [delError, setDelError] = useState("");
   const [region, setRegionState] = useState(detectedRegion);
   useEffect(() => {
     try {
@@ -51,7 +58,12 @@ export default function AccountClient({ email, subscription, detectedRegion, pro
     setBusy(true);
     setMessage("");
     try {
-      const res = await fetch("/api/subscription/cancel", { method: "POST" });
+      // The exit survey is optional; whatever was (or was not) answered is sent along.
+      const res = await fetch("/api/subscription/cancel", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ reason: reason || undefined, comment: comment.trim() || undefined }),
+      });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Could not cancel");
       setStatus("cancelled");
@@ -61,6 +73,26 @@ export default function AccountClient({ email, subscription, detectedRegion, pro
     } finally {
       setBusy(false);
       setDialog(false);
+    }
+  }
+
+  async function confirmDelete() {
+    if (delText !== "DELETE") return;
+    setDelBusy(true);
+    setDelError("");
+    try {
+      const res = await fetch("/api/account/delete", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ confirm: "DELETE" }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data.error || "Could not delete your account");
+      try { await createClient().auth.signOut(); } catch (e) {}
+      window.location.href = "/login";
+    } catch (err) {
+      setDelError(err.message);
+      setDelBusy(false);
     }
   }
 
@@ -129,6 +161,9 @@ export default function AccountClient({ email, subscription, detectedRegion, pro
         <button className="btn btn-secondary btn-block" onClick={signOut} style={{ minHeight: 44, marginTop: 24 }}>
           <Icon name="logOut" size={16} />Sign out
         </button>
+        <button className="btn btn-ghost btn-block" onClick={() => { setDelText(""); setDelError(""); setDelDialog(true); }} style={{ minHeight: 44, marginTop: 8, color: "var(--color-neutral-700)" }}>
+          Delete my account
+        </button>
         <p style={{ margin: "16px 0 0", textAlign: "center", fontSize: 11, color: "var(--color-neutral-600)" }}>Parv · the stories behind our festivals</p>
         <LegalLinks style={{ marginTop: 8 }} />
       </div>
@@ -138,9 +173,39 @@ export default function AccountClient({ email, subscription, detectedRegion, pro
           <div className="dialog">
             <div id="cancel-title" className="dialog-title">Cancel your Rituals subscription?</div>
             <div className="dialog-body">You'll keep access until the end of the current billing period{until ? `, ${until}` : ""}.</div>
+            <fieldset disabled={busy} style={{ border: 0, margin: "10px 0 0", padding: 0 }}>
+              <legend style={{ fontSize: 13, fontWeight: 600, padding: 0, marginBottom: 6 }}>What's the main reason? <span style={{ fontWeight: 400, color: "var(--color-neutral-700)" }}>(optional)</span></legend>
+              {CANCEL_REASONS.map((r) => (
+                <label key={r.key} style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 13.5, padding: "5px 0" }}>
+                  <input type="radio" name="cancel-reason" checked={reason === r.key} onChange={() => setReason(r.key)} />{r.label}
+                </label>
+              ))}
+              <textarea value={comment} onChange={(e) => setComment(e.target.value.slice(0, CANCEL_COMMENT_MAX))} maxLength={CANCEL_COMMENT_MAX} rows={2} placeholder="Anything else you'd like to tell us? (optional)" aria-label="Anything else (optional)" style={{ width: "100%", marginTop: 6, fontSize: 13, padding: 8, border: "1px solid var(--color-divider)", borderRadius: 8, resize: "vertical" }} />
+              <div style={{ fontSize: 11, color: "var(--color-neutral-600)", textAlign: "right" }}>{comment.length}/{CANCEL_COMMENT_MAX}</div>
+            </fieldset>
             <div className="dialog-actions">
               <button className="btn btn-ghost" onClick={() => setDialog(false)} disabled={busy}>Keep it</button>
               <button className="btn btn-secondary" onClick={confirmCancel} disabled={busy}>{busy ? "Cancelling…" : "Cancel subscription"}</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {delDialog && (
+        <div role="dialog" aria-modal="true" aria-labelledby="delete-title" style={{ position: "fixed", inset: 0, zIndex: 25, display: "grid", placeItems: "center", padding: 24, background: "color-mix(in srgb, var(--color-neutral-900) 50%, transparent)", animation: "fadeIn .2s" }}>
+          <div className="dialog">
+            <div id="delete-title" className="dialog-title">Delete your account?</div>
+            <div className="dialog-body">
+              This permanently deletes your profile, checklists, family notes and adapted rituals, and your sign-in. It can't be undone.
+              {status === "active" ? " Your Rituals subscription will be cancelled immediately, with no further charges." : ""}
+              {" "}If you also use another app that shares this sign-in, your sign-in is kept and only your Parv data is removed.
+            </div>
+            <label style={{ display: "block", fontSize: 13, margin: "10px 0 4px" }}>Type <strong>DELETE</strong> to confirm</label>
+            <input value={delText} onChange={(e) => setDelText(e.target.value)} disabled={delBusy} autoComplete="off" autoCapitalize="characters" aria-label="Type DELETE to confirm" style={{ width: "100%", fontSize: 15, padding: "8px 10px", border: "1px solid var(--color-divider)", borderRadius: 8 }} />
+            {delError && <div role="alert" style={{ fontSize: 12.5, color: "#b3261e", marginTop: 8 }}>{delError}</div>}
+            <div className="dialog-actions">
+              <button className="btn btn-ghost" onClick={() => setDelDialog(false)} disabled={delBusy}>Keep my account</button>
+              <button className="btn btn-secondary" onClick={confirmDelete} disabled={delBusy || delText !== "DELETE"}>{delBusy ? "Deleting…" : "Delete my account"}</button>
             </div>
           </div>
         </div>

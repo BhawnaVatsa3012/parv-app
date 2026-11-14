@@ -67,6 +67,12 @@ export async function POST(request) {
     { onConflict: "provider,provider_subscription_id" }
   );
 
+  if (error && error.code === "23503") {
+    // Account was deleted (no such user any more): acknowledge, nothing to record.
+    console.warn("Dodo webhook for a deleted user; ignoring:", event.type);
+    return NextResponse.json({ received: true });
+  }
+
   if (error) {
     console.error("Failed to upsert subscription from Dodo webhook:", error);
     return NextResponse.json({ error: "DB write failed" }, { status: 500 });
